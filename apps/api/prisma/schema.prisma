@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// @note: id, createdAt, updatedAtはモデルの上の方に必ず定義すること
+// @note: リレーションはモデルの下の方に定義すること
+
+// ユーザー（管理者・購入者）
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  email String @unique
+  name  String
+
+  orders Order[]
+
+  @@map("users")
+}
+
+// イベント
+model Event {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  title       String
+  description String?
+  venue       String
+  date        DateTime
+
+  tickets Ticket[]
+
+  @@map("events")
+}
+
+// チケット種別
+model Ticket {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  eventId String @map("event_id")
+  name    String
+  price   Int
+  stock   Int
+
+  orderItems OrderItem[]
+  event      Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("tickets")
+}
+
+// 注文
+model Order {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId     String      @map("user_id")
+  totalPrice Int         @map("total_price")
+  status     OrderStatus @default(PENDING)
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+// 注文明細
+model OrderItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  orderId   String @map("order_id")
+  ticketId  String @map("ticket_id")
+  quantity  Int
+  unitPrice Int    @map("unit_price")
+
+  ticket Ticket @relation(fields: [ticketId], references: [id])
+  order  Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
