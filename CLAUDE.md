@@ -1,0 +1,80 @@
+## GraphQL Resolver 実装規約
+
+GraphQL API を実装する際は以下のガイドラインに従ってください。
+
+REST脳を捨てよ
+– 汎用的な query/queries 2 本で単体・複数取得を賄い、部分フェッチとグラフ構造を活かして over/under-fetch を排除せよ。
+
+- 例: userテーブルの情報をとる場合→userクエリとusersクエリの2つを作成 ￼
+
+画面ロジックは API 側に寄せよ
+– フロント分岐を減らすため、状態を表すカスタム field を提供し、1 ステータスで UI が判断できる形にせよ。 ￼
+
+クエリの命名規則を統一
+
+- Query 名はリソース単語のみ
+- 単一リソース取得の場合は単数形、複数リソース取得の場合は複数形
+- 例: user(単数取得クエリ), users(複数取得クエリ)
+
+クエリの引数のルールを統一
+
+- 単一リソース取得の場合、主キーによる取得の場合は`id`を使用
+- 例: `@Args('id', { type: () => ID }) id: string`
+- 複数リソース取得の場合
+- 例: `@Args() args: UsersArgs`
+
+クエリの返り値のルールを統一
+
+- 単一リソースの場合は、リソースの型をそのまま使用して、nullable: trueを設定
+- 例: `@Query(() => User, { nullable: true })`
+- 複数リソースの場合は、`[リソース名]Connection`とする
+- 例: `UserConnection`
+
+ミューテーションの命名規則を統一
+
+- Mutation 名は resource + Action
+- 例: userUpdate
+
+ミューテーションの引数のルールを統一
+– ミューテーションのArgs が2つ以内なら直書き、3つ以上またはネスト有りなら Input 型を作成せよ
+
+- Input型を作成する場合は、GraphQL Argsは必ず'input'という名前にする
+- 型名は、ミューテーション名 + Input で統一
+- 例: userUpdateの場合 → Args: input　型名: UserUpdateInput
+
+ミューテーションごとに専用のPayload型を使え
+– ミューテーション名 + Payload の形式で統一
+
+- 例: userUpdateの場合 → 型名: UserUpdatePayload
+
+### ResolveField での Prisma クエリパターン
+
+ResolveField 内でデータを取得する際は、必ず `findUnique` + Fluent API パターンを使用すること。
+
+```typescript
+// ✅ 正しいパターン: findUnique + Fluent API
+@ResolveField(() => Boolean)
+async isCalling(@Parent() creator: Creator): Promise<boolean> {
+  const calls = await this.prisma.creator
+    .findUnique({ where: { id: creator.id } })
+    .calls({
+      where: { endedAt: null },
+      take: 1,
+    });
+  return (calls?.length ?? 0) > 0;
+}
+
+// ❌ 禁止パターン: findFirst / findMany を直接使用
+@ResolveField(() => Boolean)
+async isCalling(@Parent() creator: Creator): Promise<boolean> {
+  const activeCall = await this.prisma.call.findFirst({
+    where: { creatorId: creator.id, endedAt: null },
+  });
+  return !!activeCall;
+}
+```
+
+**理由**:
+
+- Fluent API を使用することで、Prisma の DataLoader による N+1 問題の最適化が有効になる
+- 親エンティティからのリレーション経由でアクセスすることで、一貫したクエリパターンを維持できる
