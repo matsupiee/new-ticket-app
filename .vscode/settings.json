@@ -4,7 +4,7 @@
       "mode": "auto"
     }
   ],
-  "cSpell.words": ["devoxa", "turbopack"],
+  "cSpell.words": ["devoxa", "turbopack", "Urql"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true
 }
