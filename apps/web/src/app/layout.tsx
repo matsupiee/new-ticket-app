@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { UrqlProvider } from '../libs/graphql/provider';
+import { CartProvider } from '../libs/cart/cart-context';
+import { Header } from '../components/header';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -25,7 +27,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <UrqlProvider>{children}</UrqlProvider>
+        <UrqlProvider>
+          <CartProvider>
+            <Header />
+            {children}
+          </CartProvider>
+        </UrqlProvider>
       </body>
     </html>
   );

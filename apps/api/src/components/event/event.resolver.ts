@@ -10,6 +10,8 @@ import { EventCreatePayload } from './dto/event-create.payload';
 import { EventUpdateInput } from './dto/event-update.input';
 import { EventUpdatePayload } from './dto/event-update.payload';
 import { EventDeletePayload } from './dto/event-delete.payload';
+import { EasyGuard } from '../guard/easy-guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Event)
 export class EventResolver {
@@ -29,6 +31,7 @@ export class EventResolver {
   @Query(() => EventConnection, {
     description: 'イベントを複数取得する',
   })
+  @UseGuards(EasyGuard)
   async events(
     @Args() args: EventsArgs,
     @Info() resolveInfo: GraphQLResolveInfo,

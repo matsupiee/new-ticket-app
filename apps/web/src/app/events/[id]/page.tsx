@@ -64,7 +64,7 @@ export default function EventDetailPage() {
           <p className="text-gray-600">イベントが見つかりませんでした。</p>
           <Link
             href="/events"
-            className="text-blue-600 hover:underline mt-4 inline-block"
+            className="text-gray-900 hover:underline mt-4 inline-block"
           >
             イベント一覧に戻る
           </Link>
@@ -80,7 +80,7 @@ export default function EventDetailPage() {
       <div className="max-w-4xl mx-auto">
         <Link
           href="/events"
-          className="text-blue-600 hover:underline mb-6 inline-block"
+          className="text-gray-900 hover:underline mb-6 inline-block"
         >
           &larr; イベント一覧に戻る
         </Link>
@@ -154,7 +154,12 @@ export default function EventDetailPage() {
         ) : (
           <div className="grid gap-4">
             {tickets.map((ticket) => (
-              <TicketCard key={ticket.id} ticket={ticket} />
+              <TicketCard
+                key={ticket.id}
+                ticket={ticket}
+                eventId={event.id}
+                eventName={event.title}
+              />
             ))}
           </div>
         )}
