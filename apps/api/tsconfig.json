@@ -3,9 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "target": "ES2023",
-    "esModuleInterop": true
-  }
+    "target": "ES2023"
+  },
+  "include": ["./src/**/*", "test/**/*", "prisma/**/*", "prisma.config.ts"]
 }

@@ -1,10 +1,26 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+generator nestgraphql {
+  provider           = "node node_modules/prisma-nestjs-graphql"
+  output             = "../src/generated/prisma-nestjs-graphql" // graphql用の型の生成ファイルの置き場所
+  prismaClientImport = "src/generated/prisma/client"
+  emitSingle         = true // 生成結果を1ファイルにまとめる
+
+  omitModelsCount = true
+  emitBlocks      = ["inputs", "models", "enums"]
+
+  // カスタムスカラーに型をつける
+  fields_Scalars_from   = "src/common/scalars"
+  fields_Scalars_input  = true
+  fields_Scalars_output = true
 }
 
 // @note: id, createdAt, updatedAtはモデルの上の方に必ず定義すること
