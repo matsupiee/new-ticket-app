@@ -10,7 +10,10 @@
         "schema": "../api/src/generated/schema.gql",
         "tadaOutputLocation": "./src/graphql-env.d.ts"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "**/*.ts",
