@@ -1,4 +1,13 @@
-import { Args, ID, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Info,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Event } from 'src/generated/prisma-nestjs-graphql';
 import { PrismaService } from 'src/components/prisma/prisma.service';
 import { EventConnection } from './dto/event.connection';
@@ -91,5 +100,23 @@ export class EventResolver {
       include: { tickets: true },
     });
     return { event };
+  }
+
+  /**
+   * イベントが完売かどうかを判定する
+   * - 全チケットの在庫が0の場合にtrueを返す
+   * - Fluent API を使用して N+1 問題を回避
+   */
+  @ResolveField(() => Boolean, {
+    description: 'イベントが完売かどうか',
+  })
+  async isSoldOut(@Parent() event: Event): Promise<boolean> {
+    const tickets = await this.prisma.event
+      .findUnique({ where: { id: event.id } })
+      .tickets();
+
+    if (!tickets || tickets.length === 0) return false;
+
+    return tickets.every((ticket) => ticket.stock <= 0);
   }
 }

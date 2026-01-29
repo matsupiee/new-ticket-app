@@ -30,6 +30,9 @@ type Event {
   date: DateTime!
   description: String
   id: ID!
+
+  """イベントが完売かどうか"""
+  isSoldOut: Boolean!
   tickets: [Ticket!]
   title: String!
   updatedAt: DateTime!
