@@ -35,7 +35,7 @@ model User {
   email String @unique
   name  String
 
-  orders Order[]
+  orders Order[] // 子供テーブルのリレーション
 
   @@map("users")
 }
@@ -110,4 +110,15 @@ model OrderItem {
   order  Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("order_items")
+}
+
+model Staff {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  email String @unique
+  name  String
+
+  @@map("staffs")
 }

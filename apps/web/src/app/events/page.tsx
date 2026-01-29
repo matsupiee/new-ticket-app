@@ -20,12 +20,12 @@ const EventsQuery = graphql(`
 `);
 
 export default function EventsPage() {
-  const [result] = useQuery({
+  const [{ data, fetching, error }] = useQuery({
     query: EventsQuery,
     variables: { first: 20 },
   });
 
-  const { data, fetching, error } = result;
+  const events = data?.events.nodes ?? [];
 
   if (fetching) {
     return (
@@ -46,8 +46,6 @@ export default function EventsPage() {
       </div>
     );
   }
-
-  const events = data?.events.nodes ?? [];
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
