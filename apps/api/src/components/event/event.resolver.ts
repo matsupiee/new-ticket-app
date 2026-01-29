@@ -67,6 +67,7 @@ export class EventResolver {
   @Mutation(() => EventUpdatePayload, {
     description: 'イベントを更新する',
   })
+  @UseGuards(EasyGuard)
   async eventUpdate(
     @Args('input') input: EventUpdateInput,
   ): Promise<EventUpdatePayload> {
