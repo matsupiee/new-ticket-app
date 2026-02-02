@@ -2,6 +2,177 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Account {
+  accessToken: String
+  accessTokenExpiresAt: DateTime
+  accountId: String!
+  createdAt: DateTime!
+  id: ID!
+  idToken: String
+  password: String
+  providerId: String!
+  refreshToken: String
+  refreshTokenExpiresAt: DateTime
+  scope: String
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+input AccountListRelationFilter {
+  every: AccountWhereInput
+  none: AccountWhereInput
+  some: AccountWhereInput
+}
+
+input AccountOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input AccountWhereInput {
+  AND: [AccountWhereInput!]
+  NOT: [AccountWhereInput!]
+  OR: [AccountWhereInput!]
+  accessToken: StringNullableFilter
+  accessTokenExpiresAt: DateTimeNullableFilter
+  accountId: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  idToken: StringNullableFilter
+  password: StringNullableFilter
+  providerId: StringFilter
+  refreshToken: StringNullableFilter
+  refreshTokenExpiresAt: DateTimeNullableFilter
+  scope: StringNullableFilter
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+enum AdmissionMethod {
+  ADMIN_DEVICE
+  CUSTOMER_DEVICE_BUTTON
+  QR_CODE
+}
+
+type Artist {
+  createdAt: DateTime!
+  description: String
+  favorites: [FavoriteArtist!]
+  id: ID!
+  name: String!
+  profileImageUrl: String
+  stageArtists: [StageArtist!]
+  twitterAccount: String
+  updatedAt: DateTime!
+}
+
+input ArtistScalarRelationFilter {
+  is: ArtistWhereInput
+  isNot: ArtistWhereInput
+}
+
+input ArtistWhereInput {
+  AND: [ArtistWhereInput!]
+  NOT: [ArtistWhereInput!]
+  OR: [ArtistWhereInput!]
+  createdAt: DateTimeFilter
+  description: StringNullableFilter
+  favorites: FavoriteArtistListRelationFilter
+  id: StringFilter
+  name: StringFilter
+  profileImageUrl: StringNullableFilter
+  stageArtists: StageArtistListRelationFilter
+  twitterAccount: StringNullableFilter
+  updatedAt: DateTimeFilter
+}
+
+type AvailablePaymentMethod {
+  createdAt: DateTime!
+  id: ID!
+  paymentMethod: PaymentMethodType!
+  saleSchedule: SaleSchedule!
+  saleScheduleId: String!
+  updatedAt: DateTime!
+}
+
+input AvailablePaymentMethodListRelationFilter {
+  every: AvailablePaymentMethodWhereInput
+  none: AvailablePaymentMethodWhereInput
+  some: AvailablePaymentMethodWhereInput
+}
+
+input AvailablePaymentMethodOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input AvailablePaymentMethodWhereInput {
+  AND: [AvailablePaymentMethodWhereInput!]
+  NOT: [AvailablePaymentMethodWhereInput!]
+  OR: [AvailablePaymentMethodWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  paymentMethod: EnumPaymentMethodTypeFilter
+  saleSchedule: SaleScheduleScalarRelationFilter
+  saleScheduleId: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+type BankAccount {
+  accountHolder: String!
+  accountNumber: String!
+  accountType: BankAccountType!
+  bankCode: String!
+  bankName: String!
+  branchCode: String!
+  branchName: String!
+  createdAt: DateTime!
+  eventOrganizer: EventOrganizer!
+  eventOrganizerId: String!
+  id: ID!
+  isDefault: Boolean!
+  updatedAt: DateTime!
+}
+
+input BankAccountListRelationFilter {
+  every: BankAccountWhereInput
+  none: BankAccountWhereInput
+  some: BankAccountWhereInput
+}
+
+input BankAccountOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+enum BankAccountType {
+  CHECKING
+  SAVINGS
+}
+
+input BankAccountWhereInput {
+  AND: [BankAccountWhereInput!]
+  NOT: [BankAccountWhereInput!]
+  OR: [BankAccountWhereInput!]
+  accountHolder: StringFilter
+  accountNumber: StringFilter
+  accountType: EnumBankAccountTypeFilter
+  bankCode: StringFilter
+  bankName: StringFilter
+  branchCode: StringFilter
+  branchName: StringFilter
+  createdAt: DateTimeFilter
+  eventOrganizer: EventOrganizerScalarRelationFilter
+  eventOrganizerId: StringFilter
+  id: StringFilter
+  isDefault: BoolFilter
+  updatedAt: DateTimeFilter
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -18,25 +189,128 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
-input EnumOrderStatusFilter {
-  equals: OrderStatus
-  in: [OrderStatus!]
-  not: NestedEnumOrderStatusFilter
-  notIn: [OrderStatus!]
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+input EnumAdmissionMethodFilter {
+  equals: AdmissionMethod
+  in: [AdmissionMethod!]
+  not: NestedEnumAdmissionMethodFilter
+  notIn: [AdmissionMethod!]
+}
+
+input EnumBankAccountTypeFilter {
+  equals: BankAccountType
+  in: [BankAccountType!]
+  not: NestedEnumBankAccountTypeFilter
+  notIn: [BankAccountType!]
+}
+
+input EnumEventPublishStatusFilter {
+  equals: EventPublishStatus
+  in: [EventPublishStatus!]
+  not: NestedEnumEventPublishStatusFilter
+  notIn: [EventPublishStatus!]
+}
+
+input EnumLotteryModeNullableFilter {
+  equals: LotteryMode
+  in: [LotteryMode!]
+  not: NestedEnumLotteryModeNullableFilter
+  notIn: [LotteryMode!]
+}
+
+input EnumPaymentMethodTypeFilter {
+  equals: PaymentMethodType
+  in: [PaymentMethodType!]
+  not: NestedEnumPaymentMethodTypeFilter
+  notIn: [PaymentMethodType!]
+}
+
+input EnumPaymentProviderFilter {
+  equals: PaymentProvider
+  in: [PaymentProvider!]
+  not: NestedEnumPaymentProviderFilter
+  notIn: [PaymentProvider!]
+}
+
+input EnumPaymentStatusFilter {
+  equals: PaymentStatus
+  in: [PaymentStatus!]
+  not: NestedEnumPaymentStatusFilter
+  notIn: [PaymentStatus!]
+}
+
+input EnumSaleSchedulePublishStatusFilter {
+  equals: SaleSchedulePublishStatus
+  in: [SaleSchedulePublishStatus!]
+  not: NestedEnumSaleSchedulePublishStatusFilter
+  notIn: [SaleSchedulePublishStatus!]
+}
+
+input EnumSaleTypeFilter {
+  equals: SaleType
+  in: [SaleType!]
+  not: NestedEnumSaleTypeFilter
+  notIn: [SaleType!]
+}
+
+input EnumSeatTypeFilter {
+  equals: SeatType
+  in: [SeatType!]
+  not: NestedEnumSeatTypeFilter
+  notIn: [SeatType!]
+}
+
+input EnumTicketApplicationStatusFilter {
+  equals: TicketApplicationStatus
+  in: [TicketApplicationStatus!]
+  not: NestedEnumTicketApplicationStatusFilter
+  notIn: [TicketApplicationStatus!]
+}
+
+input EnumTicketTransferPolicyFilter {
+  equals: TicketTransferPolicy
+  in: [TicketTransferPolicy!]
+  not: NestedEnumTicketTransferPolicyFilter
+  notIn: [TicketTransferPolicy!]
+}
+
+input EnumUserRoleFilter {
+  equals: UserRole
+  in: [UserRole!]
+  not: NestedEnumUserRoleFilter
+  notIn: [UserRole!]
 }
 
 type Event {
   createdAt: DateTime!
-  date: DateTime!
-  description: String
+  description: String!
+  endAt: DateTime!
+  eventOrganizer: EventOrganizer!
+  eventOrganizerId: String!
+  favorites: [FavoriteEvent!]
+  featuredEvent: FeaturedEvent
   id: ID!
-
-  """イベントが完売かどうか"""
-  isSoldOut: Boolean!
-  tickets: [Ticket!]
-  title: String!
+  isDisplayedInTop: Boolean!
+  isTokuteiKogyo: Boolean!
+  lineThumbnailUrl: String
+  name: String!
+  publishAt: DateTime
+  publishStatus: EventPublishStatus!
+  saleSchedules: [SaleSchedule!]
+  stageGroups: [StageGroup!]
+  startAt: DateTime!
+  thumbnailUrls: [String!]
   updatedAt: DateTime!
-  venue: String!
 }
 
 type EventConnection {
@@ -44,17 +318,6 @@ type EventConnection {
   nodes: [Event!]!
   pageInfo: EventPageInfo!
   totalCount: Int!
-}
-
-input EventCreateInput {
-  date: DateTime!
-  description: String
-  title: String!
-  venue: String!
-}
-
-type EventCreatePayload {
-  event: Event!
 }
 
 type EventDeletePayload {
@@ -66,15 +329,177 @@ type EventEdge {
   node: Event!
 }
 
+input EventListRelationFilter {
+  every: EventWhereInput
+  none: EventWhereInput
+  some: EventWhereInput
+}
+
+input EventOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
 input EventOrderByWithRelationInput {
   createdAt: SortOrder
-  date: SortOrder
-  description: SortOrderInput
+  description: SortOrder
+  endAt: SortOrder
+  eventOrganizer: EventOrganizerOrderByWithRelationInput
+  eventOrganizerId: SortOrder
+  favorites: FavoriteEventOrderByRelationAggregateInput
+  featuredEvent: FeaturedEventOrderByWithRelationInput
   id: SortOrder
-  tickets: TicketOrderByRelationAggregateInput
-  title: SortOrder
+  isDisplayedInTop: SortOrder
+  isTokuteiKogyo: SortOrder
+  lineThumbnailUrl: SortOrderInput
+  name: SortOrder
+  publishAt: SortOrderInput
+  publishStatus: SortOrder
+  saleSchedules: SaleScheduleOrderByRelationAggregateInput
+  stageGroups: StageGroupOrderByRelationAggregateInput
+  startAt: SortOrder
+  thumbnailUrls: SortOrder
   updatedAt: SortOrder
-  venue: SortOrder
+}
+
+type EventOrganizer {
+  bankAccounts: [BankAccount!]
+  createdAt: DateTime!
+  eventOrganizerFeatures: [EventOrganizerFeature!]
+  eventOrganizerReferrers: [EventOrganizerReferrer!]
+  events: [Event!]
+  id: ID!
+  inquiryEmail: String!
+  inquirySubject: String!
+  name: String!
+  notifyEmail: String
+  notifySlackWebhookUrl: String
+  ticketTypeFeeDistributions: [TicketTypeFeeDistribution!]
+  ticketTypePriceDistributions: [TicketTypePriceDistribution!]
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type EventOrganizerFeature {
+  createdAt: DateTime!
+  enabled: Boolean!
+  eventOrganizer: EventOrganizer!
+  eventOrganizerId: String!
+  id: ID!
+  key: String!
+  updatedAt: DateTime!
+}
+
+input EventOrganizerFeatureListRelationFilter {
+  every: EventOrganizerFeatureWhereInput
+  none: EventOrganizerFeatureWhereInput
+  some: EventOrganizerFeatureWhereInput
+}
+
+input EventOrganizerFeatureOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input EventOrganizerFeatureWhereInput {
+  AND: [EventOrganizerFeatureWhereInput!]
+  NOT: [EventOrganizerFeatureWhereInput!]
+  OR: [EventOrganizerFeatureWhereInput!]
+  createdAt: DateTimeFilter
+  enabled: BoolFilter
+  eventOrganizer: EventOrganizerScalarRelationFilter
+  eventOrganizerId: StringFilter
+  id: StringFilter
+  key: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input EventOrganizerListRelationFilter {
+  every: EventOrganizerWhereInput
+  none: EventOrganizerWhereInput
+  some: EventOrganizerWhereInput
+}
+
+input EventOrganizerOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input EventOrganizerOrderByWithRelationInput {
+  bankAccounts: BankAccountOrderByRelationAggregateInput
+  createdAt: SortOrder
+  eventOrganizerFeatures: EventOrganizerFeatureOrderByRelationAggregateInput
+  eventOrganizerReferrers: EventOrganizerReferrerOrderByRelationAggregateInput
+  events: EventOrderByRelationAggregateInput
+  id: SortOrder
+  inquiryEmail: SortOrder
+  inquirySubject: SortOrder
+  name: SortOrder
+  notifyEmail: SortOrderInput
+  notifySlackWebhookUrl: SortOrderInput
+  ticketTypeFeeDistributions: TicketTypeFeeDistributionOrderByRelationAggregateInput
+  ticketTypePriceDistributions: TicketTypePriceDistributionOrderByRelationAggregateInput
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+type EventOrganizerReferrer {
+  createdAt: DateTime!
+  eventOrganizer: EventOrganizer!
+  eventOrganizerId: String!
+  id: ID!
+  name: String!
+  referrerSource: String!
+  updatedAt: DateTime!
+}
+
+input EventOrganizerReferrerListRelationFilter {
+  every: EventOrganizerReferrerWhereInput
+  none: EventOrganizerReferrerWhereInput
+  some: EventOrganizerReferrerWhereInput
+}
+
+input EventOrganizerReferrerOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input EventOrganizerReferrerWhereInput {
+  AND: [EventOrganizerReferrerWhereInput!]
+  NOT: [EventOrganizerReferrerWhereInput!]
+  OR: [EventOrganizerReferrerWhereInput!]
+  createdAt: DateTimeFilter
+  eventOrganizer: EventOrganizerScalarRelationFilter
+  eventOrganizerId: StringFilter
+  id: StringFilter
+  name: StringFilter
+  referrerSource: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input EventOrganizerScalarRelationFilter {
+  is: EventOrganizerWhereInput
+  isNot: EventOrganizerWhereInput
+}
+
+input EventOrganizerWhereInput {
+  AND: [EventOrganizerWhereInput!]
+  NOT: [EventOrganizerWhereInput!]
+  OR: [EventOrganizerWhereInput!]
+  bankAccounts: BankAccountListRelationFilter
+  createdAt: DateTimeFilter
+  eventOrganizerFeatures: EventOrganizerFeatureListRelationFilter
+  eventOrganizerReferrers: EventOrganizerReferrerListRelationFilter
+  events: EventListRelationFilter
+  id: StringFilter
+  inquiryEmail: StringFilter
+  inquirySubject: StringFilter
+  name: StringFilter
+  notifyEmail: StringNullableFilter
+  notifySlackWebhookUrl: StringNullableFilter
+  ticketTypeFeeDistributions: TicketTypeFeeDistributionListRelationFilter
+  ticketTypePriceDistributions: TicketTypePriceDistributionListRelationFilter
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
 }
 
 type EventPageInfo {
@@ -84,21 +509,14 @@ type EventPageInfo {
   startCursor: String
 }
 
+enum EventPublishStatus {
+  PUBLISHED
+  UNPUBLISHED
+}
+
 input EventScalarRelationFilter {
   is: EventWhereInput
   isNot: EventWhereInput
-}
-
-input EventUpdateInput {
-  date: DateTime
-  description: String
-  id: ID!
-  title: String
-  venue: String
-}
-
-type EventUpdatePayload {
-  event: Event!
 }
 
 input EventWhereInput {
@@ -106,13 +524,127 @@ input EventWhereInput {
   NOT: [EventWhereInput!]
   OR: [EventWhereInput!]
   createdAt: DateTimeFilter
-  date: DateTimeFilter
-  description: StringNullableFilter
+  description: StringFilter
+  endAt: DateTimeFilter
+  eventOrganizer: EventOrganizerScalarRelationFilter
+  eventOrganizerId: StringFilter
+  favorites: FavoriteEventListRelationFilter
+  featuredEvent: FeaturedEventNullableScalarRelationFilter
   id: StringFilter
-  tickets: TicketListRelationFilter
-  title: StringFilter
+  isDisplayedInTop: BoolFilter
+  isTokuteiKogyo: BoolFilter
+  lineThumbnailUrl: StringNullableFilter
+  name: StringFilter
+  publishAt: DateTimeNullableFilter
+  publishStatus: EnumEventPublishStatusFilter
+  saleSchedules: SaleScheduleListRelationFilter
+  stageGroups: StageGroupListRelationFilter
+  startAt: DateTimeFilter
+  thumbnailUrls: StringNullableListFilter
   updatedAt: DateTimeFilter
-  venue: StringFilter
+}
+
+type FavoriteArtist {
+  artist: Artist!
+  artistId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+input FavoriteArtistListRelationFilter {
+  every: FavoriteArtistWhereInput
+  none: FavoriteArtistWhereInput
+  some: FavoriteArtistWhereInput
+}
+
+input FavoriteArtistOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input FavoriteArtistWhereInput {
+  AND: [FavoriteArtistWhereInput!]
+  NOT: [FavoriteArtistWhereInput!]
+  OR: [FavoriteArtistWhereInput!]
+  artist: ArtistScalarRelationFilter
+  artistId: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+type FavoriteEvent {
+  createdAt: DateTime!
+  event: Event!
+  eventId: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+input FavoriteEventListRelationFilter {
+  every: FavoriteEventWhereInput
+  none: FavoriteEventWhereInput
+  some: FavoriteEventWhereInput
+}
+
+input FavoriteEventOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input FavoriteEventWhereInput {
+  AND: [FavoriteEventWhereInput!]
+  NOT: [FavoriteEventWhereInput!]
+  OR: [FavoriteEventWhereInput!]
+  createdAt: DateTimeFilter
+  event: EventScalarRelationFilter
+  eventId: StringFilter
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+type FeaturedEvent {
+  createdAt: DateTime!
+  endAt: DateTime
+  event: Event!
+  eventId: String!
+  id: ID!
+  publishAt: DateTime
+  sortOrder: Int!
+  updatedAt: DateTime!
+}
+
+input FeaturedEventNullableScalarRelationFilter {
+  is: FeaturedEventWhereInput
+  isNot: FeaturedEventWhereInput
+}
+
+input FeaturedEventOrderByWithRelationInput {
+  createdAt: SortOrder
+  endAt: SortOrderInput
+  event: EventOrderByWithRelationInput
+  eventId: SortOrder
+  id: SortOrder
+  publishAt: SortOrderInput
+  sortOrder: SortOrder
+  updatedAt: SortOrder
+}
+
+input FeaturedEventWhereInput {
+  AND: [FeaturedEventWhereInput!]
+  NOT: [FeaturedEventWhereInput!]
+  OR: [FeaturedEventWhereInput!]
+  createdAt: DateTimeFilter
+  endAt: DateTimeNullableFilter
+  event: EventScalarRelationFilter
+  eventId: StringFilter
+  id: StringFilter
+  publishAt: DateTimeNullableFilter
+  sortOrder: IntFilter
+  updatedAt: DateTimeFilter
 }
 
 input IntFilter {
@@ -126,24 +658,30 @@ input IntFilter {
   notIn: [Int!]
 }
 
-type Mutation {
-  """イベントを作成する"""
-  eventCreate(input: EventCreateInput!): EventCreatePayload!
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
 
+enum LotteryMode {
+  AUTO
+  MANUAL
+}
+
+type Mutation {
   """イベントを削除する"""
   eventDelete(id: ID!): EventDeletePayload!
+}
 
-  """イベントを更新する"""
-  eventUpdate(input: EventUpdateInput!): EventUpdatePayload!
-
-  """チケットを作成する"""
-  ticketCreate(input: TicketCreateInput!): TicketCreatePayload!
-
-  """チケットを削除する"""
-  ticketDelete(id: ID!): TicketDeletePayload!
-
-  """チケットを更新する"""
-  ticketUpdate(input: TicketUpdateInput!): TicketUpdatePayload!
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
 }
 
 input NestedDateTimeFilter {
@@ -157,11 +695,106 @@ input NestedDateTimeFilter {
   notIn: [DateTime!]
 }
 
-input NestedEnumOrderStatusFilter {
-  equals: OrderStatus
-  in: [OrderStatus!]
-  not: NestedEnumOrderStatusFilter
-  notIn: [OrderStatus!]
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+input NestedEnumAdmissionMethodFilter {
+  equals: AdmissionMethod
+  in: [AdmissionMethod!]
+  not: NestedEnumAdmissionMethodFilter
+  notIn: [AdmissionMethod!]
+}
+
+input NestedEnumBankAccountTypeFilter {
+  equals: BankAccountType
+  in: [BankAccountType!]
+  not: NestedEnumBankAccountTypeFilter
+  notIn: [BankAccountType!]
+}
+
+input NestedEnumEventPublishStatusFilter {
+  equals: EventPublishStatus
+  in: [EventPublishStatus!]
+  not: NestedEnumEventPublishStatusFilter
+  notIn: [EventPublishStatus!]
+}
+
+input NestedEnumLotteryModeNullableFilter {
+  equals: LotteryMode
+  in: [LotteryMode!]
+  not: NestedEnumLotteryModeNullableFilter
+  notIn: [LotteryMode!]
+}
+
+input NestedEnumPaymentMethodTypeFilter {
+  equals: PaymentMethodType
+  in: [PaymentMethodType!]
+  not: NestedEnumPaymentMethodTypeFilter
+  notIn: [PaymentMethodType!]
+}
+
+input NestedEnumPaymentProviderFilter {
+  equals: PaymentProvider
+  in: [PaymentProvider!]
+  not: NestedEnumPaymentProviderFilter
+  notIn: [PaymentProvider!]
+}
+
+input NestedEnumPaymentStatusFilter {
+  equals: PaymentStatus
+  in: [PaymentStatus!]
+  not: NestedEnumPaymentStatusFilter
+  notIn: [PaymentStatus!]
+}
+
+input NestedEnumSaleSchedulePublishStatusFilter {
+  equals: SaleSchedulePublishStatus
+  in: [SaleSchedulePublishStatus!]
+  not: NestedEnumSaleSchedulePublishStatusFilter
+  notIn: [SaleSchedulePublishStatus!]
+}
+
+input NestedEnumSaleTypeFilter {
+  equals: SaleType
+  in: [SaleType!]
+  not: NestedEnumSaleTypeFilter
+  notIn: [SaleType!]
+}
+
+input NestedEnumSeatTypeFilter {
+  equals: SeatType
+  in: [SeatType!]
+  not: NestedEnumSeatTypeFilter
+  notIn: [SeatType!]
+}
+
+input NestedEnumTicketApplicationStatusFilter {
+  equals: TicketApplicationStatus
+  in: [TicketApplicationStatus!]
+  not: NestedEnumTicketApplicationStatusFilter
+  notIn: [TicketApplicationStatus!]
+}
+
+input NestedEnumTicketTransferPolicyFilter {
+  equals: TicketTransferPolicy
+  in: [TicketTransferPolicy!]
+  not: NestedEnumTicketTransferPolicyFilter
+  notIn: [TicketTransferPolicy!]
+}
+
+input NestedEnumUserRoleFilter {
+  equals: UserRole
+  in: [UserRole!]
+  not: NestedEnumUserRoleFilter
+  notIn: [UserRole!]
 }
 
 input NestedIntFilter {
@@ -172,6 +805,17 @@ input NestedIntFilter {
   lt: Int
   lte: Int
   not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input NestedIntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
   notIn: [Int!]
 }
 
@@ -208,87 +852,162 @@ enum NullsOrder {
   last
 }
 
-type Order {
+type Payment {
+  authorizedAt: DateTime
+  capturedAt: DateTime
+  cardId: String
   createdAt: DateTime!
+  externalId: String
+  failedAt: DateTime
+  failureReason: String
   id: ID!
-  items: [OrderItem!]
-  status: OrderStatus!
-  totalPrice: Int!
+  paymentCard: PaymentCard
+  paymentItems: [PaymentItem!]
+  paymentMethod: PaymentMethodType!
+  status: PaymentStatus!
+  ticketApplication: TicketApplication!
+  ticketApplicationId: String!
+  totalPaymentAmount: Int!
+  updatedAt: DateTime!
+}
+
+type PaymentCard {
+  cardBrand: String!
+  cardLast4: String!
+  cardToken: String!
+  createdAt: DateTime!
+  expiryMonth: Int!
+  expiryYear: Int!
+  id: ID!
+  isDefault: Boolean!
+  payments: [Payment!]
+  provider: PaymentProvider!
   updatedAt: DateTime!
   user: User!
   userId: String!
 }
 
-type OrderItem {
-  createdAt: DateTime!
-  id: ID!
-  order: Order!
-  orderId: String!
-  quantity: Int!
-  ticket: Ticket!
-  ticketId: String!
-  unitPrice: Int!
-  updatedAt: DateTime!
+input PaymentCardListRelationFilter {
+  every: PaymentCardWhereInput
+  none: PaymentCardWhereInput
+  some: PaymentCardWhereInput
 }
 
-input OrderItemListRelationFilter {
-  every: OrderItemWhereInput
-  none: OrderItemWhereInput
-  some: OrderItemWhereInput
+input PaymentCardNullableScalarRelationFilter {
+  is: PaymentCardWhereInput
+  isNot: PaymentCardWhereInput
 }
 
-input OrderItemOrderByRelationAggregateInput {
+input PaymentCardOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-input OrderItemWhereInput {
-  AND: [OrderItemWhereInput!]
-  NOT: [OrderItemWhereInput!]
-  OR: [OrderItemWhereInput!]
+input PaymentCardWhereInput {
+  AND: [PaymentCardWhereInput!]
+  NOT: [PaymentCardWhereInput!]
+  OR: [PaymentCardWhereInput!]
+  cardBrand: StringFilter
+  cardLast4: StringFilter
+  cardToken: StringFilter
   createdAt: DateTimeFilter
+  expiryMonth: IntFilter
+  expiryYear: IntFilter
   id: StringFilter
-  order: OrderScalarRelationFilter
-  orderId: StringFilter
-  quantity: IntFilter
-  ticket: TicketScalarRelationFilter
-  ticketId: StringFilter
-  unitPrice: IntFilter
-  updatedAt: DateTimeFilter
-}
-
-input OrderListRelationFilter {
-  every: OrderWhereInput
-  none: OrderWhereInput
-  some: OrderWhereInput
-}
-
-input OrderOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input OrderScalarRelationFilter {
-  is: OrderWhereInput
-  isNot: OrderWhereInput
-}
-
-enum OrderStatus {
-  CANCELLED
-  COMPLETED
-  PENDING
-}
-
-input OrderWhereInput {
-  AND: [OrderWhereInput!]
-  NOT: [OrderWhereInput!]
-  OR: [OrderWhereInput!]
-  createdAt: DateTimeFilter
-  id: StringFilter
-  items: OrderItemListRelationFilter
-  status: EnumOrderStatusFilter
-  totalPrice: IntFilter
+  isDefault: BoolFilter
+  payments: PaymentListRelationFilter
+  provider: EnumPaymentProviderFilter
   updatedAt: DateTimeFilter
   user: UserScalarRelationFilter
   userId: StringFilter
+}
+
+type PaymentItem {
+  createdAt: DateTime!
+  id: ID!
+  payment: Payment!
+  paymentId: String!
+  ticketApplicationItem: TicketApplicationItem!
+  ticketApplicationItemId: String!
+  updatedAt: DateTime!
+}
+
+input PaymentItemListRelationFilter {
+  every: PaymentItemWhereInput
+  none: PaymentItemWhereInput
+  some: PaymentItemWhereInput
+}
+
+input PaymentItemOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input PaymentItemWhereInput {
+  AND: [PaymentItemWhereInput!]
+  NOT: [PaymentItemWhereInput!]
+  OR: [PaymentItemWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  payment: PaymentScalarRelationFilter
+  paymentId: StringFilter
+  ticketApplicationItem: TicketApplicationItemScalarRelationFilter
+  ticketApplicationItemId: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input PaymentListRelationFilter {
+  every: PaymentWhereInput
+  none: PaymentWhereInput
+  some: PaymentWhereInput
+}
+
+enum PaymentMethodType {
+  CARD
+  KONBINI
+}
+
+input PaymentOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+enum PaymentProvider {
+  GMO
+  RAKUTEN
+}
+
+input PaymentScalarRelationFilter {
+  is: PaymentWhereInput
+  isNot: PaymentWhereInput
+}
+
+enum PaymentStatus {
+  AUTHORIZED
+  CANCELLED
+  CAPTURED
+  FAILED
+  PENDING
+  REFUNDED
+}
+
+input PaymentWhereInput {
+  AND: [PaymentWhereInput!]
+  NOT: [PaymentWhereInput!]
+  OR: [PaymentWhereInput!]
+  authorizedAt: DateTimeNullableFilter
+  capturedAt: DateTimeNullableFilter
+  cardId: StringNullableFilter
+  createdAt: DateTimeFilter
+  externalId: StringNullableFilter
+  failedAt: DateTimeNullableFilter
+  failureReason: StringNullableFilter
+  id: StringFilter
+  paymentCard: PaymentCardNullableScalarRelationFilter
+  paymentItems: PaymentItemListRelationFilter
+  paymentMethod: EnumPaymentMethodTypeFilter
+  status: EnumPaymentStatusFilter
+  ticketApplication: TicketApplicationScalarRelationFilter
+  ticketApplicationId: StringFilter
+  totalPaymentAmount: IntFilter
+  updatedAt: DateTimeFilter
 }
 
 type Query {
@@ -316,6 +1035,179 @@ enum QueryMode {
   insensitive
 }
 
+type SaleSchedule {
+  availablePaymentMethods: [AvailablePaymentMethod!]
+  createdAt: DateTime!
+  deletedAt: DateTime
+  description: String!
+  event: Event!
+  eventId: String!
+  id: ID!
+  isDuplicatePurchaseAllowed: Boolean!
+  isFanClubOnly: Boolean!
+  isResale: Boolean!
+  isSmsAuthRequired: Boolean!
+  isTransferRequired: Boolean!
+  konbiniPaymentTermDay: Int
+  lotteryMode: LotteryMode
+  lotteryResultAnnounceAt: DateTime
+  lotteryStartAt: DateTime
+  maxApplicationCount: Int
+  maxPerApplication: Int!
+  name: String!
+  paperTicketExchangeEndAt: DateTime
+  paperTicketExchangeStartAt: DateTime
+  publishAt: DateTime!
+  publishStatus: SaleSchedulePublishStatus!
+  reservedSeatTicketIssueAt: DateTime
+  saleEndAt: DateTime!
+  saleStartAt: DateTime!
+  saleType: SaleType!
+  sortOrder: Int!
+  ticketTypes: [TicketType!]
+  transferPolicy: TicketTransferPolicy!
+  updatedAt: DateTime!
+}
+
+input SaleScheduleListRelationFilter {
+  every: SaleScheduleWhereInput
+  none: SaleScheduleWhereInput
+  some: SaleScheduleWhereInput
+}
+
+input SaleScheduleOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input SaleScheduleOrderByWithRelationInput {
+  availablePaymentMethods: AvailablePaymentMethodOrderByRelationAggregateInput
+  createdAt: SortOrder
+  deletedAt: SortOrderInput
+  description: SortOrder
+  event: EventOrderByWithRelationInput
+  eventId: SortOrder
+  id: SortOrder
+  isDuplicatePurchaseAllowed: SortOrder
+  isFanClubOnly: SortOrder
+  isResale: SortOrder
+  isSmsAuthRequired: SortOrder
+  isTransferRequired: SortOrder
+  konbiniPaymentTermDay: SortOrderInput
+  lotteryMode: SortOrderInput
+  lotteryResultAnnounceAt: SortOrderInput
+  lotteryStartAt: SortOrderInput
+  maxApplicationCount: SortOrderInput
+  maxPerApplication: SortOrder
+  name: SortOrder
+  paperTicketExchangeEndAt: SortOrderInput
+  paperTicketExchangeStartAt: SortOrderInput
+  publishAt: SortOrder
+  publishStatus: SortOrder
+  reservedSeatTicketIssueAt: SortOrderInput
+  saleEndAt: SortOrder
+  saleStartAt: SortOrder
+  saleType: SortOrder
+  sortOrder: SortOrder
+  ticketTypes: TicketTypeOrderByRelationAggregateInput
+  transferPolicy: SortOrder
+  updatedAt: SortOrder
+}
+
+enum SaleSchedulePublishStatus {
+  PUBLISHED
+  UNPUBLISHED
+}
+
+input SaleScheduleScalarRelationFilter {
+  is: SaleScheduleWhereInput
+  isNot: SaleScheduleWhereInput
+}
+
+input SaleScheduleWhereInput {
+  AND: [SaleScheduleWhereInput!]
+  NOT: [SaleScheduleWhereInput!]
+  OR: [SaleScheduleWhereInput!]
+  availablePaymentMethods: AvailablePaymentMethodListRelationFilter
+  createdAt: DateTimeFilter
+  deletedAt: DateTimeNullableFilter
+  description: StringFilter
+  event: EventScalarRelationFilter
+  eventId: StringFilter
+  id: StringFilter
+  isDuplicatePurchaseAllowed: BoolFilter
+  isFanClubOnly: BoolFilter
+  isResale: BoolFilter
+  isSmsAuthRequired: BoolFilter
+  isTransferRequired: BoolFilter
+  konbiniPaymentTermDay: IntNullableFilter
+  lotteryMode: EnumLotteryModeNullableFilter
+  lotteryResultAnnounceAt: DateTimeNullableFilter
+  lotteryStartAt: DateTimeNullableFilter
+  maxApplicationCount: IntNullableFilter
+  maxPerApplication: IntFilter
+  name: StringFilter
+  paperTicketExchangeEndAt: DateTimeNullableFilter
+  paperTicketExchangeStartAt: DateTimeNullableFilter
+  publishAt: DateTimeFilter
+  publishStatus: EnumSaleSchedulePublishStatusFilter
+  reservedSeatTicketIssueAt: DateTimeNullableFilter
+  saleEndAt: DateTimeFilter
+  saleStartAt: DateTimeFilter
+  saleType: EnumSaleTypeFilter
+  sortOrder: IntFilter
+  ticketTypes: TicketTypeListRelationFilter
+  transferPolicy: EnumTicketTransferPolicyFilter
+  updatedAt: DateTimeFilter
+}
+
+enum SaleType {
+  FIRST_COME
+  LOTTERY
+}
+
+enum SeatType {
+  ENTRY_NUMBER
+  FREE
+  RESERVED
+}
+
+type Session {
+  createdAt: DateTime!
+  expiresAt: DateTime!
+  id: ID!
+  ipAddress: String
+  token: String!
+  updatedAt: DateTime!
+  user: User!
+  userAgent: String
+  userId: String!
+}
+
+input SessionListRelationFilter {
+  every: SessionWhereInput
+  none: SessionWhereInput
+  some: SessionWhereInput
+}
+
+input SessionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input SessionWhereInput {
+  AND: [SessionWhereInput!]
+  NOT: [SessionWhereInput!]
+  OR: [SessionWhereInput!]
+  createdAt: DateTimeFilter
+  expiresAt: DateTimeFilter
+  id: StringFilter
+  ipAddress: StringNullableFilter
+  token: StringFilter
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userAgent: StringNullableFilter
+  userId: StringFilter
+}
+
 enum SortOrder {
   asc
   desc
@@ -324,6 +1216,134 @@ enum SortOrder {
 input SortOrderInput {
   nulls: NullsOrder
   sort: SortOrder!
+}
+
+type Stage {
+  createdAt: DateTime!
+  doorsOpenAt: DateTime
+  endAt: DateTime
+  id: ID!
+  name: String!
+  stageArtists: [StageArtist!]
+  stageGroup: StageGroup!
+  stageGroupId: String!
+  startAt: DateTime!
+  updatedAt: DateTime!
+  venue: Venue
+  venueId: String
+}
+
+type StageArtist {
+  artist: Artist!
+  artistId: String!
+  createdAt: DateTime!
+  sortOrder: Int!
+  stage: Stage!
+  stageId: String!
+  updatedAt: DateTime!
+}
+
+input StageArtistListRelationFilter {
+  every: StageArtistWhereInput
+  none: StageArtistWhereInput
+  some: StageArtistWhereInput
+}
+
+input StageArtistWhereInput {
+  AND: [StageArtistWhereInput!]
+  NOT: [StageArtistWhereInput!]
+  OR: [StageArtistWhereInput!]
+  artist: ArtistScalarRelationFilter
+  artistId: StringFilter
+  createdAt: DateTimeFilter
+  sortOrder: IntFilter
+  stage: StageScalarRelationFilter
+  stageId: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+type StageGroup {
+  createdAt: DateTime!
+  event: Event!
+  eventId: String!
+  id: ID!
+  name: String!
+  stages: [Stage!]
+  ticketTypes: [TicketType!]
+  updatedAt: DateTime!
+}
+
+input StageGroupListRelationFilter {
+  every: StageGroupWhereInput
+  none: StageGroupWhereInput
+  some: StageGroupWhereInput
+}
+
+input StageGroupOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input StageGroupOrderByWithRelationInput {
+  createdAt: SortOrder
+  event: EventOrderByWithRelationInput
+  eventId: SortOrder
+  id: SortOrder
+  name: SortOrder
+  stages: StageOrderByRelationAggregateInput
+  ticketTypes: TicketTypeOrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+input StageGroupScalarRelationFilter {
+  is: StageGroupWhereInput
+  isNot: StageGroupWhereInput
+}
+
+input StageGroupWhereInput {
+  AND: [StageGroupWhereInput!]
+  NOT: [StageGroupWhereInput!]
+  OR: [StageGroupWhereInput!]
+  createdAt: DateTimeFilter
+  event: EventScalarRelationFilter
+  eventId: StringFilter
+  id: StringFilter
+  name: StringFilter
+  stages: StageListRelationFilter
+  ticketTypes: TicketTypeListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+input StageListRelationFilter {
+  every: StageWhereInput
+  none: StageWhereInput
+  some: StageWhereInput
+}
+
+input StageOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input StageScalarRelationFilter {
+  is: StageWhereInput
+  isNot: StageWhereInput
+}
+
+input StageWhereInput {
+  AND: [StageWhereInput!]
+  NOT: [StageWhereInput!]
+  OR: [StageWhereInput!]
+  createdAt: DateTimeFilter
+  doorsOpenAt: DateTimeNullableFilter
+  endAt: DateTimeNullableFilter
+  id: StringFilter
+  name: StringFilter
+  stageArtists: StageArtistListRelationFilter
+  stageGroup: StageGroupScalarRelationFilter
+  stageGroupId: StringFilter
+  startAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  venue: VenueNullableScalarRelationFilter
+  venueId: StringNullableFilter
 }
 
 input StringFilter {
@@ -356,16 +1376,150 @@ input StringNullableFilter {
   startsWith: String
 }
 
+input StringNullableListFilter {
+  equals: [String!]
+  has: String
+  hasEvery: [String!]
+  hasSome: [String!]
+  isEmpty: Boolean
+}
+
 type Ticket {
   createdAt: DateTime!
-  event: Event!
-  eventId: String!
   id: ID!
+  method: AdmissionMethod!
   name: String!
-  orderItems: [OrderItem!]
-  price: Int!
-  stock: Int!
+  ticketApplicationItem: TicketApplicationItem!
+  ticketApplicationItemId: String!
+  ticketType: TicketType!
+  ticketTypeId: String!
   updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type TicketApplication {
+  cancelReason: String
+  cancelledAt: DateTime
+  createdAt: DateTime!
+  id: ID!
+  payments: [Payment!]
+  status: TicketApplicationStatus!
+  ticketApplicationItems: [TicketApplicationItem!]
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type TicketApplicationItem {
+  createdAt: DateTime!
+  id: ID!
+  paymentItems: [PaymentItem!]
+  priority: Int!
+  quantity: Int!
+  ticketApplication: TicketApplication!
+  ticketApplicationId: String!
+  ticketType: TicketType!
+  ticketTypeId: String!
+  tickets: [Ticket!]
+  updatedAt: DateTime!
+}
+
+input TicketApplicationItemListRelationFilter {
+  every: TicketApplicationItemWhereInput
+  none: TicketApplicationItemWhereInput
+  some: TicketApplicationItemWhereInput
+}
+
+input TicketApplicationItemOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TicketApplicationItemOrderByWithRelationInput {
+  createdAt: SortOrder
+  id: SortOrder
+  paymentItems: PaymentItemOrderByRelationAggregateInput
+  priority: SortOrder
+  quantity: SortOrder
+  ticketApplication: TicketApplicationOrderByWithRelationInput
+  ticketApplicationId: SortOrder
+  ticketType: TicketTypeOrderByWithRelationInput
+  ticketTypeId: SortOrder
+  tickets: TicketOrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+input TicketApplicationItemScalarRelationFilter {
+  is: TicketApplicationItemWhereInput
+  isNot: TicketApplicationItemWhereInput
+}
+
+input TicketApplicationItemWhereInput {
+  AND: [TicketApplicationItemWhereInput!]
+  NOT: [TicketApplicationItemWhereInput!]
+  OR: [TicketApplicationItemWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  paymentItems: PaymentItemListRelationFilter
+  priority: IntFilter
+  quantity: IntFilter
+  ticketApplication: TicketApplicationScalarRelationFilter
+  ticketApplicationId: StringFilter
+  ticketType: TicketTypeScalarRelationFilter
+  ticketTypeId: StringFilter
+  tickets: TicketListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+input TicketApplicationListRelationFilter {
+  every: TicketApplicationWhereInput
+  none: TicketApplicationWhereInput
+  some: TicketApplicationWhereInput
+}
+
+input TicketApplicationOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TicketApplicationOrderByWithRelationInput {
+  cancelReason: SortOrderInput
+  cancelledAt: SortOrderInput
+  createdAt: SortOrder
+  id: SortOrder
+  payments: PaymentOrderByRelationAggregateInput
+  status: SortOrder
+  ticketApplicationItems: TicketApplicationItemOrderByRelationAggregateInput
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+input TicketApplicationScalarRelationFilter {
+  is: TicketApplicationWhereInput
+  isNot: TicketApplicationWhereInput
+}
+
+enum TicketApplicationStatus {
+  CANCELLED
+  LOST
+  PENDING
+  WIN
+}
+
+input TicketApplicationWhereInput {
+  AND: [TicketApplicationWhereInput!]
+  NOT: [TicketApplicationWhereInput!]
+  OR: [TicketApplicationWhereInput!]
+  cancelReason: StringNullableFilter
+  cancelledAt: DateTimeNullableFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  payments: PaymentListRelationFilter
+  status: EnumTicketApplicationStatusFilter
+  ticketApplicationItems: TicketApplicationItemListRelationFilter
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
 }
 
 type TicketConnection {
@@ -373,21 +1527,6 @@ type TicketConnection {
   nodes: [Ticket!]!
   pageInfo: TicketPageInfo!
   totalCount: Int!
-}
-
-input TicketCreateInput {
-  eventId: String!
-  name: String!
-  price: Int!
-  stock: Int!
-}
-
-type TicketCreatePayload {
-  ticket: Ticket!
-}
-
-type TicketDeletePayload {
-  ticket: Ticket!
 }
 
 type TicketEdge {
@@ -407,14 +1546,16 @@ input TicketOrderByRelationAggregateInput {
 
 input TicketOrderByWithRelationInput {
   createdAt: SortOrder
-  event: EventOrderByWithRelationInput
-  eventId: SortOrder
   id: SortOrder
+  method: SortOrder
   name: SortOrder
-  orderItems: OrderItemOrderByRelationAggregateInput
-  price: SortOrder
-  stock: SortOrder
+  ticketApplicationItem: TicketApplicationItemOrderByWithRelationInput
+  ticketApplicationItemId: SortOrder
+  ticketType: TicketTypeOrderByWithRelationInput
+  ticketTypeId: SortOrder
   updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
 }
 
 type TicketPageInfo {
@@ -424,20 +1565,216 @@ type TicketPageInfo {
   startCursor: String
 }
 
-input TicketScalarRelationFilter {
-  is: TicketWhereInput
-  isNot: TicketWhereInput
+enum TicketTransferPolicy {
+  COMPANIONS_ONLY
+  FREE
+  NOT_ALLOWED
+  REGISTERED_COMPANIONS_ONLY
 }
 
-input TicketUpdateInput {
+type TicketType {
+  basePrice: Int!
+  capacity: Int!
+  createdAt: DateTime!
+  description: String!
   id: ID!
-  name: String
-  price: Int
-  stock: Int
+  isOnceApplyOnly: Boolean!
+  isOnlyQrCodeEntry: Boolean!
+  maxNumPerApply: Int!
+  name: String!
+  saleSchedule: SaleSchedule!
+  saleScheduleId: String!
+  seatType: SeatType!
+  sortOrder: Int!
+  stageGroup: StageGroup!
+  stageGroupId: String!
+  ticketApplicationItems: [TicketApplicationItem!]
+  ticketTypeFeeDistributions: [TicketTypeFeeDistribution!]
+  ticketTypeFees: [TicketTypeFee!]
+  ticketTypePriceDistributions: [TicketTypePriceDistribution!]
+  tickets: [Ticket!]
+  updatedAt: DateTime!
 }
 
-type TicketUpdatePayload {
-  ticket: Ticket!
+type TicketTypeFee {
+  amount: Int!
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  ticketType: TicketType!
+  ticketTypeFeeDistributions: [TicketTypeFeeDistribution!]
+  ticketTypeId: String!
+  updatedAt: DateTime!
+}
+
+type TicketTypeFeeDistribution {
+  amount: Int!
+  createdAt: DateTime!
+  eventOrganizer: EventOrganizer!
+  eventOrganizerId: String!
+  ticketType: TicketType
+  ticketTypeFee: TicketTypeFee!
+  ticketTypeFeeId: String!
+  ticketTypeId: String
+  updatedAt: DateTime!
+}
+
+input TicketTypeFeeDistributionListRelationFilter {
+  every: TicketTypeFeeDistributionWhereInput
+  none: TicketTypeFeeDistributionWhereInput
+  some: TicketTypeFeeDistributionWhereInput
+}
+
+input TicketTypeFeeDistributionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TicketTypeFeeDistributionWhereInput {
+  AND: [TicketTypeFeeDistributionWhereInput!]
+  NOT: [TicketTypeFeeDistributionWhereInput!]
+  OR: [TicketTypeFeeDistributionWhereInput!]
+  amount: IntFilter
+  createdAt: DateTimeFilter
+  eventOrganizer: EventOrganizerScalarRelationFilter
+  eventOrganizerId: StringFilter
+  ticketType: TicketTypeNullableScalarRelationFilter
+  ticketTypeFee: TicketTypeFeeScalarRelationFilter
+  ticketTypeFeeId: StringFilter
+  ticketTypeId: StringNullableFilter
+  updatedAt: DateTimeFilter
+}
+
+input TicketTypeFeeListRelationFilter {
+  every: TicketTypeFeeWhereInput
+  none: TicketTypeFeeWhereInput
+  some: TicketTypeFeeWhereInput
+}
+
+input TicketTypeFeeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TicketTypeFeeScalarRelationFilter {
+  is: TicketTypeFeeWhereInput
+  isNot: TicketTypeFeeWhereInput
+}
+
+input TicketTypeFeeWhereInput {
+  AND: [TicketTypeFeeWhereInput!]
+  NOT: [TicketTypeFeeWhereInput!]
+  OR: [TicketTypeFeeWhereInput!]
+  amount: IntFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  name: StringFilter
+  ticketType: TicketTypeScalarRelationFilter
+  ticketTypeFeeDistributions: TicketTypeFeeDistributionListRelationFilter
+  ticketTypeId: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input TicketTypeListRelationFilter {
+  every: TicketTypeWhereInput
+  none: TicketTypeWhereInput
+  some: TicketTypeWhereInput
+}
+
+input TicketTypeNullableScalarRelationFilter {
+  is: TicketTypeWhereInput
+  isNot: TicketTypeWhereInput
+}
+
+input TicketTypeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TicketTypeOrderByWithRelationInput {
+  basePrice: SortOrder
+  capacity: SortOrder
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  isOnceApplyOnly: SortOrder
+  isOnlyQrCodeEntry: SortOrder
+  maxNumPerApply: SortOrder
+  name: SortOrder
+  saleSchedule: SaleScheduleOrderByWithRelationInput
+  saleScheduleId: SortOrder
+  seatType: SortOrder
+  sortOrder: SortOrder
+  stageGroup: StageGroupOrderByWithRelationInput
+  stageGroupId: SortOrder
+  ticketApplicationItems: TicketApplicationItemOrderByRelationAggregateInput
+  ticketTypeFeeDistributions: TicketTypeFeeDistributionOrderByRelationAggregateInput
+  ticketTypeFees: TicketTypeFeeOrderByRelationAggregateInput
+  ticketTypePriceDistributions: TicketTypePriceDistributionOrderByRelationAggregateInput
+  tickets: TicketOrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+type TicketTypePriceDistribution {
+  amount: Int!
+  createdAt: DateTime!
+  eventOrganizer: EventOrganizer!
+  eventOrganizerId: String!
+  ticketType: TicketType!
+  ticketTypeId: String!
+  updatedAt: DateTime!
+}
+
+input TicketTypePriceDistributionListRelationFilter {
+  every: TicketTypePriceDistributionWhereInput
+  none: TicketTypePriceDistributionWhereInput
+  some: TicketTypePriceDistributionWhereInput
+}
+
+input TicketTypePriceDistributionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TicketTypePriceDistributionWhereInput {
+  AND: [TicketTypePriceDistributionWhereInput!]
+  NOT: [TicketTypePriceDistributionWhereInput!]
+  OR: [TicketTypePriceDistributionWhereInput!]
+  amount: IntFilter
+  createdAt: DateTimeFilter
+  eventOrganizer: EventOrganizerScalarRelationFilter
+  eventOrganizerId: StringFilter
+  ticketType: TicketTypeScalarRelationFilter
+  ticketTypeId: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input TicketTypeScalarRelationFilter {
+  is: TicketTypeWhereInput
+  isNot: TicketTypeWhereInput
+}
+
+input TicketTypeWhereInput {
+  AND: [TicketTypeWhereInput!]
+  NOT: [TicketTypeWhereInput!]
+  OR: [TicketTypeWhereInput!]
+  basePrice: IntFilter
+  capacity: IntFilter
+  createdAt: DateTimeFilter
+  description: StringFilter
+  id: StringFilter
+  isOnceApplyOnly: BoolFilter
+  isOnlyQrCodeEntry: BoolFilter
+  maxNumPerApply: IntFilter
+  name: StringFilter
+  saleSchedule: SaleScheduleScalarRelationFilter
+  saleScheduleId: StringFilter
+  seatType: EnumSeatTypeFilter
+  sortOrder: IntFilter
+  stageGroup: StageGroupScalarRelationFilter
+  stageGroupId: StringFilter
+  ticketApplicationItems: TicketApplicationItemListRelationFilter
+  ticketTypeFeeDistributions: TicketTypeFeeDistributionListRelationFilter
+  ticketTypeFees: TicketTypeFeeListRelationFilter
+  ticketTypePriceDistributions: TicketTypePriceDistributionListRelationFilter
+  tickets: TicketListRelationFilter
+  updatedAt: DateTimeFilter
 }
 
 input TicketWhereInput {
@@ -445,23 +1782,36 @@ input TicketWhereInput {
   NOT: [TicketWhereInput!]
   OR: [TicketWhereInput!]
   createdAt: DateTimeFilter
-  event: EventScalarRelationFilter
-  eventId: StringFilter
   id: StringFilter
+  method: EnumAdmissionMethodFilter
   name: StringFilter
-  orderItems: OrderItemListRelationFilter
-  price: IntFilter
-  stock: IntFilter
+  ticketApplicationItem: TicketApplicationItemScalarRelationFilter
+  ticketApplicationItemId: StringFilter
+  ticketType: TicketTypeScalarRelationFilter
+  ticketTypeId: StringFilter
   updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
 }
 
 type User {
+  accounts: [Account!]
   createdAt: DateTime!
   email: String!
+  emailVerified: Boolean!
+  eventOrganizers: [EventOrganizer!]
+  favoriteArtists: [FavoriteArtist!]
+  favoriteEvents: [FavoriteEvent!]
   id: ID!
+  image: String
   name: String!
-  orders: [Order!]
+  paymentCards: [PaymentCard!]
+  role: UserRole!
+  sessions: [Session!]
+  ticketApplications: [TicketApplication!]
+  tickets: [Ticket!]
   updatedAt: DateTime!
+  userRestrictions: [UserRestriction!]
 }
 
 type UserConnection {
@@ -477,12 +1827,23 @@ type UserEdge {
 }
 
 input UserOrderByWithRelationInput {
+  accounts: AccountOrderByRelationAggregateInput
   createdAt: SortOrder
   email: SortOrder
+  emailVerified: SortOrder
+  eventOrganizers: EventOrganizerOrderByRelationAggregateInput
+  favoriteArtists: FavoriteArtistOrderByRelationAggregateInput
+  favoriteEvents: FavoriteEventOrderByRelationAggregateInput
   id: SortOrder
+  image: SortOrderInput
   name: SortOrder
-  orders: OrderOrderByRelationAggregateInput
+  paymentCards: PaymentCardOrderByRelationAggregateInput
+  role: SortOrder
+  sessions: SessionOrderByRelationAggregateInput
+  ticketApplications: TicketApplicationOrderByRelationAggregateInput
+  tickets: TicketOrderByRelationAggregateInput
   updatedAt: SortOrder
+  userRestrictions: UserRestrictionOrderByRelationAggregateInput
 }
 
 type UserPageInfo {
@@ -490,6 +1851,45 @@ type UserPageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
   startCursor: String
+}
+
+type UserRestriction {
+  createdAt: DateTime!
+  expiresAt: DateTime
+  id: ID!
+  reason: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+input UserRestrictionListRelationFilter {
+  every: UserRestrictionWhereInput
+  none: UserRestrictionWhereInput
+  some: UserRestrictionWhereInput
+}
+
+input UserRestrictionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input UserRestrictionWhereInput {
+  AND: [UserRestrictionWhereInput!]
+  NOT: [UserRestrictionWhereInput!]
+  OR: [UserRestrictionWhereInput!]
+  createdAt: DateTimeFilter
+  expiresAt: DateTimeNullableFilter
+  id: StringFilter
+  reason: StringFilter
+  updatedAt: DateTimeFilter
+  user: UserScalarRelationFilter
+  userId: StringFilter
+}
+
+enum UserRole {
+  EVENT_ORGANIZER
+  PLATFORM_MANAGER
+  TICKET_PURCHASER
 }
 
 input UserScalarRelationFilter {
@@ -501,10 +1901,45 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  accounts: AccountListRelationFilter
   createdAt: DateTimeFilter
   email: StringFilter
+  emailVerified: BoolFilter
+  eventOrganizers: EventOrganizerListRelationFilter
+  favoriteArtists: FavoriteArtistListRelationFilter
+  favoriteEvents: FavoriteEventListRelationFilter
+  id: StringFilter
+  image: StringNullableFilter
+  name: StringFilter
+  paymentCards: PaymentCardListRelationFilter
+  role: EnumUserRoleFilter
+  sessions: SessionListRelationFilter
+  ticketApplications: TicketApplicationListRelationFilter
+  tickets: TicketListRelationFilter
+  updatedAt: DateTimeFilter
+  userRestrictions: UserRestrictionListRelationFilter
+}
+
+type Venue {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  stages: [Stage!]
+  updatedAt: DateTime!
+}
+
+input VenueNullableScalarRelationFilter {
+  is: VenueWhereInput
+  isNot: VenueWhereInput
+}
+
+input VenueWhereInput {
+  AND: [VenueWhereInput!]
+  NOT: [VenueWhereInput!]
+  OR: [VenueWhereInput!]
+  createdAt: DateTimeFilter
   id: StringFilter
   name: StringFilter
-  orders: OrderListRelationFilter
+  stages: StageListRelationFilter
   updatedAt: DateTimeFilter
 }

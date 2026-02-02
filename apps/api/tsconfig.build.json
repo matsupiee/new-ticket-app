@@ -3,6 +3,7 @@
   "exclude": [
     "node_modules",
     "prisma",
+    "prisma/seed.ts",
     "test",
     "dist",
     "**/*spec.ts",

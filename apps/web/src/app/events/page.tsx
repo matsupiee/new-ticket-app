@@ -1,128 +1,181 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { useQuery } from 'urql';
 import Link from 'next/link';
-import { graphql } from '../../libs/graphql/tada';
+import { Plus } from 'lucide-react';
+import { graphql, ResultOf } from '../../libs/graphql/tada';
+import { Button } from '@/shared/components/ui/button';
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from '@/shared/components/ui/tabs';
+import { Skeleton } from '@/shared/components/ui/skeleton';
+import { EventCard } from './_components/event-card';
+import { EventSearch } from './_components/event-search';
+import { SortDropdown, type SortOption } from './_components/sort-dropdown';
 
 const EventsQuery = graphql(`
-  query Events($first: Int) {
-    events(first: $first, orderBy: [{ date: asc }]) {
+  query Events(
+    $first: Int
+    $orderBy: [EventOrderByWithRelationInput!]
+    $where: EventWhereInput
+  ) {
+    events(first: $first, orderBy: $orderBy, where: $where) {
       nodes {
         id
-        title
+        createdAt
+        name
         description
-        venue
-        date
+        startAt
       }
       totalCount
     }
   }
 `);
 
+type EventNode = ResultOf<typeof EventsQuery>['events']['nodes'][number];
+
 export default function EventsPage() {
+  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState<SortOption>({
+    label: '開催日新しい順',
+    field: 'startAt',
+    order: 'desc',
+  });
+  const [tab, setTab] = useState('active');
+
+  const now = useMemo(() => new Date().toISOString(), []);
+
   const [{ data, fetching, error }] = useQuery({
     query: EventsQuery,
-    variables: { first: 20 },
+    variables: {
+      first: 50,
+      orderBy: [{ [sort.field]: sort.order }],
+      where: {
+        name: { contains: search },
+        startAt: tab === 'ended' ? { gte: now } : { lte: now },
+      },
+    },
   });
 
-  const events = data?.events.nodes ?? [];
+  const events = (data?.events.nodes ?? []) as EventNode[];
 
+  return (
+    <div className="flex-1 p-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">イベント一覧</h1>
+          <Button asChild className="bg-gray-900 hover:bg-gray-800 text-white">
+            <Link href="/events/new">
+              <Plus className="size-4" />
+              作成
+            </Link>
+          </Button>
+        </div>
+
+        <div className="mb-6">
+          <EventSearch value={search} onChange={setSearch} />
+        </div>
+
+        <Tabs value={tab} onValueChange={setTab}>
+          <div className="flex items-center justify-between mb-4">
+            <TabsList variant="line">
+              <TabsTrigger value="active">下書き/公開</TabsTrigger>
+              <TabsTrigger value="ended">イベント終了</TabsTrigger>
+            </TabsList>
+            <SortDropdown current={sort} onChange={setSort} />
+          </div>
+
+          <TabsContent value="active">
+            <EventList
+              fetching={fetching}
+              error={error}
+              events={events}
+              isEndedTab={false}
+            />
+          </TabsContent>
+
+          <TabsContent value="ended">
+            <EventList
+              fetching={fetching}
+              error={error}
+              events={events}
+              isEndedTab={true}
+            />
+          </TabsContent>
+        </Tabs>
+
+        {data && (
+          <p className="mt-6 text-sm text-gray-400">
+            全 {data.events.totalCount} 件
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function EventList({
+  fetching,
+  error,
+  events,
+  isEndedTab,
+}: {
+  fetching: boolean;
+  error?: { message: string };
+  events: EventNode[];
+  isEndedTab: boolean;
+}) {
   if (fetching) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-gray-600">読み込み中...</p>
-        </div>
+      <div className="space-y-4">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="flex items-center justify-between py-5 px-2">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-5 w-64" />
+              <Skeleton className="h-4 w-32" />
+            </div>
+            <Skeleton className="h-20 w-28 rounded-md" />
+          </div>
+        ))}
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-red-600">エラーが発生しました: {error.message}</p>
-        </div>
+      <div className="py-8">
+        <p className="text-center text-red-600">
+          エラーが発生しました: {error.message}
+        </p>
+      </div>
+    );
+  }
+
+  if (events.length === 0) {
+    return (
+      <div className="py-8">
+        <p className="text-center text-gray-400">イベントがありません</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">イベント一覧</h1>
-
-        {events.length === 0 ? (
-          <p className="text-gray-600">イベントがありません。</p>
-        ) : (
-          <div className="grid gap-6">
-            {events.map((event) => (
-              <Link
-                key={event.id}
-                href={`/events/${event.id}`}
-                className="block bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
-              >
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  {event.title}
-                </h2>
-                {event.description && (
-                  <p className="text-gray-600 mb-4">{event.description}</p>
-                )}
-                <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                  <span className="flex items-center gap-1">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    {event.venue}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    {new Date(event.date).toLocaleDateString('ja-JP', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-
-        <p className="mt-6 text-sm text-gray-500">
-          全 {data?.events.totalCount ?? 0} 件のイベント
-        </p>
-      </div>
+    <div className="min-h-[200px]">
+      {events.map((event) => (
+        <EventCard
+          key={event.id}
+          id={event.id}
+          title={event.name}
+          venue=""
+          date={event.startAt}
+          isEnded={isEndedTab}
+        />
+      ))}
     </div>
   );
 }
