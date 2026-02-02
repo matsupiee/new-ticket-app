@@ -1,92 +1,143 @@
-# Turborepo starter
+## スタック
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+データベース
 
-## Using this example
+- PostgreSQL — データベースエンジン
 
-Run the following command:
+バックエンド
 
-```bash
-npx create-turbo@latest -e with-nestjs
+- Prisma — DB スキーマの定義 & 柔軟な ORM 機能
+- Nestjs — 軽量で高速なサーバーフレームワーク
+- GraphQL -
+
+フロント
+
+- Nextjs
+- TailwindCSS — 迅速な UI 開発のためのユーティリティ CSS
+- shadcn/ui — 再利用可能 UI コンポーネント
+
+プロジェクト管理
+
+- Turborepo — モノレポ最適化ビルド
+
+## ディレクトリ構成
+
+```
+new-ticket-app/
+├── apps/
+│   ├── api/         # バックエンド API
+│   └── web/         # フロントエンド
+├── packages/
+│   ├── eslint-config/
+│   └── typescript-config/
 ```
 
-## What's inside?
+## monorepo 構成について
 
-This Turborepo includes the following packages & apps:
+apps で共通利用できるものは packages として切り出しています
 
-### Apps and Packages
+例：apps/web から packages を利用する際は apps/web/package.json に以下のように書きます
 
-```shell
-.
-├── apps
-│   ├── api                       # NestJS app (https://nestjs.com).
-│   └── web                       # Next.js app (https://nextjs.org).
-└── packages
-    ├── @repo/api                 # Shared `NestJS` resources.
-    ├── @repo/eslint-config       # `eslint` configurations (includes `prettier`)
-    ├── @repo/jest-config         # `jest` configurations
-    ├── @repo/typescript-config   # `tsconfig.json`s used throughout the monorepo
-    └── @repo/ui                  # Shareable stub React component library.
+```
+"dependencies": {
+  "@repo/eslint-config": "workspace:*",  // ワークスペース内のパッケージ
+}
 ```
 
-Each package and application are mostly written in [TypeScript](https://www.typescriptlang.org/).
+また、pnpm-workspace.yaml を使って、複数の packages や app で使うパッケージのバージョンを一元管理します
 
-### Utilities
+```
+# pnpm-workspace.yaml
+packages:
+  - apps/*
+  - packages/*
+catalog:
+  dotenv: ^17.2.2
 
-This `Turborepo` has some additional tools already set for you:
+↓
 
-- [TypeScript](https://www.typescriptlang.org/) for static type-safety
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-- [Jest](https://prettier.io) & [Playwright](https://playwright.dev/) for testing
-
-### Commands
-
-This `Turborepo` already configured useful commands for all your apps and packages.
-
-#### Build
-
-```bash
-# Will build all the app & packages with the supported `build` script.
-pnpm run build
-
-# ℹ️ If you plan to only build apps individually,
-# Please make sure you've built the packages first.
+# package.json
+"dependencies": {
+  "dotenv": "catalog:",
+}
 ```
 
-#### Develop
+## 開発の始め方
 
-```bash
-# Will run the development server for all the app & packages with the supported `dev` script.
-pnpm run dev
 ```
 
-#### test
+# mise というバージョン管理ツールを導入
+# miseについてより詳しく知りたい方は[公式 docs](https://mise.jdx.dev/getting-started.html#quickstart)を参照
 
-```bash
-# Will launch a test suites for all the app & packages with the supported `test` script.
-pnpm run test
+brew install mise
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+source ~/.zshrc
+mise install
 
-# You can launch e2e testes with `test:e2e`
-pnpm run test:e2e
+# 依存関係のインストール
 
-# See `@repo/jest-config` to customize the behavior.
+pnpm install
+
+# データベースサーバーを起動（Docker を入れる必要があります）
+
+pnpm db:up
+
+# apps/server/.env にデータベースサーバーの接続先を記載
+
+# prisma スキーマをデータベースに反映
+
+pnpm db:push
+
+# 開発サーバー(バックエンド、フロントエンド両方)を起動
+
+pnpm dev
+
 ```
 
-#### Lint
+バックエンド → http://localhost:3070
+フロントエンド → http://localhost:3071
 
-```bash
-# Will lint all the app & packages with the supported `lint` script.
-# See `@repo/eslint-config` to customize the behavior.
-pnpm run lint
+バックエンドとフロントエンドを個別に起動したい場合は以下を実行
+
 ```
 
-#### Format
+pnpm dev:server # バックエンド
+pnpm dev:web # フロントエンド
 
-```bash
-# Will format all the supported `.ts,.js,json,.tsx,.jsx` files.
-# See `@repo/eslint-config/prettier-base.js` to customize the behavior.
-pnpm format
+```
+
+## リント&フォーマット
+
+```
+
+# Oxlint と Oxfmt を実行
+
+pnpm check
+
+# アプリ全体の型をチェック
+
+pnpm check-types
+
+```
+
+## データベースの中身をチェックしたり操作したりしたい場合
+
+```
+
+# 以下のコマンドを実行して、指定された localhost の url を開いてください
+
+# ブラウザで DB を GUI 上で直観的に見たり操作したりできます
+
+pnpm db:studio
+
+```
+
+[参照](https://www.prisma.io/studio)
+
+[Table plus](https://envader.plus/article/119) というツールを使うのも便利です！
+
+```
+
 ```
 
 ### Remote Caching
