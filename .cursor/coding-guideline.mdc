@@ -1,3 +1,9 @@
+---
+description: 全体的なコーディングガイドライン。
+globs:
+alwaysApply: true
+---
+
 ## GraphQL Resolver 実装規約
 
 GraphQL API を実装する際は以下のガイドラインに従ってください。
