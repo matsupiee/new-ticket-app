@@ -6,7 +6,8 @@ alwaysApply: true
 
 ## typescript型について
 
-なるべくanyは使わないようにしてください
+anyは使わないようにしてください
+型アサーションも使わないようにしてください
 
 ## GraphQL Resolver 実装規約
 

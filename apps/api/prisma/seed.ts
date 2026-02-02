@@ -15,8 +15,10 @@ async function main() {
     where: { email: 'user1@example.com' },
     update: {},
     create: {
+      id: 'user1',
       email: 'user1@example.com',
       name: 'ユーザー1',
+      emailVerified: false,
     },
   });
 
@@ -24,121 +26,80 @@ async function main() {
     where: { email: 'user2@example.com' },
     update: {},
     create: {
+      id: 'user2',
       email: 'user2@example.com',
       name: 'ユーザー2',
+      emailVerified: false,
     },
   });
 
-  console.log('Created users:', { user1, user2 });
+  const organizerUser = await prisma.user.upsert({
+    where: { email: 'organizer@example.com' },
+    update: {},
+    create: {
+      id: 'organizer1',
+      email: 'organizer@example.com',
+      name: 'イベント主催者',
+      emailVerified: false,
+      role: 'EVENT_ORGANIZER',
+    },
+  });
+
+  console.log('Created users:', { user1, user2, organizerUser });
+
+  // イベント主催者の作成
+  const eventOrganizer1 = await prisma.eventOrganizer.create({
+    data: {
+      userId: organizerUser.id,
+      name: 'サマーコンサート主催者',
+      inquiryEmail: 'inquiry1@example.com',
+      inquirySubject: 'サマーコンサート2024に関するお問い合わせ',
+    },
+  });
+
+  const eventOrganizer2 = await prisma.eventOrganizer.create({
+    data: {
+      userId: organizerUser.id,
+      name: 'ジャズナイト主催者',
+      inquiryEmail: 'inquiry2@example.com',
+      inquirySubject: 'ジャズナイトに関するお問い合わせ',
+    },
+  });
+
+  console.log('Created event organizers:', {
+    eventOrganizer1,
+    eventOrganizer2,
+  });
 
   // イベントの作成
-  const event1 = await prisma.event.upsert({
-    where: { id: 'event1' },
-    update: {},
-    create: {
-      id: 'event1',
-      title: 'サマーコンサート2024',
-      description: '夏の音楽フェスティバル',
-      venue: '東京ドーム',
-      date: new Date('2024-08-15T18:00:00Z'),
+  const event1 = await prisma.event.create({
+    data: {
+      eventOrganizerId: eventOrganizer1.id,
+      name: 'サマーコンサート2024',
+      description:
+        '夏の音楽フェスティバル\n\n人気アーティストが集結する夏の一大イベント！',
+      thumbnailUrls: [],
+      startAt: new Date('2024-08-15T18:00:00Z'),
+      endAt: new Date('2024-08-15T22:00:00Z'),
+      publishStatus: 'PUBLISHED',
+      isDisplayedInTop: true,
     },
   });
 
-  const event2 = await prisma.event.upsert({
-    where: { id: 'event2' },
-    update: {},
-    create: {
-      id: 'event2',
-      title: 'ジャズナイト',
-      description: 'ジャズの夜',
-      venue: 'ブルーノート東京',
-      date: new Date('2024-09-20T19:00:00Z'),
+  const event2 = await prisma.event.create({
+    data: {
+      eventOrganizerId: eventOrganizer2.id,
+      name: 'ジャズナイト',
+      description: 'ジャズの夜\n\n本格的なジャズライブをお楽しみください。',
+      thumbnailUrls: [],
+      startAt: new Date('2024-09-20T19:00:00Z'),
+      endAt: new Date('2024-09-20T22:00:00Z'),
+      publishStatus: 'PUBLISHED',
+      isDisplayedInTop: true,
     },
   });
 
   console.log('Created events:', { event1, event2 });
-
-  // チケットの作成
-  const ticket1 = await prisma.ticket.upsert({
-    where: { id: 'ticket1' },
-    update: {},
-    create: {
-      id: 'ticket1',
-      eventId: event1.id,
-      name: '一般席',
-      price: 5000,
-      stock: 100,
-    },
-  });
-
-  const ticket2 = await prisma.ticket.upsert({
-    where: { id: 'ticket2' },
-    update: {},
-    create: {
-      id: 'ticket2',
-      eventId: event1.id,
-      name: 'VIP席',
-      price: 15000,
-      stock: 20,
-    },
-  });
-
-  const ticket3 = await prisma.ticket.upsert({
-    where: { id: 'ticket3' },
-    update: {},
-    create: {
-      id: 'ticket3',
-      eventId: event2.id,
-      name: '一般席',
-      price: 8000,
-      stock: 50,
-    },
-  });
-
-  console.log('Created tickets:', { ticket1, ticket2, ticket3 });
-
-  // 注文の作成
-  const order1 = await prisma.order.upsert({
-    where: { id: 'order1' },
-    update: {},
-    create: {
-      id: 'order1',
-      userId: user1.id,
-      totalPrice: 10000,
-      status: 'COMPLETED',
-      items: {
-        create: [
-          {
-            ticketId: ticket1.id,
-            quantity: 2,
-            unitPrice: 5000,
-          },
-        ],
-      },
-    },
-  });
-
-  const order2 = await prisma.order.upsert({
-    where: { id: 'order2' },
-    update: {},
-    create: {
-      id: 'order2',
-      userId: user2.id,
-      totalPrice: 15000,
-      status: 'PENDING',
-      items: {
-        create: [
-          {
-            ticketId: ticket2.id,
-            quantity: 1,
-            unitPrice: 15000,
-          },
-        ],
-      },
-    },
-  });
-
-  console.log('Created orders:', { order1, order2 });
 
   console.log('Seeding completed!');
 }

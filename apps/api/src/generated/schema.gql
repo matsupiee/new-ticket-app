@@ -430,6 +430,7 @@ type Event {
   favorites: [FavoriteEvent!]
   featuredEvent: FeaturedEvent
   id: ID!
+  inquiry: String
   isDisplayedInTop: Boolean!
   isTokuteiKogyo: Boolean!
   lineThumbnailUrl: String
@@ -437,7 +438,7 @@ type Event {
   publishAt: DateTime
   publishStatus: EventPublishStatus!
   saleSchedules: [SaleSchedule!]
-  stageGroups: [StageGroup!]
+  stages: [Stage!]
   startAt: DateTime!
   thumbnailUrls: [String!]
   updatedAt: DateTime!
@@ -454,8 +455,7 @@ input EventCreateInput {
   description: String!
   endAt: DateTime!
   eventOrganizerId: String!
-  inquiryAddress: String!
-  inquiryName: String!
+  inquiry: String!
   lineThumbnailUrl: String
   name: String!
   stages: [StageInput!]!
@@ -495,6 +495,7 @@ input EventOrderByWithRelationInput {
   favorites: FavoriteEventOrderByRelationAggregateInput
   featuredEvent: FeaturedEventOrderByWithRelationInput
   id: SortOrder
+  inquiry: SortOrderInput
   isDisplayedInTop: SortOrder
   isTokuteiKogyo: SortOrder
   lineThumbnailUrl: SortOrderInput
@@ -502,7 +503,7 @@ input EventOrderByWithRelationInput {
   publishAt: SortOrderInput
   publishStatus: SortOrder
   saleSchedules: SaleScheduleOrderByRelationAggregateInput
-  stageGroups: StageGroupOrderByRelationAggregateInput
+  stages: StageOrderByRelationAggregateInput
   startAt: SortOrder
   thumbnailUrls: SortOrder
   updatedAt: SortOrder
@@ -755,6 +756,7 @@ input EventWhereInput {
   favorites: FavoriteEventListRelationFilter
   featuredEvent: FeaturedEventNullableScalarRelationFilter
   id: StringFilter
+  inquiry: StringNullableFilter
   isDisplayedInTop: BoolFilter
   isTokuteiKogyo: BoolFilter
   lineThumbnailUrl: StringNullableFilter
@@ -762,7 +764,7 @@ input EventWhereInput {
   publishAt: DateTimeNullableFilter
   publishStatus: EnumEventPublishStatusFilter
   saleSchedules: SaleScheduleListRelationFilter
-  stageGroups: StageGroupListRelationFilter
+  stages: StageListRelationFilter
   startAt: DateTimeFilter
   thumbnailUrls: StringNullableListFilter
   updatedAt: DateTimeFilter
@@ -1446,12 +1448,6 @@ type Query {
   """ステージを1件取得する"""
   stage(id: ID!): Stage
 
-  """ステージグループを1件取得する"""
-  stageGroup(id: ID!): StageGroup
-
-  """ステージグループを複数取得する"""
-  stageGroups(after: String, before: String, first: Int, last: Int, orderBy: [StageGroupOrderByWithRelationInput!], where: StageGroupWhereInput): StageGroupConnection!
-
   """ステージを複数取得する"""
   stages(after: String, before: String, first: Int, last: Int, orderBy: [StageOrderByWithRelationInput!], where: StageWhereInput): StageConnection!
 
@@ -1752,11 +1748,12 @@ type Stage {
   createdAt: DateTime!
   doorsOpenAt: DateTime
   endAt: DateTime
+  event: Event!
+  eventId: String!
   id: ID!
   name: String!
   stageArtists: [StageArtist!]
-  stageGroup: StageGroup!
-  stageGroupId: String!
+  stageTicketTypes: [StageTicketType!]
   startAt: DateTime!
   updatedAt: DateTime!
   venue: Venue
@@ -1808,76 +1805,6 @@ type StageEdge {
   node: Stage!
 }
 
-type StageGroup {
-  createdAt: DateTime!
-  event: Event!
-  eventId: String!
-  id: ID!
-  name: String!
-  stages: [Stage!]
-  ticketTypes: [TicketType!]
-  updatedAt: DateTime!
-}
-
-type StageGroupConnection {
-  edges: [StageGroupEdge!]!
-  nodes: [StageGroup!]!
-  pageInfo: StageGroupPageInfo!
-  totalCount: Int!
-}
-
-type StageGroupEdge {
-  cursor: String!
-  node: StageGroup!
-}
-
-input StageGroupListRelationFilter {
-  every: StageGroupWhereInput
-  none: StageGroupWhereInput
-  some: StageGroupWhereInput
-}
-
-input StageGroupOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input StageGroupOrderByWithRelationInput {
-  createdAt: SortOrder
-  event: EventOrderByWithRelationInput
-  eventId: SortOrder
-  id: SortOrder
-  name: SortOrder
-  stages: StageOrderByRelationAggregateInput
-  ticketTypes: TicketTypeOrderByRelationAggregateInput
-  updatedAt: SortOrder
-}
-
-type StageGroupPageInfo {
-  endCursor: String
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-}
-
-input StageGroupScalarRelationFilter {
-  is: StageGroupWhereInput
-  isNot: StageGroupWhereInput
-}
-
-input StageGroupWhereInput {
-  AND: [StageGroupWhereInput!]
-  NOT: [StageGroupWhereInput!]
-  OR: [StageGroupWhereInput!]
-  createdAt: DateTimeFilter
-  event: EventScalarRelationFilter
-  eventId: StringFilter
-  id: StringFilter
-  name: StringFilter
-  stages: StageListRelationFilter
-  ticketTypes: TicketTypeListRelationFilter
-  updatedAt: DateTimeFilter
-}
-
 input StageInput {
   artistNames: [String!]!
   doorsOpenAt: DateTime
@@ -1901,11 +1828,12 @@ input StageOrderByWithRelationInput {
   createdAt: SortOrder
   doorsOpenAt: SortOrderInput
   endAt: SortOrderInput
+  event: EventOrderByWithRelationInput
+  eventId: SortOrder
   id: SortOrder
   name: SortOrder
   stageArtists: StageArtistOrderByRelationAggregateInput
-  stageGroup: StageGroupOrderByWithRelationInput
-  stageGroupId: SortOrder
+  stageTicketTypes: StageTicketTypeOrderByRelationAggregateInput
   startAt: SortOrder
   updatedAt: SortOrder
   venue: VenueOrderByWithRelationInput
@@ -1924,6 +1852,37 @@ input StageScalarRelationFilter {
   isNot: StageWhereInput
 }
 
+type StageTicketType {
+  createdAt: DateTime!
+  stage: Stage!
+  stageId: String!
+  ticketType: TicketType!
+  ticketTypeId: String!
+  updatedAt: DateTime!
+}
+
+input StageTicketTypeListRelationFilter {
+  every: StageTicketTypeWhereInput
+  none: StageTicketTypeWhereInput
+  some: StageTicketTypeWhereInput
+}
+
+input StageTicketTypeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input StageTicketTypeWhereInput {
+  AND: [StageTicketTypeWhereInput!]
+  NOT: [StageTicketTypeWhereInput!]
+  OR: [StageTicketTypeWhereInput!]
+  createdAt: DateTimeFilter
+  stage: StageScalarRelationFilter
+  stageId: StringFilter
+  ticketType: TicketTypeScalarRelationFilter
+  ticketTypeId: StringFilter
+  updatedAt: DateTimeFilter
+}
+
 input StageWhereInput {
   AND: [StageWhereInput!]
   NOT: [StageWhereInput!]
@@ -1931,11 +1890,12 @@ input StageWhereInput {
   createdAt: DateTimeFilter
   doorsOpenAt: DateTimeNullableFilter
   endAt: DateTimeNullableFilter
+  event: EventScalarRelationFilter
+  eventId: StringFilter
   id: StringFilter
   name: StringFilter
   stageArtists: StageArtistListRelationFilter
-  stageGroup: StageGroupScalarRelationFilter
-  stageGroupId: StringFilter
+  stageTicketTypes: StageTicketTypeListRelationFilter
   startAt: DateTimeFilter
   updatedAt: DateTimeFilter
   venue: VenueNullableScalarRelationFilter
@@ -2220,8 +2180,7 @@ type TicketType {
   saleScheduleId: String!
   seatType: SeatType!
   sortOrder: Int!
-  stageGroup: StageGroup!
-  stageGroupId: String!
+  stageTicketTypes: [StageTicketType!]
   ticketApplicationItems: [TicketApplicationItem!]
   ticketTypeFeeDistributions: [TicketTypeFeeDistribution!]
   ticketTypeFees: [TicketTypeFee!]
@@ -2378,8 +2337,7 @@ input TicketTypeOrderByWithRelationInput {
   saleScheduleId: SortOrder
   seatType: SortOrder
   sortOrder: SortOrder
-  stageGroup: StageGroupOrderByWithRelationInput
-  stageGroupId: SortOrder
+  stageTicketTypes: StageTicketTypeOrderByRelationAggregateInput
   ticketApplicationItems: TicketApplicationItemOrderByRelationAggregateInput
   ticketTypeFeeDistributions: TicketTypeFeeDistributionOrderByRelationAggregateInput
   ticketTypeFees: TicketTypeFeeOrderByRelationAggregateInput
@@ -2450,8 +2408,7 @@ input TicketTypeWhereInput {
   saleScheduleId: StringFilter
   seatType: EnumSeatTypeFilter
   sortOrder: IntFilter
-  stageGroup: StageGroupScalarRelationFilter
-  stageGroupId: StringFilter
+  stageTicketTypes: StageTicketTypeListRelationFilter
   ticketApplicationItems: TicketApplicationItemListRelationFilter
   ticketTypeFeeDistributions: TicketTypeFeeDistributionListRelationFilter
   ticketTypeFees: TicketTypeFeeListRelationFilter

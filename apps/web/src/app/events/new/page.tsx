@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useMutation } from 'urql';
+import { useMutation, useQuery } from 'urql';
 import { Plus, Trash2, X } from 'lucide-react';
-import { graphql } from '../../../libs/graphql/tada';
+import { graphql, VariablesOf } from '../../../libs/graphql/tada';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Textarea } from '@/shared/components/ui/textarea';
@@ -31,11 +30,22 @@ const EventCreateMutation = graphql(`
   }
 `);
 
+const EventOrganizerIdQuery = graphql(`
+  query EventOrganizerId($first: Int) {
+    eventOrganizers(first: $first) {
+      nodes {
+        id
+      }
+    }
+  }
+`);
+
 type StageFormData = {
   name: string;
   venueName: string;
   doorsOpenAt: string;
   startAt: string;
+  endAt?: string;
   artists: string[];
 };
 
@@ -44,14 +54,28 @@ type EventFormData = {
   description: string;
   mainImage: File | null;
   additionalImages: File[];
-  inquiryName: string;
-  inquiryAddress: string;
+  inquiry: string;
   stages: StageFormData[];
 };
 
 export default function NewEventPage() {
   const router = useRouter();
   const [createResult, createEvent] = useMutation(EventCreateMutation);
+  const [{ data: organizerData }] = useQuery({
+    query: EventOrganizerIdQuery,
+    variables: { first: 1 },
+  });
+  const eventOrganizerId =
+    organizerData &&
+    typeof organizerData === 'object' &&
+    'eventOrganizers' in organizerData &&
+    organizerData.eventOrganizers &&
+    typeof organizerData.eventOrganizers === 'object' &&
+    'nodes' in organizerData.eventOrganizers &&
+    Array.isArray(organizerData.eventOrganizers.nodes) &&
+    organizerData.eventOrganizers.nodes.length > 0
+      ? ((organizerData.eventOrganizers.nodes[0] as { id: string })?.id ?? null)
+      : null;
 
   const form = useForm<EventFormData>({
     defaultValues: {
@@ -59,14 +83,14 @@ export default function NewEventPage() {
       description: '',
       mainImage: null,
       additionalImages: [],
-      inquiryName: '',
-      inquiryAddress: '',
+      inquiry: '',
       stages: [
         {
           name: '',
           venueName: '',
           doorsOpenAt: '',
           startAt: '',
+          endAt: '',
           artists: [''],
         },
       ],
@@ -80,27 +104,37 @@ export default function NewEventPage() {
 
   const onSubmit = async (data: EventFormData) => {
     try {
+      if (!eventOrganizerId) {
+        alert('主催者情報を取得できませんでした。再読み込みしてください。');
+        return;
+      }
+
       // 1ステージしかない場合で公演名が空欄だったら、イベント名をそのままコピー
-      if (data.stages.length === 1 && !data.stages[0].name) {
-        data.stages[0].name = data.name;
+      if (data.stages.length === 1 && !data.stages.at(0)?.name) {
+        data.stages.at(0)!.name = data.name;
       }
 
       // ステージの開始時刻と終了時刻から、イベント全体の開始時刻と終了時刻を計算
-      const stageStartTimes = data.stages.map((stage) => new Date(stage.startAt));
+      const stageStartTimes = data.stages.map(
+        (stage) => new Date(stage.startAt),
+      );
       const stageEndTimes = data.stages
         .map((stage) => (stage.endAt ? new Date(stage.endAt) : null))
         .filter((date): date is Date => date !== null);
 
-      const eventStartAt = new Date(Math.min(...stageStartTimes.map((d) => d.getTime())));
-      const eventEndAt = stageEndTimes.length > 0
-        ? new Date(Math.max(...stageEndTimes.map((d) => d.getTime())))
-        : new Date(Math.max(...stageStartTimes.map((d) => d.getTime())));
+      const eventStartAt = new Date(
+        Math.min(...stageStartTimes.map((d) => d.getTime())),
+      );
+      const eventEndAt =
+        stageEndTimes.length > 0
+          ? new Date(Math.max(...stageEndTimes.map((d) => d.getTime())))
+          : new Date(Math.max(...stageStartTimes.map((d) => d.getTime())));
 
       // TODO: 画像のアップロード処理（現在はスキップ）
       // 画像は別途アップロードAPIで処理する想定
 
       // GraphQLミューテーションを実行
-      const result = await createEvent({
+      const variables = {
         input: {
           name: data.name,
           description: data.description,
@@ -108,19 +142,21 @@ export default function NewEventPage() {
           lineThumbnailUrl: null,
           startAt: eventStartAt.toISOString(),
           endAt: eventEndAt.toISOString(),
-          eventOrganizerId: 'temp-organizer-id', // TODO: 認証実装後に実際のIDを取得
-          inquiryName: data.inquiryName,
-          inquiryAddress: data.inquiryAddress,
+          eventOrganizerId: eventOrganizerId!,
+          inquiry: data.inquiry,
           stages: data.stages.map((stage) => ({
             name: stage.name,
             venueName: stage.venueName,
-            doorsOpenAt: stage.doorsOpenAt ? new Date(stage.doorsOpenAt).toISOString() : null,
+            doorsOpenAt: stage.doorsOpenAt
+              ? new Date(stage.doorsOpenAt).toISOString()
+              : null,
             startAt: new Date(stage.startAt).toISOString(),
             endAt: stage.endAt ? new Date(stage.endAt).toISOString() : null,
             artistNames: stage.artists.filter((name) => name.trim() !== ''),
           })),
         },
-      });
+      } as VariablesOf<typeof EventCreateMutation>;
+      const result = await createEvent(variables);
 
       if (result.error) {
         console.error('Error creating event:', result.error);
@@ -132,7 +168,9 @@ export default function NewEventPage() {
       router.push('/events');
     } catch (error) {
       console.error('Error creating event:', error);
-      alert(`エラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      alert(
+        `エラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
     }
   };
 
@@ -167,7 +205,10 @@ export default function NewEventPage() {
                   <FormItem>
                     <FormLabel>イベント名</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="例: サマーコンサート2024" />
+                      <Input
+                        {...field}
+                        placeholder="例: サマーコンサート2024"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -196,14 +237,16 @@ export default function NewEventPage() {
                 <FormField
                   control={form.control}
                   name="mainImage"
-                  render={({ field: { value, onChange, ...field } }) => (
+                  render={({ field: { onChange, onBlur, name, ref } }) => (
                     <FormItem>
                       <FormLabel>メイン画像</FormLabel>
                       <FormControl>
                         <Input
-                          {...field}
                           type="file"
                           accept="image/*"
+                          name={name}
+                          ref={ref}
+                          onBlur={onBlur}
                           onChange={(e) => {
                             const file = e.target.files?.[0] || null;
                             onChange(file);
@@ -218,15 +261,17 @@ export default function NewEventPage() {
                 <FormField
                   control={form.control}
                   name="additionalImages"
-                  render={({ field: { value, onChange, ...field } }) => (
+                  render={({ field: { onChange, onBlur, name, ref } }) => (
                     <FormItem>
                       <FormLabel>追加画像</FormLabel>
                       <FormControl>
                         <Input
-                          {...field}
                           type="file"
                           accept="image/*"
                           multiple
+                          name={name}
+                          ref={ref}
+                          onBlur={onBlur}
                           onChange={(e) => {
                             const files = Array.from(e.target.files || []);
                             onChange(files);
@@ -248,28 +293,13 @@ export default function NewEventPage() {
 
               <FormField
                 control={form.control}
-                name="inquiryName"
+                name="inquiry"
                 rules={{ required: '問い合わせ先名は必須です' }}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>問い合わせ先名</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="例: イベント事務局" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="inquiryAddress"
-                rules={{ required: '問い合わせ先住所は必須です' }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>問い合わせ先住所</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="例: inquiry@example.com" />
+                      <Input {...field} placeholder="例: 03-1234-5678" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -293,6 +323,7 @@ export default function NewEventPage() {
                       venueName: '',
                       doorsOpenAt: '',
                       startAt: '',
+                      endAt: '',
                       artists: [''],
                     })
                   }
@@ -347,9 +378,7 @@ function StageForm({
   return (
     <div className="border rounded-lg p-6 space-y-4 bg-gray-50">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-gray-900">
-          ステージ {index + 1}
-        </h3>
+        <h3 className="font-semibold text-gray-900">ステージ {index + 1}</h3>
         {!isFirst && (
           <Button
             type="button"
@@ -465,6 +494,36 @@ function StageForm({
         />
       </div>
 
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          control={form.control}
+          name={`stages.${index}.endAt`}
+          rules={{
+            validate: (value) => {
+              if (!value) return true;
+              const endAt = new Date(value);
+              const startAt = form.getValues(`stages.${index}.startAt`);
+              if (startAt) {
+                const start = new Date(startAt);
+                if (endAt <= start) {
+                  return '終了時刻は開演時刻より後である必要があります';
+                }
+              }
+              return true;
+            },
+          }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>終了時刻（任意）</FormLabel>
+              <FormControl>
+                <Input {...field} type="datetime-local" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
       <div className="space-y-2">
         <Label>出演アーティスト</Label>
         {artists.map((_, artistIndex) => (
@@ -507,10 +566,7 @@ function StageForm({
           size="sm"
           onClick={() => {
             const currentArtists = form.getValues(`stages.${index}.artists`);
-            form.setValue(`stages.${index}.artists`, [
-              ...currentArtists,
-              '',
-            ]);
+            form.setValue(`stages.${index}.artists`, [...currentArtists, '']);
           }}
         >
           <Plus className="size-4 mr-2" />

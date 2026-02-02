@@ -45,10 +45,7 @@ export class EventCreateInput {
   eventOrganizerId!: string;
 
   @Field(() => String)
-  inquiryName!: string;
-
-  @Field(() => String)
-  inquiryAddress!: string;
+  inquiry!: string;
 
   @Field(() => [StageInput])
   stages!: StageInput[];

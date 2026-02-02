@@ -207,7 +207,8 @@ model Event {
   eventOrganizerId String
   name             String
   // イベントページの詳細文・概要文（Markdown記法）
-  description      String @db.Text
+  description      String  @db.Text
+  inquiry          String? // 問い合わせ先(電話番号 or メール)
 
   thumbnailUrls    String[]
   lineThumbnailUrl String? // LINEサムネイル画像URL（JPEG形式の画像URL）
@@ -225,7 +226,7 @@ model Event {
   eventOrganizer EventOrganizer  @relation(fields: [eventOrganizerId], references: [id])
   favorites      FavoriteEvent[]
   featuredEvent  FeaturedEvent?
-  stageGroups    StageGroup[]
+  stages         Stage[]
   saleSchedules  SaleSchedule[]
 }
 
@@ -234,28 +235,13 @@ enum EventPublishStatus {
   UNPUBLISHED
 }
 
-// 1チケットで複数のstageに入場できるという場合に対応できるようにStageGroupテーブルを作成する
-// 1チケットで1stageしか入場できないチケットの場合は、StageGroupにstageが1件だけ紐づくことになる
-model StageGroup {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-
-  eventId String
-  name    String
-
-  event       Event        @relation(fields: [eventId], references: [id])
-  stages      Stage[]
-  ticketTypes TicketType[]
-}
-
 model Stage {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  stageGroupId String
-  venueId      String?
+  eventId String
+  venueId String?
 
   name String
 
@@ -263,9 +249,10 @@ model Stage {
   startAt     DateTime // 公演開始時間
   endAt       DateTime? // 公演終了時間
 
-  stageGroup   StageGroup    @relation(fields: [stageGroupId], references: [id])
-  venue        Venue?        @relation(fields: [venueId], references: [id])
-  stageArtists StageArtist[]
+  event            Event             @relation(fields: [eventId], references: [id])
+  venue            Venue?            @relation(fields: [venueId], references: [id])
+  stageArtists     StageArtist[]
+  stageTicketTypes StageTicketType[]
 }
 
 model Venue {
@@ -389,13 +376,25 @@ model AvailablePaymentMethod {
   saleSchedule SaleSchedule @relation(fields: [saleScheduleId], references: [id])
 }
 
+model StageTicketType {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  stageId      String
+  ticketTypeId String
+
+  stage      Stage      @relation(fields: [stageId], references: [id])
+  ticketType TicketType @relation(fields: [ticketTypeId], references: [id])
+
+  @@id([stageId, ticketTypeId])
+}
+
 model TicketType {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
   saleScheduleId String
-  stageGroupId   String
   seatType       SeatType @default(FREE)
   name           String // S席、A席、立見等
   description    String
@@ -410,12 +409,12 @@ model TicketType {
   isOnlyQrCodeEntry Boolean @default(false) // QRコードのみで入場可能かどうか
 
   saleSchedule                 SaleSchedule                  @relation(fields: [saleScheduleId], references: [id])
-  stageGroup                   StageGroup                    @relation(fields: [stageGroupId], references: [id])
   tickets                      Ticket[]
   ticketTypeFees               TicketTypeFee[]
   ticketTypePriceDistributions TicketTypePriceDistribution[]
   ticketTypeFeeDistributions   TicketTypeFeeDistribution[]
   ticketApplicationItems       TicketApplicationItem[]
+  stageTicketTypes             StageTicketType[]
 }
 
 enum SeatType {

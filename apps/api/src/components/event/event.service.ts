@@ -36,36 +36,31 @@ export class EventService {
   }
 
   async create(input: EventCreateInput): Promise<Event> {
-    // EventOrganizerの問い合わせ先情報を更新
-    await this.prisma.eventOrganizer.update({
-      where: { id: input.eventOrganizerId },
-      data: {
-        inquiryEmail: input.inquiryAddress,
-        inquirySubject: input.inquiryName,
-      },
-    });
-
     // イベントを作成
     const event = await this.prisma.event.create({
       data: {
         name: input.name,
         description: input.description,
+        inquiry: input.inquiry,
         thumbnailUrls: input.thumbnailUrls || [],
         lineThumbnailUrl: input.lineThumbnailUrl,
         startAt: input.startAt,
         endAt: input.endAt,
         eventOrganizerId: input.eventOrganizerId,
-        stageGroups: {
+        stages: {
           create: await Promise.all(
             input.stages.map(async (stage) => {
               // 会場を取得または作成
-              let venue = await this.prisma.venue.findFirst({
-                where: { name: stage.venueName },
-              });
-              if (!venue) {
-                venue = await this.prisma.venue.create({
-                  data: { name: stage.venueName },
+              let venue: { id: string } | null = null;
+              if (stage.venueName) {
+                venue = await this.prisma.venue.findFirst({
+                  where: { name: stage.venueName },
                 });
+                if (!venue) {
+                  venue = await this.prisma.venue.create({
+                    data: { name: stage.venueName },
+                  });
+                }
               }
 
               // アーティストを取得または作成
@@ -87,20 +82,15 @@ export class EventService {
 
               return {
                 name: stage.name,
-                stages: {
-                  create: {
-                    name: stage.name,
-                    doorsOpenAt: stage.doorsOpenAt,
-                    startAt: stage.startAt,
-                    endAt: stage.endAt,
-                    venueId: venue.id,
-                    stageArtists: {
-                      create: artists.map((artist, index) => ({
-                        artistId: artist.id,
-                        sortOrder: index,
-                      })),
-                    },
-                  },
+                doorsOpenAt: stage.doorsOpenAt,
+                startAt: stage.startAt,
+                endAt: stage.endAt,
+                venueId: venue?.id,
+                stageArtists: {
+                  create: artists.map((artist, index) => ({
+                    artistId: artist.id,
+                    sortOrder: index,
+                  })),
                 },
               };
             }),

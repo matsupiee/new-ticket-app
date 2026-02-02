@@ -15,7 +15,6 @@ import { EventOrganizerModule } from './components/event-organizer/event-organiz
 import { EventOrganizerFeatureModule } from './components/event-organizer-feature/event-organizer-feature.module';
 import { BankAccountModule } from './components/bank-account/bank-account.module';
 import { EventOrganizerReferrerModule } from './components/event-organizer-referrer/event-organizer-referrer.module';
-import { StageGroupModule } from './components/stage-group/stage-group.module';
 import { StageModule } from './components/stage/stage.module';
 import { VenueModule } from './components/venue/venue.module';
 import { ArtistModule } from './components/artist/artist.module';
@@ -56,7 +55,6 @@ import { FeaturedEventModule } from './components/featured-event/featured-event.
     EventOrganizerFeatureModule,
     BankAccountModule,
     EventOrganizerReferrerModule,
-    StageGroupModule,
     StageModule,
     VenueModule,
     ArtistModule,
