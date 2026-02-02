@@ -1,3 +1,7 @@
+## typescript 型について
+
+なるべくanyは使わないようにしてください
+
 ## GraphQL Resolver 実装規約
 
 GraphQL API を実装する際は以下のガイドラインに従ってください。

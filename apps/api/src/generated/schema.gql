@@ -19,6 +19,18 @@ type Account {
   userId: String!
 }
 
+type AccountConnection {
+  edges: [AccountEdge!]!
+  nodes: [Account!]!
+  pageInfo: AccountPageInfo!
+  totalCount: Int!
+}
+
+type AccountEdge {
+  cursor: String!
+  node: Account!
+}
+
 input AccountListRelationFilter {
   every: AccountWhereInput
   none: AccountWhereInput
@@ -27,6 +39,30 @@ input AccountListRelationFilter {
 
 input AccountOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input AccountOrderByWithRelationInput {
+  accessToken: SortOrderInput
+  accessTokenExpiresAt: SortOrderInput
+  accountId: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  idToken: SortOrderInput
+  password: SortOrderInput
+  providerId: SortOrder
+  refreshToken: SortOrderInput
+  refreshTokenExpiresAt: SortOrderInput
+  scope: SortOrderInput
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+type AccountPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input AccountWhereInput {
@@ -67,6 +103,37 @@ type Artist {
   updatedAt: DateTime!
 }
 
+type ArtistConnection {
+  edges: [ArtistEdge!]!
+  nodes: [Artist!]!
+  pageInfo: ArtistPageInfo!
+  totalCount: Int!
+}
+
+type ArtistEdge {
+  cursor: String!
+  node: Artist!
+}
+
+input ArtistOrderByWithRelationInput {
+  createdAt: SortOrder
+  description: SortOrderInput
+  favorites: FavoriteArtistOrderByRelationAggregateInput
+  id: SortOrder
+  name: SortOrder
+  profileImageUrl: SortOrderInput
+  stageArtists: StageArtistOrderByRelationAggregateInput
+  twitterAccount: SortOrderInput
+  updatedAt: SortOrder
+}
+
+type ArtistPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
 input ArtistScalarRelationFilter {
   is: ArtistWhereInput
   isNot: ArtistWhereInput
@@ -96,6 +163,18 @@ type AvailablePaymentMethod {
   updatedAt: DateTime!
 }
 
+type AvailablePaymentMethodConnection {
+  edges: [AvailablePaymentMethodEdge!]!
+  nodes: [AvailablePaymentMethod!]!
+  pageInfo: AvailablePaymentMethodPageInfo!
+  totalCount: Int!
+}
+
+type AvailablePaymentMethodEdge {
+  cursor: String!
+  node: AvailablePaymentMethod!
+}
+
 input AvailablePaymentMethodListRelationFilter {
   every: AvailablePaymentMethodWhereInput
   none: AvailablePaymentMethodWhereInput
@@ -104,6 +183,22 @@ input AvailablePaymentMethodListRelationFilter {
 
 input AvailablePaymentMethodOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input AvailablePaymentMethodOrderByWithRelationInput {
+  createdAt: SortOrder
+  id: SortOrder
+  paymentMethod: SortOrder
+  saleSchedule: SaleScheduleOrderByWithRelationInput
+  saleScheduleId: SortOrder
+  updatedAt: SortOrder
+}
+
+type AvailablePaymentMethodPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input AvailablePaymentMethodWhereInput {
@@ -134,6 +229,18 @@ type BankAccount {
   updatedAt: DateTime!
 }
 
+type BankAccountConnection {
+  edges: [BankAccountEdge!]!
+  nodes: [BankAccount!]!
+  pageInfo: BankAccountPageInfo!
+  totalCount: Int!
+}
+
+type BankAccountEdge {
+  cursor: String!
+  node: BankAccount!
+}
+
 input BankAccountListRelationFilter {
   every: BankAccountWhereInput
   none: BankAccountWhereInput
@@ -142,6 +249,29 @@ input BankAccountListRelationFilter {
 
 input BankAccountOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input BankAccountOrderByWithRelationInput {
+  accountHolder: SortOrder
+  accountNumber: SortOrder
+  accountType: SortOrder
+  bankCode: SortOrder
+  bankName: SortOrder
+  branchCode: SortOrder
+  branchName: SortOrder
+  createdAt: SortOrder
+  eventOrganizer: EventOrganizerOrderByWithRelationInput
+  eventOrganizerId: SortOrder
+  id: SortOrder
+  isDefault: SortOrder
+  updatedAt: SortOrder
+}
+
+type BankAccountPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 enum BankAccountType {
@@ -320,6 +450,23 @@ type EventConnection {
   totalCount: Int!
 }
 
+input EventCreateInput {
+  description: String!
+  endAt: DateTime!
+  eventOrganizerId: String!
+  inquiryAddress: String!
+  inquiryName: String!
+  lineThumbnailUrl: String
+  name: String!
+  stages: [StageInput!]!
+  startAt: DateTime!
+  thumbnailUrls: [String!]
+}
+
+type EventCreatePayload {
+  event: Event!
+}
+
 type EventDeletePayload {
   event: Event!
 }
@@ -380,6 +527,18 @@ type EventOrganizer {
   userId: String!
 }
 
+type EventOrganizerConnection {
+  edges: [EventOrganizerEdge!]!
+  nodes: [EventOrganizer!]!
+  pageInfo: EventOrganizerPageInfo!
+  totalCount: Int!
+}
+
+type EventOrganizerEdge {
+  cursor: String!
+  node: EventOrganizer!
+}
+
 type EventOrganizerFeature {
   createdAt: DateTime!
   enabled: Boolean!
@@ -390,6 +549,18 @@ type EventOrganizerFeature {
   updatedAt: DateTime!
 }
 
+type EventOrganizerFeatureConnection {
+  edges: [EventOrganizerFeatureEdge!]!
+  nodes: [EventOrganizerFeature!]!
+  pageInfo: EventOrganizerFeaturePageInfo!
+  totalCount: Int!
+}
+
+type EventOrganizerFeatureEdge {
+  cursor: String!
+  node: EventOrganizerFeature!
+}
+
 input EventOrganizerFeatureListRelationFilter {
   every: EventOrganizerFeatureWhereInput
   none: EventOrganizerFeatureWhereInput
@@ -398,6 +569,23 @@ input EventOrganizerFeatureListRelationFilter {
 
 input EventOrganizerFeatureOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input EventOrganizerFeatureOrderByWithRelationInput {
+  createdAt: SortOrder
+  enabled: SortOrder
+  eventOrganizer: EventOrganizerOrderByWithRelationInput
+  eventOrganizerId: SortOrder
+  id: SortOrder
+  key: SortOrder
+  updatedAt: SortOrder
+}
+
+type EventOrganizerFeaturePageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input EventOrganizerFeatureWhereInput {
@@ -442,6 +630,13 @@ input EventOrganizerOrderByWithRelationInput {
   userId: SortOrder
 }
 
+type EventOrganizerPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
 type EventOrganizerReferrer {
   createdAt: DateTime!
   eventOrganizer: EventOrganizer!
@@ -452,6 +647,18 @@ type EventOrganizerReferrer {
   updatedAt: DateTime!
 }
 
+type EventOrganizerReferrerConnection {
+  edges: [EventOrganizerReferrerEdge!]!
+  nodes: [EventOrganizerReferrer!]!
+  pageInfo: EventOrganizerReferrerPageInfo!
+  totalCount: Int!
+}
+
+type EventOrganizerReferrerEdge {
+  cursor: String!
+  node: EventOrganizerReferrer!
+}
+
 input EventOrganizerReferrerListRelationFilter {
   every: EventOrganizerReferrerWhereInput
   none: EventOrganizerReferrerWhereInput
@@ -460,6 +667,23 @@ input EventOrganizerReferrerListRelationFilter {
 
 input EventOrganizerReferrerOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input EventOrganizerReferrerOrderByWithRelationInput {
+  createdAt: SortOrder
+  eventOrganizer: EventOrganizerOrderByWithRelationInput
+  eventOrganizerId: SortOrder
+  id: SortOrder
+  name: SortOrder
+  referrerSource: SortOrder
+  updatedAt: SortOrder
+}
+
+type EventOrganizerReferrerPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input EventOrganizerReferrerWhereInput {
@@ -617,6 +841,18 @@ type FeaturedEvent {
   updatedAt: DateTime!
 }
 
+type FeaturedEventConnection {
+  edges: [FeaturedEventEdge!]!
+  nodes: [FeaturedEvent!]!
+  pageInfo: FeaturedEventPageInfo!
+  totalCount: Int!
+}
+
+type FeaturedEventEdge {
+  cursor: String!
+  node: FeaturedEvent!
+}
+
 input FeaturedEventNullableScalarRelationFilter {
   is: FeaturedEventWhereInput
   isNot: FeaturedEventWhereInput
@@ -631,6 +867,13 @@ input FeaturedEventOrderByWithRelationInput {
   publishAt: SortOrderInput
   sortOrder: SortOrder
   updatedAt: SortOrder
+}
+
+type FeaturedEventPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input FeaturedEventWhereInput {
@@ -675,6 +918,9 @@ enum LotteryMode {
 }
 
 type Mutation {
+  """イベントを作成する"""
+  eventCreate(input: EventCreateInput!): EventCreatePayload!
+
   """イベントを削除する"""
   eventDelete(id: ID!): EventDeletePayload!
 }
@@ -887,6 +1133,18 @@ type PaymentCard {
   userId: String!
 }
 
+type PaymentCardConnection {
+  edges: [PaymentCardEdge!]!
+  nodes: [PaymentCard!]!
+  pageInfo: PaymentCardPageInfo!
+  totalCount: Int!
+}
+
+type PaymentCardEdge {
+  cursor: String!
+  node: PaymentCard!
+}
+
 input PaymentCardListRelationFilter {
   every: PaymentCardWhereInput
   none: PaymentCardWhereInput
@@ -900,6 +1158,29 @@ input PaymentCardNullableScalarRelationFilter {
 
 input PaymentCardOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input PaymentCardOrderByWithRelationInput {
+  cardBrand: SortOrder
+  cardLast4: SortOrder
+  cardToken: SortOrder
+  createdAt: SortOrder
+  expiryMonth: SortOrder
+  expiryYear: SortOrder
+  id: SortOrder
+  isDefault: SortOrder
+  payments: PaymentOrderByRelationAggregateInput
+  provider: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+type PaymentCardPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input PaymentCardWhereInput {
@@ -921,6 +1202,18 @@ input PaymentCardWhereInput {
   userId: StringFilter
 }
 
+type PaymentConnection {
+  edges: [PaymentEdge!]!
+  nodes: [Payment!]!
+  pageInfo: PaymentPageInfo!
+  totalCount: Int!
+}
+
+type PaymentEdge {
+  cursor: String!
+  node: Payment!
+}
+
 type PaymentItem {
   createdAt: DateTime!
   id: ID!
@@ -931,6 +1224,18 @@ type PaymentItem {
   updatedAt: DateTime!
 }
 
+type PaymentItemConnection {
+  edges: [PaymentItemEdge!]!
+  nodes: [PaymentItem!]!
+  pageInfo: PaymentItemPageInfo!
+  totalCount: Int!
+}
+
+type PaymentItemEdge {
+  cursor: String!
+  node: PaymentItem!
+}
+
 input PaymentItemListRelationFilter {
   every: PaymentItemWhereInput
   none: PaymentItemWhereInput
@@ -939,6 +1244,23 @@ input PaymentItemListRelationFilter {
 
 input PaymentItemOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input PaymentItemOrderByWithRelationInput {
+  createdAt: SortOrder
+  id: SortOrder
+  payment: PaymentOrderByWithRelationInput
+  paymentId: SortOrder
+  ticketApplicationItem: TicketApplicationItemOrderByWithRelationInput
+  ticketApplicationItemId: SortOrder
+  updatedAt: SortOrder
+}
+
+type PaymentItemPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input PaymentItemWhereInput {
@@ -967,6 +1289,32 @@ enum PaymentMethodType {
 
 input PaymentOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input PaymentOrderByWithRelationInput {
+  authorizedAt: SortOrderInput
+  capturedAt: SortOrderInput
+  cardId: SortOrderInput
+  createdAt: SortOrder
+  externalId: SortOrderInput
+  failedAt: SortOrderInput
+  failureReason: SortOrderInput
+  id: SortOrder
+  paymentCard: PaymentCardOrderByWithRelationInput
+  paymentItems: PaymentItemOrderByRelationAggregateInput
+  paymentMethod: SortOrder
+  status: SortOrder
+  ticketApplication: TicketApplicationOrderByWithRelationInput
+  ticketApplicationId: SortOrder
+  totalPaymentAmount: SortOrder
+  updatedAt: SortOrder
+}
+
+type PaymentPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 enum PaymentProvider {
@@ -1011,14 +1359,128 @@ input PaymentWhereInput {
 }
 
 type Query {
+  """アカウントを1件取得する"""
+  account(id: ID!): Account
+
+  """アカウントを複数取得する"""
+  accounts(after: String, before: String, first: Int, last: Int, orderBy: [AccountOrderByWithRelationInput!], where: AccountWhereInput): AccountConnection!
+
+  """アーティストを1件取得する"""
+  artist(id: ID!): Artist
+
+  """アーティストを複数取得する"""
+  artists(after: String, before: String, first: Int, last: Int, orderBy: [ArtistOrderByWithRelationInput!], where: ArtistWhereInput): ArtistConnection!
+
+  """利用可能な支払い方法を1件取得する"""
+  availablePaymentMethod(id: ID!): AvailablePaymentMethod
+
+  """利用可能な支払い方法を複数取得する"""
+  availablePaymentMethods(after: String, before: String, first: Int, last: Int, orderBy: [AvailablePaymentMethodOrderByWithRelationInput!], where: AvailablePaymentMethodWhereInput): AvailablePaymentMethodConnection!
+
+  """銀行口座を1件取得する"""
+  bankAccount(id: ID!): BankAccount
+
+  """銀行口座を複数取得する"""
+  bankAccounts(after: String, before: String, first: Int, last: Int, orderBy: [BankAccountOrderByWithRelationInput!], where: BankAccountWhereInput): BankAccountConnection!
+
   """イベントを1件取得する"""
   event(id: ID!): Event
+
+  """イベント主催者を1件取得する"""
+  eventOrganizer(id: ID!): EventOrganizer
+
+  """イベント主催者機能を1件取得する"""
+  eventOrganizerFeature(id: ID!): EventOrganizerFeature
+
+  """イベント主催者機能を複数取得する"""
+  eventOrganizerFeatures(after: String, before: String, first: Int, last: Int, orderBy: [EventOrganizerFeatureOrderByWithRelationInput!], where: EventOrganizerFeatureWhereInput): EventOrganizerFeatureConnection!
+
+  """イベント主催者紹介者を1件取得する"""
+  eventOrganizerReferrer(id: ID!): EventOrganizerReferrer
+
+  """イベント主催者紹介者を複数取得する"""
+  eventOrganizerReferrers(after: String, before: String, first: Int, last: Int, orderBy: [EventOrganizerReferrerOrderByWithRelationInput!], where: EventOrganizerReferrerWhereInput): EventOrganizerReferrerConnection!
+
+  """イベント主催者を複数取得する"""
+  eventOrganizers(after: String, before: String, first: Int, last: Int, orderBy: [EventOrganizerOrderByWithRelationInput!], where: EventOrganizerWhereInput): EventOrganizerConnection!
 
   """イベントを複数取得する"""
   events(after: String, before: String, first: Int, last: Int, orderBy: [EventOrderByWithRelationInput!], where: EventWhereInput): EventConnection!
 
+  """特集イベントを1件取得する"""
+  featuredEvent(id: ID!): FeaturedEvent
+
+  """特集イベントを複数取得する"""
+  featuredEvents(after: String, before: String, first: Int, last: Int, orderBy: [FeaturedEventOrderByWithRelationInput!], where: FeaturedEventWhereInput): FeaturedEventConnection!
+
+  """支払いを1件取得する"""
+  payment(id: ID!): Payment
+
+  """支払いカードを1件取得する"""
+  paymentCard(id: ID!): PaymentCard
+
+  """支払いカードを複数取得する"""
+  paymentCards(after: String, before: String, first: Int, last: Int, orderBy: [PaymentCardOrderByWithRelationInput!], where: PaymentCardWhereInput): PaymentCardConnection!
+
+  """支払いアイテムを1件取得する"""
+  paymentItem(id: ID!): PaymentItem
+
+  """支払いアイテムを複数取得する"""
+  paymentItems(after: String, before: String, first: Int, last: Int, orderBy: [PaymentItemOrderByWithRelationInput!], where: PaymentItemWhereInput): PaymentItemConnection!
+
+  """支払いを複数取得する"""
+  payments(after: String, before: String, first: Int, last: Int, orderBy: [PaymentOrderByWithRelationInput!], where: PaymentWhereInput): PaymentConnection!
+
+  """販売スケジュールを1件取得する"""
+  saleSchedule(id: ID!): SaleSchedule
+
+  """販売スケジュールを複数取得する"""
+  saleSchedules(after: String, before: String, first: Int, last: Int, orderBy: [SaleScheduleOrderByWithRelationInput!], where: SaleScheduleWhereInput): SaleScheduleConnection!
+
+  """セッションを1件取得する"""
+  session(id: ID!): Session
+
+  """セッションを複数取得する"""
+  sessions(after: String, before: String, first: Int, last: Int, orderBy: [SessionOrderByWithRelationInput!], where: SessionWhereInput): SessionConnection!
+
+  """ステージを1件取得する"""
+  stage(id: ID!): Stage
+
+  """ステージグループを1件取得する"""
+  stageGroup(id: ID!): StageGroup
+
+  """ステージグループを複数取得する"""
+  stageGroups(after: String, before: String, first: Int, last: Int, orderBy: [StageGroupOrderByWithRelationInput!], where: StageGroupWhereInput): StageGroupConnection!
+
+  """ステージを複数取得する"""
+  stages(after: String, before: String, first: Int, last: Int, orderBy: [StageOrderByWithRelationInput!], where: StageWhereInput): StageConnection!
+
   """チケットを1件取得する"""
   ticket(id: ID!): Ticket
+
+  """チケット申し込みを1件取得する"""
+  ticketApplication(id: ID!): TicketApplication
+
+  """チケット申し込みアイテムを1件取得する"""
+  ticketApplicationItem(id: ID!): TicketApplicationItem
+
+  """チケット申し込みアイテムを複数取得する"""
+  ticketApplicationItems(after: String, before: String, first: Int, last: Int, orderBy: [TicketApplicationItemOrderByWithRelationInput!], where: TicketApplicationItemWhereInput): TicketApplicationItemConnection!
+
+  """チケット申し込みを複数取得する"""
+  ticketApplications(after: String, before: String, first: Int, last: Int, orderBy: [TicketApplicationOrderByWithRelationInput!], where: TicketApplicationWhereInput): TicketApplicationConnection!
+
+  """チケットタイプを1件取得する"""
+  ticketType(id: ID!): TicketType
+
+  """チケットタイプ手数料を1件取得する"""
+  ticketTypeFee(id: ID!): TicketTypeFee
+
+  """チケットタイプ手数料を複数取得する"""
+  ticketTypeFees(after: String, before: String, first: Int, last: Int, orderBy: [TicketTypeFeeOrderByWithRelationInput!], where: TicketTypeFeeWhereInput): TicketTypeFeeConnection!
+
+  """チケットタイプを複数取得する"""
+  ticketTypes(after: String, before: String, first: Int, last: Int, orderBy: [TicketTypeOrderByWithRelationInput!], where: TicketTypeWhereInput): TicketTypeConnection!
 
   """チケットを複数取得する"""
   tickets(after: String, before: String, first: Int, last: Int, orderBy: [TicketOrderByWithRelationInput!], where: TicketWhereInput): TicketConnection!
@@ -1026,8 +1488,26 @@ type Query {
   """[Shared]: Userを取得する"""
   user(id: ID): User
 
+  """ユーザー制限を1件取得する"""
+  userRestriction(id: ID!): UserRestriction
+
+  """ユーザー制限を複数取得する"""
+  userRestrictions(after: String, before: String, first: Int, last: Int, orderBy: [UserRestrictionOrderByWithRelationInput!], where: UserRestrictionWhereInput): UserRestrictionConnection!
+
   """[Admin]:Userを複数取得する"""
   users(after: String, before: String, first: Int, last: Int, orderBy: [UserOrderByWithRelationInput!], where: UserWhereInput): UserConnection!
+
+  """会場を1件取得する"""
+  venue(id: ID!): Venue
+
+  """会場を複数取得する"""
+  venues(after: String, before: String, first: Int, last: Int, orderBy: [VenueOrderByWithRelationInput!], where: VenueWhereInput): VenueConnection!
+
+  """認証情報を1件取得する"""
+  verification(id: ID!): Verification
+
+  """認証情報を複数取得する"""
+  verifications(after: String, before: String, first: Int, last: Int, orderBy: [VerificationOrderByWithRelationInput!], where: VerificationWhereInput): VerificationConnection!
 }
 
 enum QueryMode {
@@ -1067,6 +1547,18 @@ type SaleSchedule {
   ticketTypes: [TicketType!]
   transferPolicy: TicketTransferPolicy!
   updatedAt: DateTime!
+}
+
+type SaleScheduleConnection {
+  edges: [SaleScheduleEdge!]!
+  nodes: [SaleSchedule!]!
+  pageInfo: SaleSchedulePageInfo!
+  totalCount: Int!
+}
+
+type SaleScheduleEdge {
+  cursor: String!
+  node: SaleSchedule!
 }
 
 input SaleScheduleListRelationFilter {
@@ -1111,6 +1603,13 @@ input SaleScheduleOrderByWithRelationInput {
   ticketTypes: TicketTypeOrderByRelationAggregateInput
   transferPolicy: SortOrder
   updatedAt: SortOrder
+}
+
+type SaleSchedulePageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 enum SaleSchedulePublishStatus {
@@ -1183,6 +1682,18 @@ type Session {
   userId: String!
 }
 
+type SessionConnection {
+  edges: [SessionEdge!]!
+  nodes: [Session!]!
+  pageInfo: SessionPageInfo!
+  totalCount: Int!
+}
+
+type SessionEdge {
+  cursor: String!
+  node: Session!
+}
+
 input SessionListRelationFilter {
   every: SessionWhereInput
   none: SessionWhereInput
@@ -1191,6 +1702,25 @@ input SessionListRelationFilter {
 
 input SessionOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input SessionOrderByWithRelationInput {
+  createdAt: SortOrder
+  expiresAt: SortOrder
+  id: SortOrder
+  ipAddress: SortOrderInput
+  token: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userAgent: SortOrderInput
+  userId: SortOrder
+}
+
+type SessionPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input SessionWhereInput {
@@ -1249,6 +1779,10 @@ input StageArtistListRelationFilter {
   some: StageArtistWhereInput
 }
 
+input StageArtistOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
 input StageArtistWhereInput {
   AND: [StageArtistWhereInput!]
   NOT: [StageArtistWhereInput!]
@@ -1262,6 +1796,18 @@ input StageArtistWhereInput {
   updatedAt: DateTimeFilter
 }
 
+type StageConnection {
+  edges: [StageEdge!]!
+  nodes: [Stage!]!
+  pageInfo: StagePageInfo!
+  totalCount: Int!
+}
+
+type StageEdge {
+  cursor: String!
+  node: Stage!
+}
+
 type StageGroup {
   createdAt: DateTime!
   event: Event!
@@ -1271,6 +1817,18 @@ type StageGroup {
   stages: [Stage!]
   ticketTypes: [TicketType!]
   updatedAt: DateTime!
+}
+
+type StageGroupConnection {
+  edges: [StageGroupEdge!]!
+  nodes: [StageGroup!]!
+  pageInfo: StageGroupPageInfo!
+  totalCount: Int!
+}
+
+type StageGroupEdge {
+  cursor: String!
+  node: StageGroup!
 }
 
 input StageGroupListRelationFilter {
@@ -1294,6 +1852,13 @@ input StageGroupOrderByWithRelationInput {
   updatedAt: SortOrder
 }
 
+type StageGroupPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
 input StageGroupScalarRelationFilter {
   is: StageGroupWhereInput
   isNot: StageGroupWhereInput
@@ -1313,6 +1878,15 @@ input StageGroupWhereInput {
   updatedAt: DateTimeFilter
 }
 
+input StageInput {
+  artistNames: [String!]!
+  doorsOpenAt: DateTime
+  endAt: DateTime
+  name: String!
+  startAt: DateTime!
+  venueName: String!
+}
+
 input StageListRelationFilter {
   every: StageWhereInput
   none: StageWhereInput
@@ -1321,6 +1895,28 @@ input StageListRelationFilter {
 
 input StageOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input StageOrderByWithRelationInput {
+  createdAt: SortOrder
+  doorsOpenAt: SortOrderInput
+  endAt: SortOrderInput
+  id: SortOrder
+  name: SortOrder
+  stageArtists: StageArtistOrderByRelationAggregateInput
+  stageGroup: StageGroupOrderByWithRelationInput
+  stageGroupId: SortOrder
+  startAt: SortOrder
+  updatedAt: SortOrder
+  venue: VenueOrderByWithRelationInput
+  venueId: SortOrderInput
+}
+
+type StagePageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input StageScalarRelationFilter {
@@ -1411,6 +2007,18 @@ type TicketApplication {
   userId: String!
 }
 
+type TicketApplicationConnection {
+  edges: [TicketApplicationEdge!]!
+  nodes: [TicketApplication!]!
+  pageInfo: TicketApplicationPageInfo!
+  totalCount: Int!
+}
+
+type TicketApplicationEdge {
+  cursor: String!
+  node: TicketApplication!
+}
+
 type TicketApplicationItem {
   createdAt: DateTime!
   id: ID!
@@ -1423,6 +2031,18 @@ type TicketApplicationItem {
   ticketTypeId: String!
   tickets: [Ticket!]
   updatedAt: DateTime!
+}
+
+type TicketApplicationItemConnection {
+  edges: [TicketApplicationItemEdge!]!
+  nodes: [TicketApplicationItem!]!
+  pageInfo: TicketApplicationItemPageInfo!
+  totalCount: Int!
+}
+
+type TicketApplicationItemEdge {
+  cursor: String!
+  node: TicketApplicationItem!
 }
 
 input TicketApplicationItemListRelationFilter {
@@ -1447,6 +2067,13 @@ input TicketApplicationItemOrderByWithRelationInput {
   ticketTypeId: SortOrder
   tickets: TicketOrderByRelationAggregateInput
   updatedAt: SortOrder
+}
+
+type TicketApplicationItemPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input TicketApplicationItemScalarRelationFilter {
@@ -1492,6 +2119,13 @@ input TicketApplicationOrderByWithRelationInput {
   updatedAt: SortOrder
   user: UserOrderByWithRelationInput
   userId: SortOrder
+}
+
+type TicketApplicationPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input TicketApplicationScalarRelationFilter {
@@ -1596,6 +2230,18 @@ type TicketType {
   updatedAt: DateTime!
 }
 
+type TicketTypeConnection {
+  edges: [TicketTypeEdge!]!
+  nodes: [TicketType!]!
+  pageInfo: TicketTypePageInfo!
+  totalCount: Int!
+}
+
+type TicketTypeEdge {
+  cursor: String!
+  node: TicketType!
+}
+
 type TicketTypeFee {
   amount: Int!
   createdAt: DateTime!
@@ -1605,6 +2251,13 @@ type TicketTypeFee {
   ticketTypeFeeDistributions: [TicketTypeFeeDistribution!]
   ticketTypeId: String!
   updatedAt: DateTime!
+}
+
+type TicketTypeFeeConnection {
+  edges: [TicketTypeFeeEdge!]!
+  nodes: [TicketTypeFee!]!
+  pageInfo: TicketTypeFeePageInfo!
+  totalCount: Int!
 }
 
 type TicketTypeFeeDistribution {
@@ -1644,6 +2297,11 @@ input TicketTypeFeeDistributionWhereInput {
   updatedAt: DateTimeFilter
 }
 
+type TicketTypeFeeEdge {
+  cursor: String!
+  node: TicketTypeFee!
+}
+
 input TicketTypeFeeListRelationFilter {
   every: TicketTypeFeeWhereInput
   none: TicketTypeFeeWhereInput
@@ -1652,6 +2310,24 @@ input TicketTypeFeeListRelationFilter {
 
 input TicketTypeFeeOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input TicketTypeFeeOrderByWithRelationInput {
+  amount: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  name: SortOrder
+  ticketType: TicketTypeOrderByWithRelationInput
+  ticketTypeFeeDistributions: TicketTypeFeeDistributionOrderByRelationAggregateInput
+  ticketTypeId: SortOrder
+  updatedAt: SortOrder
+}
+
+type TicketTypeFeePageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input TicketTypeFeeScalarRelationFilter {
@@ -1710,6 +2386,13 @@ input TicketTypeOrderByWithRelationInput {
   ticketTypePriceDistributions: TicketTypePriceDistributionOrderByRelationAggregateInput
   tickets: TicketOrderByRelationAggregateInput
   updatedAt: SortOrder
+}
+
+type TicketTypePageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 type TicketTypePriceDistribution {
@@ -1863,6 +2546,18 @@ type UserRestriction {
   userId: String!
 }
 
+type UserRestrictionConnection {
+  edges: [UserRestrictionEdge!]!
+  nodes: [UserRestriction!]!
+  pageInfo: UserRestrictionPageInfo!
+  totalCount: Int!
+}
+
+type UserRestrictionEdge {
+  cursor: String!
+  node: UserRestriction!
+}
+
 input UserRestrictionListRelationFilter {
   every: UserRestrictionWhereInput
   none: UserRestrictionWhereInput
@@ -1871,6 +2566,23 @@ input UserRestrictionListRelationFilter {
 
 input UserRestrictionOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input UserRestrictionOrderByWithRelationInput {
+  createdAt: SortOrder
+  expiresAt: SortOrderInput
+  id: SortOrder
+  reason: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+type UserRestrictionPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input UserRestrictionWhereInput {
@@ -1928,9 +2640,36 @@ type Venue {
   updatedAt: DateTime!
 }
 
+type VenueConnection {
+  edges: [VenueEdge!]!
+  nodes: [Venue!]!
+  pageInfo: VenuePageInfo!
+  totalCount: Int!
+}
+
+type VenueEdge {
+  cursor: String!
+  node: Venue!
+}
+
 input VenueNullableScalarRelationFilter {
   is: VenueWhereInput
   isNot: VenueWhereInput
+}
+
+input VenueOrderByWithRelationInput {
+  createdAt: SortOrder
+  id: SortOrder
+  name: SortOrder
+  stages: StageOrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+type VenuePageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 input VenueWhereInput {
@@ -1942,4 +2681,53 @@ input VenueWhereInput {
   name: StringFilter
   stages: StageListRelationFilter
   updatedAt: DateTimeFilter
+}
+
+type Verification {
+  createdAt: DateTime!
+  expiresAt: DateTime!
+  id: ID!
+  identifier: String!
+  updatedAt: DateTime!
+  value: String!
+}
+
+type VerificationConnection {
+  edges: [VerificationEdge!]!
+  nodes: [Verification!]!
+  pageInfo: VerificationPageInfo!
+  totalCount: Int!
+}
+
+type VerificationEdge {
+  cursor: String!
+  node: Verification!
+}
+
+input VerificationOrderByWithRelationInput {
+  createdAt: SortOrder
+  expiresAt: SortOrder
+  id: SortOrder
+  identifier: SortOrder
+  updatedAt: SortOrder
+  value: SortOrder
+}
+
+type VerificationPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+input VerificationWhereInput {
+  AND: [VerificationWhereInput!]
+  NOT: [VerificationWhereInput!]
+  OR: [VerificationWhereInput!]
+  createdAt: DateTimeFilter
+  expiresAt: DateTimeFilter
+  id: StringFilter
+  identifier: StringFilter
+  updatedAt: DateTimeFilter
+  value: StringFilter
 }

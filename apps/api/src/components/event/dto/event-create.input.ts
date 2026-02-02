@@ -1,16 +1,55 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class EventCreateInput {
+class StageInput {
   @Field(() => String)
-  title!: string;
-
-  @Field(() => String, { nullable: true })
-  description?: string;
+  name!: string;
 
   @Field(() => String)
-  venue!: string;
+  venueName!: string;
+
+  @Field(() => Date, { nullable: true })
+  doorsOpenAt?: Date;
 
   @Field(() => Date)
-  date!: Date;
+  startAt!: Date;
+
+  @Field(() => Date, { nullable: true })
+  endAt?: Date;
+
+  @Field(() => [String])
+  artistNames!: string[];
+}
+
+@InputType()
+export class EventCreateInput {
+  @Field(() => String)
+  name!: string;
+
+  @Field(() => String)
+  description!: string;
+
+  @Field(() => [String], { nullable: true })
+  thumbnailUrls?: string[];
+
+  @Field(() => String, { nullable: true })
+  lineThumbnailUrl?: string;
+
+  @Field(() => Date)
+  startAt!: Date;
+
+  @Field(() => Date)
+  endAt!: Date;
+
+  @Field(() => String)
+  eventOrganizerId!: string;
+
+  @Field(() => String)
+  inquiryName!: string;
+
+  @Field(() => String)
+  inquiryAddress!: string;
+
+  @Field(() => [StageInput])
+  stages!: StageInput[];
 }

@@ -1,0 +1,29 @@
+import { Args, ID, Info, Query, Resolver } from '@nestjs/graphql';
+import { Venue } from 'src/generated/prisma-nestjs-graphql';
+import { VenueConnection } from './dto/venue.connection';
+import { type GraphQLResolveInfo } from 'graphql';
+import { VenuesArgs } from './dto/venues.args';
+import { VenueService } from './venue.service';
+
+@Resolver(() => Venue)
+export class VenueResolver {
+  constructor(private readonly venueService: VenueService) {}
+
+  @Query(() => Venue, {
+    description: '会場を1件取得する',
+    nullable: true,
+  })
+  async venue(@Args('id', { type: () => ID }) id: string) {
+    return this.venueService.findOne(id);
+  }
+
+  @Query(() => VenueConnection, {
+    description: '会場を複数取得する',
+  })
+  async venues(
+    @Args() args: VenuesArgs,
+    @Info() resolveInfo: GraphQLResolveInfo,
+  ): Promise<VenueConnection> {
+    return this.venueService.findMany(args, resolveInfo);
+  }
+}
