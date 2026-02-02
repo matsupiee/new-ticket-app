@@ -7,9 +7,9 @@ export default function EventsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider className="h-svh">
+    <SidebarProvider className="h-svh flex">
       <AdminSidebar />
-      <SidebarInset className="bg-white h-full">{children}</SidebarInset>
+      <SidebarInset className="bg-white">{children}</SidebarInset>
     </SidebarProvider>
   );
 }
