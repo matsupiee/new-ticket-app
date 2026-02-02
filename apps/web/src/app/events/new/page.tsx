@@ -2,9 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useMutation, useQuery } from 'urql';
+import { useMutation } from 'urql';
 import { Plus, Trash2, X } from 'lucide-react';
-import { graphql, VariablesOf } from '../../../libs/graphql/tada';
+import { graphql } from '../../../libs/graphql/tada';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Textarea } from '@/shared/components/ui/textarea';
@@ -30,22 +30,11 @@ const EventCreateMutation = graphql(`
   }
 `);
 
-const EventOrganizerIdQuery = graphql(`
-  query EventOrganizerId($first: Int) {
-    eventOrganizers(first: $first) {
-      nodes {
-        id
-      }
-    }
-  }
-`);
-
 type StageFormData = {
   name: string;
   venueName: string;
   doorsOpenAt: string;
   startAt: string;
-  endAt?: string;
   artists: string[];
 };
 
@@ -61,21 +50,6 @@ type EventFormData = {
 export default function NewEventPage() {
   const router = useRouter();
   const [createResult, createEvent] = useMutation(EventCreateMutation);
-  const [{ data: organizerData }] = useQuery({
-    query: EventOrganizerIdQuery,
-    variables: { first: 1 },
-  });
-  const eventOrganizerId =
-    organizerData &&
-    typeof organizerData === 'object' &&
-    'eventOrganizers' in organizerData &&
-    organizerData.eventOrganizers &&
-    typeof organizerData.eventOrganizers === 'object' &&
-    'nodes' in organizerData.eventOrganizers &&
-    Array.isArray(organizerData.eventOrganizers.nodes) &&
-    organizerData.eventOrganizers.nodes.length > 0
-      ? ((organizerData.eventOrganizers.nodes[0] as { id: string })?.id ?? null)
-      : null;
 
   const form = useForm<EventFormData>({
     defaultValues: {
@@ -90,7 +64,6 @@ export default function NewEventPage() {
           venueName: '',
           doorsOpenAt: '',
           startAt: '',
-          endAt: '',
           artists: [''],
         },
       ],
@@ -104,31 +77,10 @@ export default function NewEventPage() {
 
   const onSubmit = async (data: EventFormData) => {
     try {
-      if (!eventOrganizerId) {
-        alert('主催者情報を取得できませんでした。再読み込みしてください。');
-        return;
-      }
-
       // 1ステージしかない場合で公演名が空欄だったら、イベント名をそのままコピー
       if (data.stages.length === 1 && !data.stages.at(0)?.name) {
         data.stages.at(0)!.name = data.name;
       }
-
-      // ステージの開始時刻と終了時刻から、イベント全体の開始時刻と終了時刻を計算
-      const stageStartTimes = data.stages.map(
-        (stage) => new Date(stage.startAt),
-      );
-      const stageEndTimes = data.stages
-        .map((stage) => (stage.endAt ? new Date(stage.endAt) : null))
-        .filter((date): date is Date => date !== null);
-
-      const eventStartAt = new Date(
-        Math.min(...stageStartTimes.map((d) => d.getTime())),
-      );
-      const eventEndAt =
-        stageEndTimes.length > 0
-          ? new Date(Math.max(...stageEndTimes.map((d) => d.getTime())))
-          : new Date(Math.max(...stageStartTimes.map((d) => d.getTime())));
 
       // TODO: 画像のアップロード処理（現在はスキップ）
       // 画像は別途アップロードAPIで処理する想定
@@ -140,22 +92,17 @@ export default function NewEventPage() {
           description: data.description,
           thumbnailUrls: [], // TODO: 画像アップロード後にURLを設定
           lineThumbnailUrl: null,
-          startAt: eventStartAt.toISOString(),
-          endAt: eventEndAt.toISOString(),
-          eventOrganizerId: eventOrganizerId!,
+          eventOrganizerId: 'organizer1',
           inquiry: data.inquiry,
           stages: data.stages.map((stage) => ({
             name: stage.name,
             venueName: stage.venueName,
-            doorsOpenAt: stage.doorsOpenAt
-              ? new Date(stage.doorsOpenAt).toISOString()
-              : null,
+            doorsOpenAt: new Date(stage.doorsOpenAt).toISOString(),
             startAt: new Date(stage.startAt).toISOString(),
-            endAt: stage.endAt ? new Date(stage.endAt).toISOString() : null,
             artistNames: stage.artists.filter((name) => name.trim() !== ''),
           })),
         },
-      } as VariablesOf<typeof EventCreateMutation>;
+      };
       const result = await createEvent(variables);
 
       if (result.error) {
@@ -323,7 +270,6 @@ export default function NewEventPage() {
                       venueName: '',
                       doorsOpenAt: '',
                       startAt: '',
-                      endAt: '',
                       artists: [''],
                     })
                   }
@@ -485,36 +431,6 @@ function StageForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>開演時刻</FormLabel>
-              <FormControl>
-                <Input {...field} type="datetime-local" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <FormField
-          control={form.control}
-          name={`stages.${index}.endAt`}
-          rules={{
-            validate: (value) => {
-              if (!value) return true;
-              const endAt = new Date(value);
-              const startAt = form.getValues(`stages.${index}.startAt`);
-              if (startAt) {
-                const start = new Date(startAt);
-                if (endAt <= start) {
-                  return '終了時刻は開演時刻より後である必要があります';
-                }
-              }
-              return true;
-            },
-          }}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>終了時刻（任意）</FormLabel>
               <FormControl>
                 <Input {...field} type="datetime-local" />
               </FormControl>

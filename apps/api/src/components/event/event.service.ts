@@ -44,8 +44,6 @@ export class EventService {
         inquiry: input.inquiry,
         thumbnailUrls: input.thumbnailUrls || [],
         lineThumbnailUrl: input.lineThumbnailUrl,
-        startAt: input.startAt,
-        endAt: input.endAt,
         eventOrganizerId: input.eventOrganizerId,
         stages: {
           create: await Promise.all(
@@ -84,7 +82,6 @@ export class EventService {
                 name: stage.name,
                 doorsOpenAt: stage.doorsOpenAt,
                 startAt: stage.startAt,
-                endAt: stage.endAt,
                 venueId: venue?.id,
                 stageArtists: {
                   create: artists.map((artist, index) => ({

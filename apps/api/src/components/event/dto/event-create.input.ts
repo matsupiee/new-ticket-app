@@ -8,14 +8,11 @@ class StageInput {
   @Field(() => String)
   venueName!: string;
 
-  @Field(() => Date, { nullable: true })
-  doorsOpenAt?: Date;
+  @Field(() => Date)
+  doorsOpenAt!: Date;
 
   @Field(() => Date)
   startAt!: Date;
-
-  @Field(() => Date, { nullable: true })
-  endAt?: Date;
 
   @Field(() => [String])
   artistNames!: string[];
@@ -34,12 +31,6 @@ export class EventCreateInput {
 
   @Field(() => String, { nullable: true })
   lineThumbnailUrl?: string;
-
-  @Field(() => Date)
-  startAt!: Date;
-
-  @Field(() => Date)
-  endAt!: Date;
 
   @Field(() => String)
   eventOrganizerId!: string;

@@ -207,15 +207,13 @@ model Event {
   eventOrganizerId String
   name             String
   // イベントページの詳細文・概要文（Markdown記法）
-  description      String  @db.Text
-  inquiry          String? // 問い合わせ先(電話番号 or メール)
+  description      String @db.Text
+  inquiry          String // 問い合わせ先(電話番号 or メール)
 
   thumbnailUrls    String[]
   lineThumbnailUrl String? // LINEサムネイル画像URL（JPEG形式の画像URL）
 
-  publishAt DateTime? // 予約公開したい場合は未来の日時を設定
-  startAt   DateTime
-  endAt     DateTime
+  publishAt DateTime? // 予約公開したい場合は未来の日時を設定する
 
   publishStatus    EventPublishStatus @default(UNPUBLISHED)
   isDisplayedInTop Boolean            @default(true) // トップページ非公開にしたい場合はfalse
@@ -245,9 +243,8 @@ model Stage {
 
   name String
 
-  doorsOpenAt DateTime? // 会場時間
+  doorsOpenAt DateTime // 会場時間
   startAt     DateTime // 公演開始時間
-  endAt       DateTime? // 公演終了時間
 
   event            Event             @relation(fields: [eventId], references: [id])
   venue            Venue?            @relation(fields: [venueId], references: [id])

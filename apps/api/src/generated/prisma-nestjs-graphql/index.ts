@@ -147,8 +147,7 @@ export enum StageScalarFieldEnum {
     venueId = "venueId",
     name = "name",
     doorsOpenAt = "doorsOpenAt",
-    startAt = "startAt",
-    endAt = "endAt"
+    startAt = "startAt"
 }
 
 export enum SessionScalarFieldEnum {
@@ -394,8 +393,6 @@ export enum EventScalarFieldEnum {
     thumbnailUrls = "thumbnailUrls",
     lineThumbnailUrl = "lineThumbnailUrl",
     publishAt = "publishAt",
-    startAt = "startAt",
-    endAt = "endAt",
     publishStatus = "publishStatus",
     isDisplayedInTop = "isDisplayedInTop",
     isTokuteiKogyo = "isTokuteiKogyo"
@@ -3414,10 +3411,6 @@ export class EventCountOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     publishAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    startAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    endAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
     publishStatus?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     isDisplayedInTop?: `${SortOrder}`;
@@ -3446,18 +3439,14 @@ export class EventCreateManyEventOrganizerInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -3480,18 +3469,14 @@ export class EventCreateManyInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -3630,18 +3615,14 @@ export class EventCreateWithoutEventOrganizerInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -3670,18 +3651,14 @@ export class EventCreateWithoutFavoritesInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -3710,18 +3687,14 @@ export class EventCreateWithoutFeaturedEventInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -3750,18 +3723,14 @@ export class EventCreateWithoutSaleSchedulesInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -3790,18 +3759,14 @@ export class EventCreateWithoutStagesInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -3830,18 +3795,14 @@ export class EventCreateInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -3897,10 +3858,6 @@ export class EventMaxOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     publishAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    startAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    endAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
     publishStatus?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     isDisplayedInTop?: `${SortOrder}`;
@@ -3929,10 +3886,6 @@ export class EventMinOrderByAggregateInput {
     @Field(() => SortOrder, {nullable:true})
     publishAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
-    startAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    endAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
     publishStatus?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     isDisplayedInTop?: `${SortOrder}`;
@@ -3960,18 +3913,14 @@ export class EventOrderByWithAggregationInput {
     name?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     description?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    inquiry?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    inquiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     thumbnailUrls?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     publishAt?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    startAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    endAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     publishStatus?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -4000,18 +3949,14 @@ export class EventOrderByWithRelationInput {
     name?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     description?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    inquiry?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    inquiry?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     thumbnailUrls?: `${SortOrder}`;
     @Field(() => SortOrderInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrderInput, {nullable:true})
     publishAt?: InstanceType<typeof SortOrderInput>;
-    @Field(() => SortOrder, {nullable:true})
-    startAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    endAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     publishStatus?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
@@ -4058,18 +4003,14 @@ export class EventScalarWhereWithAggregatesInput {
     name?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     description?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    inquiry?: InstanceType<typeof StringNullableWithAggregatesFilter>;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    inquiry?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => StringNullableListFilter, {nullable:true})
     thumbnailUrls?: InstanceType<typeof StringNullableListFilter>;
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
     publishAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
-    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
-    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     @Field(() => EnumEventPublishStatusWithAggregatesFilter, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusWithAggregatesFilter>;
     @Field(() => BoolWithAggregatesFilter, {nullable:true})
@@ -4098,18 +4039,14 @@ export class EventScalarWhereInput {
     name?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
     description?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    inquiry?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    inquiry?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableListFilter, {nullable:true})
     thumbnailUrls?: InstanceType<typeof StringNullableListFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     publishAt?: InstanceType<typeof DateTimeNullableFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => EnumEventPublishStatusFilter, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFilter>;
     @Field(() => BoolFilter, {nullable:true})
@@ -4146,18 +4083,14 @@ export class EventUncheckedCreateWithoutEventOrganizerInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -4188,18 +4121,14 @@ export class EventUncheckedCreateWithoutFavoritesInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -4228,18 +4157,14 @@ export class EventUncheckedCreateWithoutFeaturedEventInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -4268,18 +4193,14 @@ export class EventUncheckedCreateWithoutSaleSchedulesInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -4308,18 +4229,14 @@ export class EventUncheckedCreateWithoutStagesInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -4348,18 +4265,14 @@ export class EventUncheckedCreateInput {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry?: string;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => EventCreatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventCreatethumbnailUrlsInput>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl?: string;
     @Field(() => Date, {nullable:true})
     publishAt?: Date | string;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date | string;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date | string;
     @Field(() => EventPublishStatus, {nullable:true})
     publishStatus?: `${EventPublishStatus}`;
     @Field(() => Boolean, {nullable:true})
@@ -4425,18 +4338,14 @@ export class EventUncheckedUpdateManyWithoutEventOrganizerInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4459,18 +4368,14 @@ export class EventUncheckedUpdateManyInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4491,18 +4396,14 @@ export class EventUncheckedUpdateWithoutEventOrganizerInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4533,18 +4434,14 @@ export class EventUncheckedUpdateWithoutFavoritesInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4573,18 +4470,14 @@ export class EventUncheckedUpdateWithoutFeaturedEventInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4613,18 +4506,14 @@ export class EventUncheckedUpdateWithoutSaleSchedulesInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4653,18 +4542,14 @@ export class EventUncheckedUpdateWithoutStagesInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4693,18 +4578,14 @@ export class EventUncheckedUpdateInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4733,18 +4614,14 @@ export class EventUpdateManyMutationInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4938,18 +4815,14 @@ export class EventUpdateWithoutEventOrganizerInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -4978,18 +4851,14 @@ export class EventUpdateWithoutFavoritesInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -5018,18 +4887,14 @@ export class EventUpdateWithoutFeaturedEventInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -5058,18 +4923,14 @@ export class EventUpdateWithoutSaleSchedulesInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -5098,18 +4959,14 @@ export class EventUpdateWithoutStagesInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -5138,18 +4995,14 @@ export class EventUpdateInput {
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    inquiry?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    inquiry?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => EventUpdatethumbnailUrlsInput, {nullable:true})
     thumbnailUrls?: InstanceType<typeof EventUpdatethumbnailUrlsInput>;
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     publishAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => EnumEventPublishStatusFieldUpdateOperationsInput, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFieldUpdateOperationsInput>;
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
@@ -5261,18 +5114,14 @@ export class EventWhereUniqueInput {
     name?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
     description?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    inquiry?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    inquiry?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableListFilter, {nullable:true})
     thumbnailUrls?: InstanceType<typeof StringNullableListFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     publishAt?: InstanceType<typeof DateTimeNullableFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => EnumEventPublishStatusFilter, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFilter>;
     @Field(() => BoolFilter, {nullable:true})
@@ -5311,18 +5160,14 @@ export class EventWhereInput {
     name?: InstanceType<typeof StringFilter>;
     @Field(() => StringFilter, {nullable:true})
     description?: InstanceType<typeof StringFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    inquiry?: InstanceType<typeof StringNullableFilter>;
+    @Field(() => StringFilter, {nullable:true})
+    inquiry?: InstanceType<typeof StringFilter>;
     @Field(() => StringNullableListFilter, {nullable:true})
     thumbnailUrls?: InstanceType<typeof StringNullableListFilter>;
     @Field(() => StringNullableFilter, {nullable:true})
     lineThumbnailUrl?: InstanceType<typeof StringNullableFilter>;
     @Field(() => DateTimeNullableFilter, {nullable:true})
     publishAt?: InstanceType<typeof DateTimeNullableFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    startAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeFilter, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => EnumEventPublishStatusFilter, {nullable:true})
     publishStatus?: InstanceType<typeof EnumEventPublishStatusFilter>;
     @Field(() => BoolFilter, {nullable:true})
@@ -5355,18 +5200,14 @@ export class Event {
     name!: string;
     @Field(() => String, {nullable:false})
     description!: string;
-    @Field(() => String, {nullable:true})
-    inquiry!: string | null;
+    @Field(() => String, {nullable:false})
+    inquiry!: string;
     @Field(() => [String], {nullable:true})
     thumbnailUrls!: Array<string>;
     @Field(() => String, {nullable:true})
     lineThumbnailUrl!: string | null;
     @Field(() => Date, {nullable:true})
     publishAt!: Date | null;
-    @Field(() => Date, {nullable:false})
-    startAt!: Date;
-    @Field(() => Date, {nullable:false})
-    endAt!: Date;
     @Field(() => EventPublishStatus, {defaultValue:'UNPUBLISHED',nullable:false})
     publishStatus!: `${EventPublishStatus}`;
     @Field(() => Boolean, {defaultValue:true,nullable:false})
@@ -18322,8 +18163,6 @@ export class StageCountOrderByAggregateInput {
     doorsOpenAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     startAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    endAt?: `${SortOrder}`;
 }
 
 @InputType()
@@ -18347,12 +18186,10 @@ export class StageCreateManyEventInput {
     venueId?: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
 }
 
 @InputType()
@@ -18376,12 +18213,10 @@ export class StageCreateManyVenueInput {
     eventId!: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
 }
 
 @InputType()
@@ -18398,12 +18233,10 @@ export class StageCreateManyInput {
     venueId?: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
 }
 
 @InputType()
@@ -18514,12 +18347,10 @@ export class StageCreateWithoutEventInput {
     updatedAt?: Date | string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => VenueCreateNestedOneWithoutStagesInput, {nullable:true})
     venue?: InstanceType<typeof VenueCreateNestedOneWithoutStagesInput>;
     @Field(() => StageArtistCreateNestedManyWithoutStageInput, {nullable:true})
@@ -18538,12 +18369,10 @@ export class StageCreateWithoutStageArtistsInput {
     updatedAt?: Date | string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => EventCreateNestedOneWithoutStagesInput, {nullable:false})
     event!: InstanceType<typeof EventCreateNestedOneWithoutStagesInput>;
     @Field(() => VenueCreateNestedOneWithoutStagesInput, {nullable:true})
@@ -18562,12 +18391,10 @@ export class StageCreateWithoutStageTicketTypesInput {
     updatedAt?: Date | string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => EventCreateNestedOneWithoutStagesInput, {nullable:false})
     event!: InstanceType<typeof EventCreateNestedOneWithoutStagesInput>;
     @Field(() => VenueCreateNestedOneWithoutStagesInput, {nullable:true})
@@ -18586,12 +18413,10 @@ export class StageCreateWithoutVenueInput {
     updatedAt?: Date | string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => EventCreateNestedOneWithoutStagesInput, {nullable:false})
     event!: InstanceType<typeof EventCreateNestedOneWithoutStagesInput>;
     @Field(() => StageArtistCreateNestedManyWithoutStageInput, {nullable:true})
@@ -18610,12 +18435,10 @@ export class StageCreateInput {
     updatedAt?: Date | string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => EventCreateNestedOneWithoutStagesInput, {nullable:false})
     event!: InstanceType<typeof EventCreateNestedOneWithoutStagesInput>;
     @Field(() => VenueCreateNestedOneWithoutStagesInput, {nullable:true})
@@ -18654,8 +18477,6 @@ export class StageMaxOrderByAggregateInput {
     doorsOpenAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     startAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    endAt?: `${SortOrder}`;
 }
 
 @InputType()
@@ -18676,8 +18497,6 @@ export class StageMinOrderByAggregateInput {
     doorsOpenAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     startAt?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    endAt?: `${SortOrder}`;
 }
 
 @InputType()
@@ -18700,12 +18519,10 @@ export class StageOrderByWithAggregationInput {
     venueId?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     name?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    doorsOpenAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     startAt?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    endAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => StageCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof StageCountOrderByAggregateInput>;
     @Field(() => StageMaxOrderByAggregateInput, {nullable:true})
@@ -18728,12 +18545,10 @@ export class StageOrderByWithRelationInput {
     venueId?: InstanceType<typeof SortOrderInput>;
     @Field(() => SortOrder, {nullable:true})
     name?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof SortOrderInput>;
+    @Field(() => SortOrder, {nullable:true})
+    doorsOpenAt?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     startAt?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    endAt?: InstanceType<typeof SortOrderInput>;
     @Field(() => EventOrderByWithRelationInput, {nullable:true})
     event?: InstanceType<typeof EventOrderByWithRelationInput>;
     @Field(() => VenueOrderByWithRelationInput, {nullable:true})
@@ -18772,12 +18587,10 @@ export class StageScalarWhereWithAggregatesInput {
     venueId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     name?: InstanceType<typeof StringWithAggregatesFilter>;
-    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     startAt?: InstanceType<typeof DateTimeWithAggregatesFilter>;
-    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeNullableWithAggregatesFilter>;
 }
 
 @InputType()
@@ -18800,12 +18613,10 @@ export class StageScalarWhereInput {
     venueId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringFilter, {nullable:true})
     name?: InstanceType<typeof StringFilter>;
-    @Field(() => DateTimeNullableFilter, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeNullableFilter, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeNullableFilter>;
 }
 
 @InputType()
@@ -18852,12 +18663,10 @@ export class StageUncheckedCreateWithoutEventInput {
     venueId?: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => StageArtistUncheckedCreateNestedManyWithoutStageInput, {nullable:true})
     stageArtists?: InstanceType<typeof StageArtistUncheckedCreateNestedManyWithoutStageInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutStageInput, {nullable:true})
@@ -18878,12 +18687,10 @@ export class StageUncheckedCreateWithoutStageArtistsInput {
     venueId?: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutStageInput, {nullable:true})
     stageTicketTypes?: InstanceType<typeof StageTicketTypeUncheckedCreateNestedManyWithoutStageInput>;
 }
@@ -18902,12 +18709,10 @@ export class StageUncheckedCreateWithoutStageTicketTypesInput {
     venueId?: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => StageArtistUncheckedCreateNestedManyWithoutStageInput, {nullable:true})
     stageArtists?: InstanceType<typeof StageArtistUncheckedCreateNestedManyWithoutStageInput>;
 }
@@ -18924,12 +18729,10 @@ export class StageUncheckedCreateWithoutVenueInput {
     eventId!: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => StageArtistUncheckedCreateNestedManyWithoutStageInput, {nullable:true})
     stageArtists?: InstanceType<typeof StageArtistUncheckedCreateNestedManyWithoutStageInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutStageInput, {nullable:true})
@@ -18950,12 +18753,10 @@ export class StageUncheckedCreateInput {
     venueId?: string;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt?: Date | string;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date | string;
     @Field(() => Date, {nullable:false})
     startAt!: Date | string;
-    @Field(() => Date, {nullable:true})
-    endAt?: Date | string;
     @Field(() => StageArtistUncheckedCreateNestedManyWithoutStageInput, {nullable:true})
     stageArtists?: InstanceType<typeof StageArtistUncheckedCreateNestedManyWithoutStageInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutStageInput, {nullable:true})
@@ -19011,12 +18812,10 @@ export class StageUncheckedUpdateManyWithoutEventInput {
     venueId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -19068,12 +18867,10 @@ export class StageUncheckedUpdateManyWithoutVenueInput {
     eventId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -19090,12 +18887,10 @@ export class StageUncheckedUpdateManyInput {
     venueId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -19110,12 +18905,10 @@ export class StageUncheckedUpdateWithoutEventInput {
     venueId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => StageArtistUncheckedUpdateManyWithoutStageNestedInput, {nullable:true})
     stageArtists?: InstanceType<typeof StageArtistUncheckedUpdateManyWithoutStageNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutStageNestedInput, {nullable:true})
@@ -19136,12 +18929,10 @@ export class StageUncheckedUpdateWithoutStageArtistsInput {
     venueId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutStageNestedInput, {nullable:true})
     stageTicketTypes?: InstanceType<typeof StageTicketTypeUncheckedUpdateManyWithoutStageNestedInput>;
 }
@@ -19160,12 +18951,10 @@ export class StageUncheckedUpdateWithoutStageTicketTypesInput {
     venueId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => StageArtistUncheckedUpdateManyWithoutStageNestedInput, {nullable:true})
     stageArtists?: InstanceType<typeof StageArtistUncheckedUpdateManyWithoutStageNestedInput>;
 }
@@ -19182,12 +18971,10 @@ export class StageUncheckedUpdateWithoutVenueInput {
     eventId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => StageArtistUncheckedUpdateManyWithoutStageNestedInput, {nullable:true})
     stageArtists?: InstanceType<typeof StageArtistUncheckedUpdateManyWithoutStageNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutStageNestedInput, {nullable:true})
@@ -19208,12 +18995,10 @@ export class StageUncheckedUpdateInput {
     venueId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => StageArtistUncheckedUpdateManyWithoutStageNestedInput, {nullable:true})
     stageArtists?: InstanceType<typeof StageArtistUncheckedUpdateManyWithoutStageNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutStageNestedInput, {nullable:true})
@@ -19230,12 +19015,10 @@ export class StageUpdateManyMutationInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -19420,12 +19203,10 @@ export class StageUpdateWithoutEventInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => VenueUpdateOneWithoutStagesNestedInput, {nullable:true})
     venue?: InstanceType<typeof VenueUpdateOneWithoutStagesNestedInput>;
     @Field(() => StageArtistUpdateManyWithoutStageNestedInput, {nullable:true})
@@ -19444,12 +19225,10 @@ export class StageUpdateWithoutStageArtistsInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => EventUpdateOneRequiredWithoutStagesNestedInput, {nullable:true})
     event?: InstanceType<typeof EventUpdateOneRequiredWithoutStagesNestedInput>;
     @Field(() => VenueUpdateOneWithoutStagesNestedInput, {nullable:true})
@@ -19468,12 +19247,10 @@ export class StageUpdateWithoutStageTicketTypesInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => EventUpdateOneRequiredWithoutStagesNestedInput, {nullable:true})
     event?: InstanceType<typeof EventUpdateOneRequiredWithoutStagesNestedInput>;
     @Field(() => VenueUpdateOneWithoutStagesNestedInput, {nullable:true})
@@ -19492,12 +19269,10 @@ export class StageUpdateWithoutVenueInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => EventUpdateOneRequiredWithoutStagesNestedInput, {nullable:true})
     event?: InstanceType<typeof EventUpdateOneRequiredWithoutStagesNestedInput>;
     @Field(() => StageArtistUpdateManyWithoutStageNestedInput, {nullable:true})
@@ -19516,12 +19291,10 @@ export class StageUpdateInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
-    endAt?: InstanceType<typeof NullableDateTimeFieldUpdateOperationsInput>;
     @Field(() => EventUpdateOneRequiredWithoutStagesNestedInput, {nullable:true})
     event?: InstanceType<typeof EventUpdateOneRequiredWithoutStagesNestedInput>;
     @Field(() => VenueUpdateOneWithoutStagesNestedInput, {nullable:true})
@@ -19604,12 +19377,10 @@ export class StageWhereUniqueInput {
     venueId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringFilter, {nullable:true})
     name?: InstanceType<typeof StringFilter>;
-    @Field(() => DateTimeNullableFilter, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeNullableFilter, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => EventScalarRelationFilter, {nullable:true})
     event?: InstanceType<typeof EventScalarRelationFilter>;
     @Field(() => VenueNullableScalarRelationFilter, {nullable:true})
@@ -19640,12 +19411,10 @@ export class StageWhereInput {
     venueId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => StringFilter, {nullable:true})
     name?: InstanceType<typeof StringFilter>;
-    @Field(() => DateTimeNullableFilter, {nullable:true})
-    doorsOpenAt?: InstanceType<typeof DateTimeNullableFilter>;
+    @Field(() => DateTimeFilter, {nullable:true})
+    doorsOpenAt?: InstanceType<typeof DateTimeFilter>;
     @Field(() => DateTimeFilter, {nullable:true})
     startAt?: InstanceType<typeof DateTimeFilter>;
-    @Field(() => DateTimeNullableFilter, {nullable:true})
-    endAt?: InstanceType<typeof DateTimeNullableFilter>;
     @Field(() => EventScalarRelationFilter, {nullable:true})
     event?: InstanceType<typeof EventScalarRelationFilter>;
     @Field(() => VenueNullableScalarRelationFilter, {nullable:true})
@@ -19670,12 +19439,10 @@ export class Stage {
     venueId!: string | null;
     @Field(() => String, {nullable:false})
     name!: string;
-    @Field(() => Date, {nullable:true})
-    doorsOpenAt!: Date | null;
+    @Field(() => Date, {nullable:false})
+    doorsOpenAt!: Date;
     @Field(() => Date, {nullable:false})
     startAt!: Date;
-    @Field(() => Date, {nullable:true})
-    endAt!: Date | null;
     @Field(() => Event, {nullable:false})
     event?: InstanceType<typeof Event>;
     @Field(() => Venue, {nullable:true})

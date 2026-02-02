@@ -424,13 +424,12 @@ input EnumUserRoleFilter {
 type Event {
   createdAt: DateTime!
   description: String!
-  endAt: DateTime!
   eventOrganizer: EventOrganizer!
   eventOrganizerId: String!
   favorites: [FavoriteEvent!]
   featuredEvent: FeaturedEvent
   id: ID!
-  inquiry: String
+  inquiry: String!
   isDisplayedInTop: Boolean!
   isTokuteiKogyo: Boolean!
   lineThumbnailUrl: String
@@ -439,7 +438,6 @@ type Event {
   publishStatus: EventPublishStatus!
   saleSchedules: [SaleSchedule!]
   stages: [Stage!]
-  startAt: DateTime!
   thumbnailUrls: [String!]
   updatedAt: DateTime!
 }
@@ -453,13 +451,11 @@ type EventConnection {
 
 input EventCreateInput {
   description: String!
-  endAt: DateTime!
   eventOrganizerId: String!
   inquiry: String!
   lineThumbnailUrl: String
   name: String!
   stages: [StageInput!]!
-  startAt: DateTime!
   thumbnailUrls: [String!]
 }
 
@@ -489,13 +485,12 @@ input EventOrderByRelationAggregateInput {
 input EventOrderByWithRelationInput {
   createdAt: SortOrder
   description: SortOrder
-  endAt: SortOrder
   eventOrganizer: EventOrganizerOrderByWithRelationInput
   eventOrganizerId: SortOrder
   favorites: FavoriteEventOrderByRelationAggregateInput
   featuredEvent: FeaturedEventOrderByWithRelationInput
   id: SortOrder
-  inquiry: SortOrderInput
+  inquiry: SortOrder
   isDisplayedInTop: SortOrder
   isTokuteiKogyo: SortOrder
   lineThumbnailUrl: SortOrderInput
@@ -504,7 +499,6 @@ input EventOrderByWithRelationInput {
   publishStatus: SortOrder
   saleSchedules: SaleScheduleOrderByRelationAggregateInput
   stages: StageOrderByRelationAggregateInput
-  startAt: SortOrder
   thumbnailUrls: SortOrder
   updatedAt: SortOrder
 }
@@ -750,13 +744,12 @@ input EventWhereInput {
   OR: [EventWhereInput!]
   createdAt: DateTimeFilter
   description: StringFilter
-  endAt: DateTimeFilter
   eventOrganizer: EventOrganizerScalarRelationFilter
   eventOrganizerId: StringFilter
   favorites: FavoriteEventListRelationFilter
   featuredEvent: FeaturedEventNullableScalarRelationFilter
   id: StringFilter
-  inquiry: StringNullableFilter
+  inquiry: StringFilter
   isDisplayedInTop: BoolFilter
   isTokuteiKogyo: BoolFilter
   lineThumbnailUrl: StringNullableFilter
@@ -765,7 +758,6 @@ input EventWhereInput {
   publishStatus: EnumEventPublishStatusFilter
   saleSchedules: SaleScheduleListRelationFilter
   stages: StageListRelationFilter
-  startAt: DateTimeFilter
   thumbnailUrls: StringNullableListFilter
   updatedAt: DateTimeFilter
 }
@@ -1746,8 +1738,7 @@ input SortOrderInput {
 
 type Stage {
   createdAt: DateTime!
-  doorsOpenAt: DateTime
-  endAt: DateTime
+  doorsOpenAt: DateTime!
   event: Event!
   eventId: String!
   id: ID!
@@ -1807,8 +1798,7 @@ type StageEdge {
 
 input StageInput {
   artistNames: [String!]!
-  doorsOpenAt: DateTime
-  endAt: DateTime
+  doorsOpenAt: DateTime!
   name: String!
   startAt: DateTime!
   venueName: String!
@@ -1826,8 +1816,7 @@ input StageOrderByRelationAggregateInput {
 
 input StageOrderByWithRelationInput {
   createdAt: SortOrder
-  doorsOpenAt: SortOrderInput
-  endAt: SortOrderInput
+  doorsOpenAt: SortOrder
   event: EventOrderByWithRelationInput
   eventId: SortOrder
   id: SortOrder
@@ -1888,8 +1877,7 @@ input StageWhereInput {
   NOT: [StageWhereInput!]
   OR: [StageWhereInput!]
   createdAt: DateTimeFilter
-  doorsOpenAt: DateTimeNullableFilter
-  endAt: DateTimeNullableFilter
+  doorsOpenAt: DateTimeFilter
   event: EventScalarRelationFilter
   eventId: StringFilter
   id: StringFilter

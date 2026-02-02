@@ -79,10 +79,9 @@ async function main() {
       description:
         '夏の音楽フェスティバル\n\n人気アーティストが集結する夏の一大イベント！',
       thumbnailUrls: [],
-      startAt: new Date('2024-08-15T18:00:00Z'),
-      endAt: new Date('2024-08-15T22:00:00Z'),
       publishStatus: 'PUBLISHED',
       isDisplayedInTop: true,
+      inquiry: '03-1234-5678',
     },
   });
 
@@ -92,10 +91,9 @@ async function main() {
       name: 'ジャズナイト',
       description: 'ジャズの夜\n\n本格的なジャズライブをお楽しみください。',
       thumbnailUrls: [],
-      startAt: new Date('2024-09-20T19:00:00Z'),
-      endAt: new Date('2024-09-20T22:00:00Z'),
       publishStatus: 'PUBLISHED',
       isDisplayedInTop: true,
+      inquiry: '03-1234-5678',
     },
   });
 
