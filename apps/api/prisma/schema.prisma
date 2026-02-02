@@ -26,99 +26,660 @@ generator nestgraphql {
 // @note: id, createdAt, updatedAtはモデルの上の方に必ず定義すること
 // @note: リレーションはモデルの下の方に定義すること
 
-// ユーザー（管理者・購入者）
+// ログイン認証に関連するテーブルだけここで定義する
+
 model User {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  email String @unique
-  name  String
+  name          String
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  image         String?
 
-  orders Order[] // 子供テーブルのリレーション
+  role UserRole @default(TICKET_PURCHASER)
 
-  @@map("users")
+  // 認証関連テーブル
+  sessions Session[]
+  accounts Account[]
+
+  // その他
+  userRestrictions   UserRestriction[]
+  eventOrganizers    EventOrganizer[]
+  ticketApplications TicketApplication[]
+  paymentCards       PaymentCard[]
+  tickets            Ticket[]
+  favoriteArtists    FavoriteArtist[]
+  favoriteEvents     FavoriteEvent[]
+
+  @@map("user")
 }
 
-// イベント
+enum UserRole {
+  TICKET_PURCHASER
+  EVENT_ORGANIZER
+  PLATFORM_MANAGER
+}
+
+model Session {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String   @unique
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model UserRestriction {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  userId    String
+  reason    String
+  expiresAt DateTime? // nullの場合は無期限
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model EventOrganizer {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  userId String
+  name   String
+
+  // 問い合わせ先情報
+  inquiryEmail   String
+  inquirySubject String
+
+  // 通知に使うメールアドレスとSlackのWebhook URL
+  notifyEmail           String?
+  notifySlackWebhookUrl String?
+
+  user                         User                          @relation(fields: [userId], references: [id])
+  events                       Event[]
+  bankAccounts                 BankAccount[]
+  eventOrganizerReferrers      EventOrganizerReferrer[]
+  ticketTypePriceDistributions TicketTypePriceDistribution[]
+  ticketTypeFeeDistributions   TicketTypeFeeDistribution[]
+  eventOrganizerFeatures       EventOrganizerFeature[]
+}
+
+// 主催者ごとに使える機能の設定
+model EventOrganizerFeature {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  eventOrganizerId String
+  key              String
+  enabled          Boolean @default(false)
+
+  eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+}
+
+model BankAccount {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  eventOrganizerId String
+  bankCode         String
+  bankName         String
+  branchCode       String
+  branchName       String
+  accountType      BankAccountType
+  accountNumber    String
+  accountHolder    String
+
+  isDefault Boolean @default(false)
+
+  eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+}
+
+enum BankAccountType {
+  SAVINGS // 普通
+  CHECKING // 当座
+}
+
+model EventOrganizerReferrer {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  eventOrganizerId String
+  name             String
+  referrerSource   String
+
+  eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+}
+
 model Event {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
-  title       String
-  description String?
-  venue       String
-  date        DateTime
+  eventOrganizerId String
+  name             String
+  // イベントページの詳細文・概要文（Markdown記法）
+  description      String @db.Text
 
-  tickets Ticket[]
+  thumbnailUrls    String[]
+  lineThumbnailUrl String? // LINEサムネイル画像URL（JPEG形式の画像URL）
 
-  @@map("events")
+  publishAt DateTime? // 予約公開したい場合は未来の日時を設定
+  startAt   DateTime
+  endAt     DateTime
+
+  publishStatus    EventPublishStatus @default(UNPUBLISHED)
+  isDisplayedInTop Boolean            @default(true) // トップページ非公開にしたい場合はfalse
+
+  // 特定興行の場合は、チケットの不正転売を防止するために、入場券に特定興行入場券という印を押す必要がある
+  isTokuteiKogyo Boolean @default(false) // 特定興行の場合はtrue
+
+  eventOrganizer EventOrganizer  @relation(fields: [eventOrganizerId], references: [id])
+  favorites      FavoriteEvent[]
+  featuredEvent  FeaturedEvent?
+  stageGroups    StageGroup[]
+  saleSchedules  SaleSchedule[]
 }
 
-// チケット種別
+enum EventPublishStatus {
+  PUBLISHED
+  UNPUBLISHED
+}
+
+// 1チケットで複数のstageに入場できるという場合に対応できるようにStageGroupテーブルを作成する
+// 1チケットで1stageしか入場できないチケットの場合は、StageGroupにstageが1件だけ紐づくことになる
+model StageGroup {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  eventId String
+  name    String
+
+  event       Event        @relation(fields: [eventId], references: [id])
+  stages      Stage[]
+  ticketTypes TicketType[]
+}
+
+model Stage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  stageGroupId String
+  venueId      String?
+
+  name String
+
+  doorsOpenAt DateTime? // 会場時間
+  startAt     DateTime // 公演開始時間
+  endAt       DateTime? // 公演終了時間
+
+  stageGroup   StageGroup    @relation(fields: [stageGroupId], references: [id])
+  venue        Venue?        @relation(fields: [venueId], references: [id])
+  stageArtists StageArtist[]
+}
+
+model Venue {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  name   String // 会場名
+  stages Stage[]
+}
+
+model Artist {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  name            String
+  description     String? @db.Text
+  profileImageUrl String?
+  twitterAccount  String?
+
+  stageArtists StageArtist[]
+  favorites    FavoriteArtist[]
+}
+
+// ステージとアーティストの紐付け
+model StageArtist {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  stageId  String
+  artistId String
+
+  // 同じステージ内でのアーティストの表示順
+  sortOrder Int @default(0)
+
+  stage  Stage  @relation(fields: [stageId], references: [id])
+  artist Artist @relation(fields: [artistId], references: [id])
+
+  @@id([stageId, artistId])
+}
+
+model SaleSchedule {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  eventId String
+
+  name           String
+  description    String
+  // 同じステージ内での表示順
+  sortOrder      Int                  @default(0)
+  transferPolicy TicketTransferPolicy @default(FREE)
+
+  publishStatus SaleSchedulePublishStatus @default(UNPUBLISHED)
+  publishAt     DateTime // 公開開始日時(公開されていても販売自体は開始してないことがある)
+  saleStartAt   DateTime // 販売開始日時
+  saleEndAt     DateTime // 販売終了日時
+
+  paperTicketExchangeStartAt DateTime? // 紙のチケットを交換する開始日時
+  paperTicketExchangeEndAt   DateTime? // 紙のチケットを交換する終了日時
+
+  saleType SaleType
+
+  // 以下はsaleTypeがLOTTERYの場合にのみ値が入る
+  lotteryMode             LotteryMode? // 抽選方式
+  lotteryStartAt          DateTime? // 抽選開始日時
+  lotteryResultAnnounceAt DateTime? // 抽選結果発表日時
+
+  reservedSeatTicketIssueAt DateTime? // 指定席チケットの発行予定日時
+
+  maxApplicationCount Int? // 申込回数制限
+  maxPerApplication   Int  @default(4) // 1申込あたりの最大枚数
+
+  konbiniPaymentTermDay Int? // コンビニ支払いの期限日数
+
+  isDuplicatePurchaseAllowed Boolean @default(false) // 同一SaleSchedule内での重複購入可否
+  isSmsAuthRequired          Boolean @default(false) // sms認証必須
+  isResale                   Boolean @default(false) // リセール受付かどうか
+  isTransferRequired         Boolean @default(false) // 分配必須かどうか
+  isFanClubOnly              Boolean @default(false) // ファンクラブ会員のみ
+
+  deletedAt DateTime?
+
+  event                   Event                    @relation(fields: [eventId], references: [id])
+  ticketTypes             TicketType[]
+  availablePaymentMethods AvailablePaymentMethod[]
+}
+
+enum SaleType {
+  FIRST_COME // 先着
+  LOTTERY // 抽選
+}
+
+enum LotteryMode {
+  MANUAL // 手動
+  AUTO // 自動
+}
+
+enum SaleSchedulePublishStatus {
+  PUBLISHED
+  UNPUBLISHED
+}
+
+enum TicketTransferPolicy {
+  FREE // 自由に分配可能
+  COMPANIONS_ONLY // 同行者のみ
+  REGISTERED_COMPANIONS_ONLY // 事前登録済みの同行者のみ
+  NOT_ALLOWED // 分配不可
+}
+
+model AvailablePaymentMethod {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  saleScheduleId String
+  paymentMethod  PaymentMethodType
+
+  saleSchedule SaleSchedule @relation(fields: [saleScheduleId], references: [id])
+}
+
+model TicketType {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  saleScheduleId String
+  stageGroupId   String
+  seatType       SeatType @default(FREE)
+  name           String // S席、A席、立見等
+  description    String
+  basePrice      Int // ベースになるチケット価格(ここに手数料や割引が入る)
+  capacity       Int // 販売可能枚数
+  maxNumPerApply Int      @default(1) // 1申込あたりの最大枚数
+
+  sortOrder Int @default(0) // 同じSaleSchedule内での表示順
+
+  // 制限
+  isOnceApplyOnly   Boolean @default(false) // 一度のみ申込可能かどうか
+  isOnlyQrCodeEntry Boolean @default(false) // QRコードのみで入場可能かどうか
+
+  saleSchedule                 SaleSchedule                  @relation(fields: [saleScheduleId], references: [id])
+  stageGroup                   StageGroup                    @relation(fields: [stageGroupId], references: [id])
+  tickets                      Ticket[]
+  ticketTypeFees               TicketTypeFee[]
+  ticketTypePriceDistributions TicketTypePriceDistribution[]
+  ticketTypeFeeDistributions   TicketTypeFeeDistribution[]
+  ticketApplicationItems       TicketApplicationItem[]
+}
+
+enum SeatType {
+  RESERVED // 座席指定
+  ENTRY_NUMBER // 整理番号
+  FREE // 自由（この場合は、販売枚数だけ管理する方式になる）
+}
+
+model TicketTypePriceDistribution {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  eventOrganizerId String
+  ticketTypeId     String
+  amount           Int
+
+  eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+  ticketType     TicketType     @relation(fields: [ticketTypeId], references: [id])
+
+  @@id([eventOrganizerId, ticketTypeId])
+}
+
+model TicketTypeFee {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  name         String // 「システム手数料」「先行サービス手数料」など
+  amount       Int
+  ticketTypeId String
+
+  ticketType                 TicketType                  @relation(fields: [ticketTypeId], references: [id])
+  ticketTypeFeeDistributions TicketTypeFeeDistribution[]
+}
+
+model TicketTypeFeeDistribution {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  eventOrganizerId String
+  ticketTypeFeeId  String
+  amount           Int
+
+  eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+  ticketTypeFee  TicketTypeFee  @relation(fields: [ticketTypeFeeId], references: [id])
+  ticketType     TicketType?    @relation(fields: [ticketTypeId], references: [id])
+  ticketTypeId   String?
+
+  @@id([eventOrganizerId, ticketTypeFeeId])
+}
+
+// 申し込み
+// 抽選などの場合は、この段階では購入が確定しない
+model TicketApplication {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  userId String
+  status TicketApplicationStatus @default(PENDING)
+
+  cancelReason String? // キャンセル扱いになった理由（当選したが、結局支払いができなかったという場合はLOSTになる）
+  cancelledAt  DateTime?
+
+  user                   User                    @relation(fields: [userId], references: [id])
+  ticketApplicationItems TicketApplicationItem[]
+  payments               Payment[]
+}
+
+enum TicketApplicationStatus {
+  PENDING // 申し込み中
+  WIN // 当選
+  LOST // 落選
+  CANCELLED // キャンセル
+}
+
+model TicketApplicationItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  ticketApplicationId String
+  ticketTypeId        String
+
+  quantity Int // 申し込み枚数
+  priority Int // 複数のチケットに同時に申し込む際に希望順位をつける
+
+  ticketApplication TicketApplication @relation(fields: [ticketApplicationId], references: [id])
+  ticketType        TicketType        @relation(fields: [ticketTypeId], references: [id])
+  tickets           Ticket[] // 1TicketApplicationItemで複数枚申し込めるので、複数のticketが紐づけられる
+  paymentItems      PaymentItem[]
+
+  @@unique([ticketApplicationId, ticketTypeId])
+  @@unique([ticketApplicationId, priority])
+}
+
+// 複数のチケット申し込みの決済が一気にできる
+model Payment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  ticketApplicationId String
+
+  paymentMethod PaymentMethodType
+  cardId        String? // カード支払いの場合だけ値が入る
+
+  totalPaymentAmount Int // 実際の支払い金額(割引などが入る場合、割引分が引かれた値が入る)
+
+  // ステータス・支払い確定までの過程を管理する
+  status        PaymentStatus @default(PENDING)
+  authorizedAt  DateTime?
+  capturedAt    DateTime?
+  failedAt      DateTime?
+  failureReason String?
+
+  externalId String? // 外部決済ID
+
+  ticketApplication TicketApplication @relation(fields: [ticketApplicationId], references: [id])
+  paymentCard       PaymentCard?      @relation(fields: [cardId], references: [id])
+  paymentItems      PaymentItem[]
+}
+
+enum PaymentMethodType {
+  CARD
+  KONBINI
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+model PaymentItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  paymentId               String
+  ticketApplicationItemId String
+
+  payment               Payment               @relation(fields: [paymentId], references: [id])
+  ticketApplicationItem TicketApplicationItem @relation(fields: [ticketApplicationItemId], references: [id])
+
+  // 決済を複数回試みる可能性があるので、ticketApplicationId単体ではunique制約を貼らない
+  @@unique([paymentId, ticketApplicationItemId])
+}
+
+// カード情報を保存する
+model PaymentCard {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  userId      String
+  provider    PaymentProvider // GMO, RAKUTEN
+  cardToken   String // トークン化されたカード情報
+  cardLast4   String // 下4桁
+  cardBrand   String // VISA, MASTERCARD等
+  expiryMonth Int
+  expiryYear  Int
+  isDefault   Boolean         @default(false)
+
+  user     User      @relation(fields: [userId], references: [id])
+  payments Payment[]
+}
+
+enum PaymentProvider {
+  GMO
+  RAKUTEN
+}
+
+// TicketTypeが作成された段階ではTicketは作成されない
+// 当選したタイミングなどで作成される
 model Ticket {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
-  eventId String @map("event_id")
-  name    String
-  price   Int
-  stock   Int
+  ticketApplicationItemId String
+  userId                  String // チケットを持つユーザー
+  ticketTypeId            String
 
-  orderItems OrderItem[]
-  event      Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name String
 
-  @@map("tickets")
+  method AdmissionMethod
+
+  ticketApplicationItem TicketApplicationItem @relation(fields: [ticketApplicationItemId], references: [id])
+  user                  User                  @relation(fields: [userId], references: [id])
+  ticketType            TicketType            @relation(fields: [ticketTypeId], references: [id])
 }
 
-// 注文
-model Order {
+enum AdmissionMethod {
+  CUSTOMER_DEVICE_BUTTON // 顧客端末のボタンで入場
+  QR_CODE // QRコードで入場
+  ADMIN_DEVICE // 管理者端末で入場処理
+}
+
+// チケットを使って入場した時間を管理する
+model TicketStageEntry {
+  createdAt DateTime @default(now()) // 入場した時間
+  updatedAt DateTime @default(now()) @updatedAt
+
+  ticketId String
+  stageId  String
+
+  @@id([ticketId, stageId])
+}
+
+// お気に入りアーティスト
+model FavoriteArtist {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  userId   String
+  artistId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  artist Artist @relation(fields: [artistId], references: [id])
+
+  @@id([userId, artistId])
+}
+
+// お気に入りイベント
+model FavoriteEvent {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  userId  String
+  eventId String
+
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@id([userId, eventId])
+}
+
+// トップページ上部に特別に表示するイベント
+model FeaturedEvent {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
-  userId     String      @map("user_id")
-  totalPrice Int         @map("total_price")
-  status     OrderStatus @default(PENDING)
+  eventId   String @unique
+  sortOrder Int    @default(0)
 
-  user  User        @relation(fields: [userId], references: [id])
-  items OrderItem[]
+  publishAt DateTime?
+  endAt     DateTime?
 
-  @@map("orders")
+  event Event @relation(fields: [eventId], references: [id])
 }
 
-enum OrderStatus {
-  PENDING
-  COMPLETED
-  CANCELLED
-}
+// 申込時に「お目当てのアーティストを教えてください」という質問を行う
+// その回答を管理する
+// model FavoriteArtistSurvey {
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @default(now()) @updatedAt
 
-// 注文明細
-model OrderItem {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+//   orderId  String
+//   artistId String
 
-  orderId   String @map("order_id")
-  ticketId  String @map("ticket_id")
-  quantity  Int
-  unitPrice Int    @map("unit_price")
-
-  ticket Ticket @relation(fields: [ticketId], references: [id])
-  order  Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@map("order_items")
-}
-
-model Staff {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  email String @unique
-  name  String
-
-  @@map("staffs")
-}
+//   artist Artist @relation(fields: [artistId], references: [id])
+// }
