@@ -6,14 +6,17 @@ export class EventUpdateInput {
   id!: string;
 
   @Field(() => String, { nullable: true })
-  title?: string;
+  name?: string;
 
   @Field(() => String, { nullable: true })
   description?: string;
 
-  @Field(() => String, { nullable: true })
-  venue?: string;
+  @Field(() => [String], { nullable: true })
+  thumbnailUrls?: string[];
 
-  @Field(() => Date, { nullable: true })
-  date?: Date;
+  @Field(() => String, { nullable: true })
+  lineThumbnailUrl?: string;
+
+  @Field(() => String, { nullable: true })
+  inquiry?: string;
 }

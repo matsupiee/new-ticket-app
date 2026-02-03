@@ -170,6 +170,9 @@ async function main() {
         ],
       },
     },
+    include: {
+      stages: true,
+    },
   });
 
   const event2 = await prisma.event.create({
@@ -200,9 +203,125 @@ async function main() {
         ],
       },
     },
+    include: {
+      stages: true,
+    },
   });
 
   console.log('Created events:', { event1, event2 });
+
+  // SaleScheduleの作成
+  const saleSchedule1 = await prisma.saleSchedule.create({
+    data: {
+      eventId: event1.id,
+      name: '先行抽選',
+      description: '先行抽選販売',
+      saleType: 'LOTTERY',
+      publishStatus: 'PUBLISHED',
+      publishAt: new Date('2024-07-01T00:00:00'),
+      saleStartAt: new Date('2024-07-01T00:00:00'),
+      saleEndAt: new Date('2024-07-14T23:59:59'),
+      lotteryMode: 'MANUAL',
+      lotteryStartAt: new Date('2024-07-15T15:00:00'),
+      lotteryResultAnnounceAt: new Date('2024-07-15T18:00:00'),
+      sortOrder: 0,
+      transferPolicy: 'FREE',
+      maxPerApplication: 4,
+      ticketTypes: {
+        create: [
+          {
+            name: 'A 前方チケット',
+            description: '前方エリアのチケット',
+            basePrice: 5000,
+            capacity: 1000,
+            maxNumPerApply: 4,
+            sortOrder: 0,
+            seatType: 'FREE',
+            stageTicketTypes: {
+              create: [
+                {
+                  stageId: event1.stages[0]!.id,
+                },
+              ],
+            },
+          },
+          {
+            name: 'C 一般チケット',
+            description: '一般エリアのチケット',
+            basePrice: 1000,
+            capacity: 1000,
+            maxNumPerApply: 6,
+            sortOrder: 1,
+            seatType: 'FREE',
+            stageTicketTypes: {
+              create: [
+                {
+                  stageId: event1.stages[0]!.id,
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  const saleSchedule2 = await prisma.saleSchedule.create({
+    data: {
+      eventId: event2.id,
+      name: '先行抽選',
+      description: '先行抽選販売',
+      saleType: 'LOTTERY',
+      publishStatus: 'PUBLISHED',
+      publishAt: new Date('2025-12-01T00:00:00'),
+      saleStartAt: new Date('2025-12-01T00:00:00'),
+      saleEndAt: new Date('2026-01-18T23:59:59'),
+      lotteryMode: 'MANUAL',
+      lotteryStartAt: new Date('2026-01-19T15:00:00'),
+      lotteryResultAnnounceAt: new Date('2026-01-19T18:00:00'),
+      sortOrder: 0,
+      transferPolicy: 'FREE',
+      maxPerApplication: 4,
+      ticketTypes: {
+        create: [
+          {
+            name: 'A 前方チケット',
+            description: '前方エリアのチケット',
+            basePrice: 5000,
+            capacity: 1000,
+            maxNumPerApply: 4,
+            sortOrder: 0,
+            seatType: 'FREE',
+            stageTicketTypes: {
+              create: [
+                {
+                  stageId: event2.stages[0]!.id,
+                },
+              ],
+            },
+          },
+          {
+            name: 'C 一般チケット',
+            description: '一般エリアのチケット',
+            basePrice: 1000,
+            capacity: 1000,
+            maxNumPerApply: 6,
+            sortOrder: 1,
+            seatType: 'FREE',
+            stageTicketTypes: {
+              create: [
+                {
+                  stageId: event2.stages[0]!.id,
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  console.log('Created sale schedules:', { saleSchedule1, saleSchedule2 });
 
   console.log('Seeding completed!');
 }

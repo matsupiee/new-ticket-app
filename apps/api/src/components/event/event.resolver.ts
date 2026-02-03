@@ -22,6 +22,10 @@ import { EventsArgs } from './dto/events.args';
 import { EventDeletePayload } from './dto/event-delete.payload';
 import { EventCreateInput } from './dto/event-create.input';
 import { EventCreatePayload } from './dto/event-create.payload';
+import { EventUpdateInput } from './dto/event-update.input';
+import { EventUpdatePayload } from './dto/event-update.payload';
+import { StagesUpdateInput } from './dto/stages-update.input';
+import { StagesUpdatePayload } from './dto/stages-update.payload';
 import { EventService } from './event.service';
 import { EasyGuard } from '../guard/easy-guard';
 import { UseGuards } from '@nestjs/common';
@@ -61,6 +65,28 @@ export class EventResolver {
     @Args('input') input: EventCreateInput,
   ): Promise<EventCreatePayload> {
     const event = await this.eventService.create(input);
+    return { event };
+  }
+
+  @Mutation(() => EventUpdatePayload, {
+    description: 'イベントを更新する',
+  })
+  @UseGuards(EasyGuard)
+  async eventUpdate(
+    @Args('input') input: EventUpdateInput,
+  ): Promise<EventUpdatePayload> {
+    const event = await this.eventService.update(input);
+    return { event };
+  }
+
+  @Mutation(() => StagesUpdatePayload, {
+    description: 'イベントのステージ情報を更新する',
+  })
+  @UseGuards(EasyGuard)
+  async stagesUpdate(
+    @Args('input') input: StagesUpdateInput,
+  ): Promise<StagesUpdatePayload> {
+    const event = await this.eventService.updateStages(input);
     return { event };
   }
 

@@ -738,6 +738,19 @@ input EventScalarRelationFilter {
   isNot: EventWhereInput
 }
 
+input EventUpdateInput {
+  description: String
+  id: ID!
+  inquiry: String
+  lineThumbnailUrl: String
+  name: String
+  thumbnailUrls: [String!]
+}
+
+type EventUpdatePayload {
+  event: Event!
+}
+
 input EventWhereInput {
   AND: [EventWhereInput!]
   NOT: [EventWhereInput!]
@@ -917,6 +930,12 @@ type Mutation {
 
   """イベントを削除する"""
   eventDelete(id: ID!): EventDeletePayload!
+
+  """イベントを更新する"""
+  eventUpdate(input: EventUpdateInput!): EventUpdatePayload!
+
+  """イベントのステージ情報を更新する"""
+  stagesUpdate(input: StagesUpdateInput!): StagesUpdatePayload!
 }
 
 input NestedBoolFilter {
@@ -1872,6 +1891,14 @@ input StageTicketTypeWhereInput {
   updatedAt: DateTimeFilter
 }
 
+input StageUpdateInput {
+  artistNames: [String!]
+  doorsOpenAt: DateTime
+  name: String
+  startAt: DateTime
+  venueName: String
+}
+
 input StageWhereInput {
   AND: [StageWhereInput!]
   NOT: [StageWhereInput!]
@@ -1888,6 +1915,15 @@ input StageWhereInput {
   updatedAt: DateTimeFilter
   venue: VenueNullableScalarRelationFilter
   venueId: StringNullableFilter
+}
+
+input StagesUpdateInput {
+  eventId: ID!
+  stages: [StageUpdateInput!]!
+}
+
+type StagesUpdatePayload {
+  event: Event!
 }
 
 input StringFilter {

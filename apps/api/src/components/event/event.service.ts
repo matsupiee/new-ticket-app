@@ -5,6 +5,8 @@ import { type GraphQLResolveInfo } from 'graphql';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { EventsArgs } from './dto/events.args';
 import { EventCreateInput } from './dto/event-create.input';
+import { EventUpdateInput } from './dto/event-update.input';
+import { StagesUpdateInput } from './dto/stages-update.input';
 import { EventConnection } from './dto/event.connection';
 
 @Injectable()
@@ -82,6 +84,114 @@ export class EventService {
                 name: stage.name,
                 doorsOpenAt: stage.doorsOpenAt,
                 startAt: stage.startAt,
+                venueId: venue?.id,
+                stageArtists: {
+                  create: artists.map((artist, index) => ({
+                    artistId: artist.id,
+                    sortOrder: index,
+                  })),
+                },
+              };
+            }),
+          ),
+        },
+      },
+    });
+
+    return event;
+  }
+
+  async update(input: EventUpdateInput): Promise<Event> {
+    const updateData: any = {};
+
+    if (input.name !== undefined) {
+      updateData.name = input.name;
+    }
+    if (input.description !== undefined) {
+      updateData.description = input.description;
+    }
+    if (input.thumbnailUrls !== undefined) {
+      updateData.thumbnailUrls = input.thumbnailUrls;
+    }
+    if (input.lineThumbnailUrl !== undefined) {
+      updateData.lineThumbnailUrl = input.lineThumbnailUrl;
+    }
+    if (input.inquiry !== undefined) {
+      updateData.inquiry = input.inquiry;
+    }
+
+    return this.prisma.event.update({
+      where: { id: input.id },
+      data: updateData,
+    });
+  }
+
+  async updateStages(input: StagesUpdateInput): Promise<Event> {
+    // 既存のステージに関連するStageArtistとStageTicketTypeを削除
+    const existingStages = await this.prisma.stage.findMany({
+      where: { eventId: input.eventId },
+      select: { id: true },
+    });
+
+    const stageIds = existingStages.map((stage) => stage.id);
+
+    if (stageIds.length > 0) {
+      // StageArtistを削除
+      await this.prisma.stageArtist.deleteMany({
+        where: { stageId: { in: stageIds } },
+      });
+
+      // StageTicketTypeを削除
+      await this.prisma.stageTicketType.deleteMany({
+        where: { stageId: { in: stageIds } },
+      });
+    }
+
+    // 既存のステージをすべて削除してから新しく作成
+    await this.prisma.stage.deleteMany({
+      where: { eventId: input.eventId },
+    });
+
+    const event = await this.prisma.event.update({
+      where: { id: input.eventId },
+      data: {
+        stages: {
+          create: await Promise.all(
+            input.stages.map(async (stage) => {
+              // 会場を取得または作成
+              let venue: { id: string } | null = null;
+              if (stage.venueName) {
+                venue = await this.prisma.venue.findFirst({
+                  where: { name: stage.venueName },
+                });
+                if (!venue) {
+                  venue = await this.prisma.venue.create({
+                    data: { name: stage.venueName },
+                  });
+                }
+              }
+
+              // アーティストを取得または作成
+              const artists = await Promise.all(
+                (stage.artistNames || [])
+                  .filter((name) => name.trim() !== '')
+                  .map(async (artistName) => {
+                    let artist = await this.prisma.artist.findFirst({
+                      where: { name: artistName },
+                    });
+                    if (!artist) {
+                      artist = await this.prisma.artist.create({
+                        data: { name: artistName },
+                      });
+                    }
+                    return artist;
+                  }),
+              );
+
+              return {
+                name: stage.name || '',
+                doorsOpenAt: stage.doorsOpenAt!,
+                startAt: stage.startAt!,
                 venueId: venue?.id,
                 stageArtists: {
                   create: artists.map((artist, index) => ({

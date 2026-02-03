@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuery } from 'urql';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
@@ -16,15 +17,20 @@ import {
   TabsTrigger,
   TabsContent,
 } from '@/shared/components/ui/tabs';
+import { EditEventDialog } from './_components/edit-event-dialog';
+import { EditStagesDialog } from './_components/edit-stages-dialog';
 
 const EventDetailQuery = graphql(`
   query EventDetail($id: ID!) {
     event(id: $id) {
       id
       name
+      description
+      inquiry
       thumbnailUrls
       stages {
         id
+        name
         doorsOpenAt
         startAt
         venue {
@@ -61,8 +67,10 @@ const EventDetailQuery = graphql(`
 export default function EventDetailPage() {
   const params = useParams();
   const eventId = params.id as string;
+  const [editEventDialogOpen, setEditEventDialogOpen] = useState(false);
+  const [editStagesDialogOpen, setEditStagesDialogOpen] = useState(false);
 
-  const [{ data, fetching, error }] = useQuery({
+  const [{ data, fetching, error }, refetch] = useQuery({
     query: EventDetailQuery,
     variables: { id: eventId },
   });
@@ -124,10 +132,24 @@ export default function EventDetailPage() {
                 <h2 className="text-lg font-semibold text-gray-900">
                   イベント情報
                 </h2>
-                <Button variant="outline" size="sm">
-                  <Pencil className="size-4 mr-2" />
-                  編集する
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditEventDialogOpen(true)}
+                  >
+                    <Pencil className="size-4 mr-2" />
+                    イベント情報を編集
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditStagesDialogOpen(true)}
+                  >
+                    <Pencil className="size-4 mr-2" />
+                    公演情報を編集
+                  </Button>
+                </div>
               </div>
 
               <div className="flex gap-8">
@@ -406,6 +428,44 @@ export default function EventDetailPage() {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* 編集ダイアログ */}
+        {data?.event && (
+          <>
+            <EditEventDialog
+              open={editEventDialogOpen}
+              onOpenChange={setEditEventDialogOpen}
+              event={{
+                id: data.event.id,
+                name: data.event.name,
+                description: data.event.description || '',
+                inquiry: data.event.inquiry || '',
+              }}
+              onSuccess={() => {
+                refetch();
+              }}
+            />
+            <EditStagesDialog
+              open={editStagesDialogOpen}
+              onOpenChange={setEditStagesDialogOpen}
+              event={{
+                id: data.event.id,
+                name: data.event.name,
+                stages: data.event.stages?.map((stage) => ({
+                  id: stage.id,
+                  name: stage.name || '',
+                  doorsOpenAt: stage.doorsOpenAt,
+                  startAt: stage.startAt,
+                  venue: stage.venue,
+                  stageArtists: stage.stageArtists,
+                })),
+              }}
+              onSuccess={() => {
+                refetch();
+              }}
+            />
+          </>
+        )}
       </div>
     </div>
   );
