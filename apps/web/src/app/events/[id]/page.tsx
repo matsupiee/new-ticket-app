@@ -130,108 +130,112 @@ export default function EventDetailPage() {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
-                {/* 画像 */}
-                <div>
+              <div className="flex gap-8">
+                {/* 左側：画像 */}
+                <div className="flex-shrink-0">
                   {mainImage ? (
                     <Image
                       src={mainImage}
                       alt={event.name}
-                      width={400}
-                      height={256}
-                      className="w-full h-64 object-cover rounded-lg"
+                      width={250}
+                      height={250}
+                      className="max-w-[250px] h-[250px] object-cover rounded-lg"
                     />
                   ) : (
-                    <div className="w-full h-64 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                    <div className="w-[250px] h-[250px] bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
                       No Image
                     </div>
                   )}
                 </div>
 
-                {/* URL情報 */}
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-1 block">
-                      URL
-                    </label>
-                    <code className="text-sm bg-gray-50 px-2 py-1 rounded block">
-                      {eventUrl}
-                    </code>
+                {/* 右側：URL情報と公演リスト */}
+                <div className="flex-1 space-y-6 min-w-0">
+                  {/* URL情報 */}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">
+                        URL
+                      </label>
+                      <code className="text-sm bg-gray-50 px-2 py-1 rounded block">
+                        {eventUrl}
+                      </code>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">
+                        プレビュー
+                      </label>
+                      <code className="text-sm bg-gray-50 px-2 py-1 rounded block">
+                        {previewUrl}
+                      </code>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-1 block">
-                      プレビュー
-                    </label>
-                    <code className="text-sm bg-gray-50 px-2 py-1 rounded block">
-                      {previewUrl}
-                    </code>
+                  {/* 公演リスト */}
+                  <div className="space-y-4">
+                    {event.stages?.map((stage, index) => {
+                      const stageDate = new Date(stage.startAt);
+                      const doorsOpenDate = new Date(stage.doorsOpenAt);
+                      const dayLabel = index + 1 + '日目';
+
+                      return (
+                        <div
+                          key={stage.id}
+                          className="border rounded-lg p-4 bg-gray-50 space-y-3"
+                        >
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-semibold text-gray-900">
+                              {dayLabel}
+                            </h3>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="flex items-start gap-2">
+                              <Calendar className="size-4 text-gray-500 mt-0.5" />
+                              <div>
+                                <p className="text-sm text-gray-900">
+                                  {format(stageDate, 'yyyy/MM/dd (E)', {
+                                    locale: ja,
+                                  })}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  開場時刻 {format(doorsOpenDate, 'HH:mm')} /
+                                  開演時刻 {format(stageDate, 'HH:mm')}
+                                </p>
+                              </div>
+                            </div>
+
+                            {stage.venue && (
+                              <div className="flex items-start gap-2">
+                                <MapPin className="size-4 text-gray-500 mt-0.5" />
+                                <p className="text-sm text-gray-900">
+                                  {stage.venue.name}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+
+                          {stage.stageArtists &&
+                            stage.stageArtists.length > 0 && (
+                              <div className="flex items-start gap-2">
+                                <Mic className="size-4 text-gray-500 mt-0.5" />
+                                <div className="flex flex-wrap gap-2">
+                                  {stage.stageArtists.map((stageArtist) => (
+                                    <span
+                                      key={stageArtist.artist.id}
+                                      className="text-sm text-gray-900"
+                                    >
+                                      {stageArtist.artist.name}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              </div>
-
-              {/* 公演リスト */}
-              <div className="mt-6 space-y-4">
-                {event.stages?.map((stage, index) => {
-                  const stageDate = new Date(stage.startAt);
-                  const doorsOpenDate = new Date(stage.doorsOpenAt);
-                  const dayLabel = index + 1 + '日目';
-
-                  return (
-                    <div
-                      key={stage.id}
-                      className="border rounded-lg p-4 bg-gray-50 space-y-3"
-                    >
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-semibold text-gray-900">
-                          {dayLabel}
-                        </h3>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="flex items-start gap-2">
-                          <Calendar className="size-4 text-gray-500 mt-0.5" />
-                          <div>
-                            <p className="text-sm text-gray-900">
-                              {format(stageDate, 'yyyy/MM/dd (E)', {
-                                locale: ja,
-                              })}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              開場時刻 {format(doorsOpenDate, 'HH:mm')} /
-                              開演時刻 {format(stageDate, 'HH:mm')}
-                            </p>
-                          </div>
-                        </div>
-
-                        {stage.venue && (
-                          <div className="flex items-start gap-2">
-                            <MapPin className="size-4 text-gray-500 mt-0.5" />
-                            <p className="text-sm text-gray-900">
-                              {stage.venue.name}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-
-                      {stage.stageArtists && stage.stageArtists.length > 0 && (
-                        <div className="flex items-start gap-2">
-                          <Mic className="size-4 text-gray-500 mt-0.5" />
-                          <div className="flex flex-wrap gap-2">
-                            {stage.stageArtists.map((stageArtist) => (
-                              <span
-                                key={stageArtist.artist.id}
-                                className="text-sm text-gray-900"
-                              >
-                                {stageArtist.artist.name}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </TabsContent>
