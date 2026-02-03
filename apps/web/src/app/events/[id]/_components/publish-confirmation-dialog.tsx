@@ -10,17 +10,24 @@ import {
 } from '@/shared/components/ui/dialog';
 import { Button } from '@/shared/components/ui/button';
 import { ScrollArea } from '@/shared/components/ui/scroll-area';
-import { format } from 'date-fns';
-import { ja } from 'date-fns/locale';
 import { SaleSchedules } from './sale-schedules';
+import { Stages } from './stages';
 
 type Stage = {
   id: string;
-  date: Date;
-  startTime: Date;
-  endTime: Date;
-  venueName: string;
-  artists: string[];
+  name: string | null;
+  doorsOpenAt: string;
+  startAt: string;
+  venue: {
+    id: string;
+    name: string;
+  } | null;
+  stageArtists: Array<{
+    artist: {
+      id: string;
+      name: string;
+    };
+  }> | null;
 };
 
 type SaleSchedule = {
@@ -68,14 +75,6 @@ export function PublishConfirmationDialog({
     saleSchedules?: SaleSchedule[];
   };
 }) {
-  const formatDate = (date: Date) => {
-    return format(date, 'yyyy/MM/dd', { locale: ja });
-  };
-
-  const formatTime = (date: Date) => {
-    return format(date, 'HH:mm', { locale: ja });
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[80vw] lg:w-[900px] max-w-none sm:max-w-none max-h-[90vh]">
@@ -137,50 +136,7 @@ export function PublishConfirmationDialog({
                 <h3 className="text-sm font-semibold mb-3 pb-2 border-b">
                   公演情報
                 </h3>
-                <div className="space-y-3">
-                  {event.stages.map((stage, index) => (
-                    <div
-                      key={stage.id}
-                      className="rounded-lg border bg-muted/50 p-4"
-                    >
-                      <h4 className="text-sm font-medium mb-2">
-                        {index + 1}日目
-                      </h4>
-                      <div className="space-y-2 text-sm">
-                        <div className="grid grid-cols-[80px_1fr] gap-2">
-                          <span className="text-muted-foreground">日程</span>
-                          <span className="text-foreground">
-                            {formatDate(stage.date)}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-[80px_1fr] gap-2">
-                          <span className="text-muted-foreground">日時</span>
-                          <span className="text-foreground">
-                            {formatDate(stage.date)} 開場{' '}
-                            {formatTime(stage.startTime)} 終演{' '}
-                            {formatTime(stage.endTime)}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-[80px_1fr] gap-2">
-                          <span className="text-muted-foreground">会場名</span>
-                          <span className="text-foreground">
-                            {stage.venueName}
-                          </span>
-                        </div>
-                        {stage.artists && stage.artists.length > 0 && (
-                          <div className="grid grid-cols-[80px_1fr] gap-2">
-                            <span className="text-muted-foreground">
-                              出演者
-                            </span>
-                            <span className="text-foreground">
-                              {stage.artists.join(' / ')}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <Stages stages={event.stages} />
               </section>
             )}
 

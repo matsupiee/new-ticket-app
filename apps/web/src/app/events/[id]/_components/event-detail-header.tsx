@@ -19,23 +19,6 @@ const EventUpdatePublishStatusMutation = graphql(`
   }
 `);
 
-type Stage = {
-  id: string;
-  name: string | null;
-  doorsOpenAt: string;
-  startAt: string;
-  venue: {
-    id: string;
-    name: string;
-  } | null;
-  stageArtists: Array<{
-    artist: {
-      id: string;
-      name: string;
-    };
-  }> | null;
-};
-
 type SaleSchedule = {
   id: string;
   name: string;
@@ -71,7 +54,22 @@ export function EventDetailHeader({
     description?: string | null;
     inquiry?: string | null;
     publishStatus: string | null;
-    stages?: Stage[] | null;
+    stages?: Array<{
+      id: string;
+      name: string | null;
+      doorsOpenAt: string;
+      startAt: string;
+      venue: {
+        id: string;
+        name: string;
+      } | null;
+      stageArtists: Array<{
+        artist: {
+          id: string;
+          name: string;
+        };
+      }> | null;
+    }> | null;
     saleSchedules?: SaleSchedule[] | null;
   };
 }) {
@@ -158,14 +156,7 @@ export function EventDetailHeader({
           description: event.description || undefined,
           url: `https://dev.t-dv.com/${event.id}`,
           contactInfo: event.inquiry || undefined,
-          stages: event.stages?.map((stage) => ({
-            id: stage.id,
-            date: new Date(stage.startAt),
-            startTime: new Date(stage.doorsOpenAt),
-            endTime: new Date(stage.startAt),
-            venueName: stage.venue?.name || '未設定',
-            artists: stage.stageArtists?.map((sa) => sa.artist.name) || [],
-          })),
+          stages: event.stages || undefined,
           saleSchedules: event.saleSchedules || undefined,
         }}
       />

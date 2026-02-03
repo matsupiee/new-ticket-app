@@ -4,13 +4,10 @@ import { useMemo, useState } from 'react';
 import { useQuery } from 'urql';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { Calendar, MapPin, Mic, Pencil, Plus } from 'lucide-react';
-import { format } from 'date-fns';
-import { ja } from 'date-fns/locale';
+import { Pencil, Plus } from 'lucide-react';
 import { graphql } from '../../../libs/graphql/tada';
 import { Button } from '@/shared/components/ui/button';
 import { Skeleton } from '@/shared/components/ui/skeleton';
-import { Badge } from '@/shared/components/ui/badge';
 import {
   Tabs,
   TabsList,
@@ -25,6 +22,7 @@ import { EditTicketTypeDialog } from './_components/edit-ticket-type-dialog';
 import { CreateTicketTypeDialog } from './_components/create-ticket-type-dialog';
 import { EventDetailHeader } from './_components/event-detail-header';
 import { SaleSchedules } from './_components/sale-schedules';
+import { Stages } from './_components/stages';
 
 const EventDetailQuery = graphql(`
   query EventDetail($id: ID!) {
@@ -109,7 +107,9 @@ export default function EventDetailPage() {
     query: EventDetailQuery,
     variables: { id: eventId },
     context: useMemo(
-      () => ({ additionalTypenames: ['Event', 'Stage', 'SaleSchedule', 'TicketType'] }),
+      () => ({
+        additionalTypenames: ['Event', 'Stage', 'SaleSchedule', 'TicketType'],
+      }),
       [],
     ),
   });
@@ -231,69 +231,7 @@ export default function EventDetailPage() {
                   </div>
 
                   {/* 公演リスト */}
-                  <div className="space-y-4">
-                    {event.stages?.map((stage, index) => {
-                      const stageDate = new Date(stage.startAt);
-                      const doorsOpenDate = new Date(stage.doorsOpenAt);
-                      const dayLabel = index + 1 + '日目';
-
-                      return (
-                        <div
-                          key={stage.id}
-                          className="border rounded-lg p-4 bg-gray-50 space-y-3"
-                        >
-                          <div className="flex items-center justify-between">
-                            <h3 className="font-semibold text-gray-900">
-                              {dayLabel}
-                            </h3>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="flex items-start gap-2">
-                              <Calendar className="size-4 text-gray-500 mt-0.5" />
-                              <div>
-                                <p className="text-sm text-gray-900">
-                                  {format(stageDate, 'yyyy/MM/dd (E)', {
-                                    locale: ja,
-                                  })}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  開場時刻 {format(doorsOpenDate, 'HH:mm')} /
-                                  開演時刻 {format(stageDate, 'HH:mm')}
-                                </p>
-                              </div>
-                            </div>
-
-                            {stage.venue && (
-                              <div className="flex items-start gap-2">
-                                <MapPin className="size-4 text-gray-500 mt-0.5" />
-                                <p className="text-sm text-gray-900">
-                                  {stage.venue.name}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-
-                          {stage.stageArtists &&
-                            stage.stageArtists.length > 0 && (
-                              <div className="flex items-start gap-2">
-                                <Mic className="size-4 text-gray-500 mt-0.5" />
-                                <div className="flex flex-wrap gap-2">
-                                  {stage.stageArtists.map((stageArtist) => (
-                                    <span
-                                      key={stageArtist.artist.id}
-                                      className="text-sm text-gray-900"
-                                    >
-                                      {stageArtist.artist.name}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <Stages stages={event.stages || []} />
                 </div>
               </div>
             </div>
@@ -411,7 +349,10 @@ export default function EventDetailPage() {
                         id: ticketType.id,
                         name: ticketType.name,
                         description: ticketType.description,
-                        seatType: ticketType.seatType as 'RESERVED' | 'ENTRY_NUMBER' | 'FREE',
+                        seatType: ticketType.seatType as
+                          | 'RESERVED'
+                          | 'ENTRY_NUMBER'
+                          | 'FREE',
                         basePrice: ticketType.basePrice,
                         capacity: ticketType.capacity,
                         maxNumPerApply: ticketType.maxNumPerApply,
