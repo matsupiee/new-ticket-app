@@ -1,13 +1,34 @@
-import { Args, ID, Info, Query, Resolver } from '@nestjs/graphql';
-import { TicketType } from 'src/generated/prisma-nestjs-graphql';
+import {
+  Args,
+  ID,
+  Info,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import {
+  SaleSchedule,
+  StageTicketType,
+  Ticket,
+  TicketApplicationItem,
+  TicketType,
+  TicketTypeFee,
+  TicketTypeFeeDistribution,
+  TicketTypePriceDistribution,
+} from 'src/generated/prisma-nestjs-graphql';
 import { TicketTypeConnection } from './dto/ticket-type.connection';
 import { type GraphQLResolveInfo } from 'graphql';
 import { TicketTypesArgs } from './dto/ticket-types.args';
 import { TicketTypeService } from './ticket-type.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Resolver(() => TicketType)
 export class TicketTypeResolver {
-  constructor(private readonly ticketTypeService: TicketTypeService) {}
+  constructor(
+    private readonly ticketTypeService: TicketTypeService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Query(() => TicketType, {
     description: 'チケットタイプを1件取得する',
@@ -25,5 +46,47 @@ export class TicketTypeResolver {
     @Info() resolveInfo: GraphQLResolveInfo,
   ): Promise<TicketTypeConnection> {
     return this.ticketTypeService.findMany(args, resolveInfo);
+  }
+
+  @ResolveField(() => SaleSchedule)
+  async saleSchedule(@Parent() ticketType: TicketType) {
+    return await this.prisma.ticketType
+      .findUnique({ where: { id: ticketType.id } })
+      .saleSchedule();
+  }
+
+  @ResolveField(() => [StageTicketType])
+  async stageTicketTypes(@Parent() ticketType: TicketType) {
+    return await this.prisma.ticketType
+      .findUnique({ where: { id: ticketType.id } })
+      .stageTicketTypes();
+  }
+
+  @ResolveField(() => [TicketTypeFee])
+  async ticketTypeFees(@Parent() ticketType: TicketType) {
+    return await this.prisma.ticketType
+      .findUnique({ where: { id: ticketType.id } })
+      .ticketTypeFees();
+  }
+
+  @ResolveField(() => [TicketTypePriceDistribution])
+  async ticketTypePriceDistributions(@Parent() ticketType: TicketType) {
+    return await this.prisma.ticketType
+      .findUnique({ where: { id: ticketType.id } })
+      .ticketTypePriceDistributions();
+  }
+
+  @ResolveField(() => [TicketApplicationItem])
+  async ticketApplicationItems(@Parent() ticketType: TicketType) {
+    return await this.prisma.ticketType
+      .findUnique({ where: { id: ticketType.id } })
+      .ticketApplicationItems();
+  }
+
+  @ResolveField(() => [Ticket])
+  async tickets(@Parent() ticketType: TicketType) {
+    return await this.prisma.ticketType
+      .findUnique({ where: { id: ticketType.id } })
+      .tickets();
   }
 }

@@ -71,6 +71,57 @@ async function main() {
     eventOrganizer2,
   });
 
+  // 会場の作成
+  const venue1 = await prisma.venue.upsert({
+    where: { id: 'venue1' },
+    update: {},
+    create: {
+      id: 'venue1',
+      name: '東京ドーム',
+    },
+  });
+
+  const venue2 = await prisma.venue.upsert({
+    where: { id: 'venue2' },
+    update: {},
+    create: {
+      id: 'venue2',
+      name: 'ゾンネンハイム渋谷',
+    },
+  });
+
+  console.log('Created venues:', { venue1, venue2 });
+
+  // アーティストの作成
+  const artist1 = await prisma.artist.upsert({
+    where: { id: 'artist1' },
+    update: {},
+    create: {
+      id: 'artist1',
+      name: 'アーティストA',
+    },
+  });
+
+  const artist2 = await prisma.artist.upsert({
+    where: { id: 'artist2' },
+    update: {},
+    create: {
+      id: 'artist2',
+      name: 'アーティストB',
+    },
+  });
+
+  const artist3 = await prisma.artist.upsert({
+    where: { id: 'artist3' },
+    update: {},
+    create: {
+      id: 'artist3',
+      name: 'pa',
+    },
+  });
+
+  console.log('Created artists:', { artist1, artist2, artist3 });
+
   // イベントの作成
   const event1 = await prisma.event.create({
     data: {
@@ -82,6 +133,42 @@ async function main() {
       publishStatus: 'PUBLISHED',
       isDisplayedInTop: true,
       inquiry: '03-1234-5678',
+      stages: {
+        create: [
+          {
+            name: '第1部',
+            venueId: venue1.id,
+            doorsOpenAt: new Date('2024-07-15T18:00:00'),
+            startAt: new Date('2024-07-15T19:00:00'),
+            stageArtists: {
+              create: [
+                {
+                  artistId: artist1.id,
+                  sortOrder: 0,
+                },
+                {
+                  artistId: artist2.id,
+                  sortOrder: 1,
+                },
+              ],
+            },
+          },
+          {
+            name: '第2部',
+            venueId: venue1.id,
+            doorsOpenAt: new Date('2024-07-15T20:00:00'),
+            startAt: new Date('2024-07-15T21:00:00'),
+            stageArtists: {
+              create: [
+                {
+                  artistId: artist2.id,
+                  sortOrder: 0,
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
   });
 
@@ -94,6 +181,24 @@ async function main() {
       publishStatus: 'PUBLISHED',
       isDisplayedInTop: true,
       inquiry: '03-1234-5678',
+      stages: {
+        create: [
+          {
+            name: '',
+            venueId: venue2.id,
+            doorsOpenAt: new Date('2026-01-18T18:30:00'),
+            startAt: new Date('2026-01-18T19:00:00'),
+            stageArtists: {
+              create: [
+                {
+                  artistId: artist3.id,
+                  sortOrder: 0,
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
   });
 

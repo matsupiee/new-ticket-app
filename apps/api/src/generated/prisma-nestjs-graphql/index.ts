@@ -57,8 +57,7 @@ export enum TicketTypeFeeDistributionScalarFieldEnum {
     updatedAt = "updatedAt",
     eventOrganizerId = "eventOrganizerId",
     ticketTypeFeeId = "ticketTypeFeeId",
-    amount = "amount",
-    ticketTypeId = "ticketTypeId"
+    amount = "amount"
 }
 
 export enum TicketTypeFeeScalarFieldEnum {
@@ -3502,13 +3501,13 @@ export class EventCreateNestedManyWithoutEventOrganizerInput {
 }
 
 @InputType()
-export class EventCreateNestedOneWithoutFavoritesInput {
-    @Field(() => EventCreateWithoutFavoritesInput, {nullable:true})
-    @Type(() => EventCreateWithoutFavoritesInput)
-    create?: InstanceType<typeof EventCreateWithoutFavoritesInput>;
-    @Field(() => EventCreateOrConnectWithoutFavoritesInput, {nullable:true})
-    @Type(() => EventCreateOrConnectWithoutFavoritesInput)
-    connectOrCreate?: InstanceType<typeof EventCreateOrConnectWithoutFavoritesInput>;
+export class EventCreateNestedOneWithoutFavoriteEventsInput {
+    @Field(() => EventCreateWithoutFavoriteEventsInput, {nullable:true})
+    @Type(() => EventCreateWithoutFavoriteEventsInput)
+    create?: InstanceType<typeof EventCreateWithoutFavoriteEventsInput>;
+    @Field(() => EventCreateOrConnectWithoutFavoriteEventsInput, {nullable:true})
+    @Type(() => EventCreateOrConnectWithoutFavoriteEventsInput)
+    connectOrCreate?: InstanceType<typeof EventCreateOrConnectWithoutFavoriteEventsInput>;
     @Field(() => EventWhereUniqueInput, {nullable:true})
     @Type(() => EventWhereUniqueInput)
     connect?: Prisma.AtLeast<EventWhereUniqueInput, 'id'>;
@@ -3564,13 +3563,13 @@ export class EventCreateOrConnectWithoutEventOrganizerInput {
 }
 
 @InputType()
-export class EventCreateOrConnectWithoutFavoritesInput {
+export class EventCreateOrConnectWithoutFavoriteEventsInput {
     @Field(() => EventWhereUniqueInput, {nullable:false})
     @Type(() => EventWhereUniqueInput)
     where!: Prisma.AtLeast<EventWhereUniqueInput, 'id'>;
-    @Field(() => EventCreateWithoutFavoritesInput, {nullable:false})
-    @Type(() => EventCreateWithoutFavoritesInput)
-    create!: InstanceType<typeof EventCreateWithoutFavoritesInput>;
+    @Field(() => EventCreateWithoutFavoriteEventsInput, {nullable:false})
+    @Type(() => EventCreateWithoutFavoriteEventsInput)
+    create!: InstanceType<typeof EventCreateWithoutFavoriteEventsInput>;
 }
 
 @InputType()
@@ -3630,7 +3629,7 @@ export class EventCreateWithoutEventOrganizerInput {
     @Field(() => Boolean, {nullable:true})
     isTokuteiKogyo?: boolean;
     @Field(() => FavoriteEventCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
     @Field(() => FeaturedEventCreateNestedOneWithoutEventInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventCreateNestedOneWithoutEventInput>;
     @Field(() => StageCreateNestedManyWithoutEventInput, {nullable:true})
@@ -3640,7 +3639,7 @@ export class EventCreateWithoutEventOrganizerInput {
 }
 
 @InputType()
-export class EventCreateWithoutFavoritesInput {
+export class EventCreateWithoutFavoriteEventsInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => Date, {nullable:true})
@@ -3704,7 +3703,7 @@ export class EventCreateWithoutFeaturedEventInput {
     @Field(() => EventOrganizerCreateNestedOneWithoutEventsInput, {nullable:false})
     eventOrganizer!: InstanceType<typeof EventOrganizerCreateNestedOneWithoutEventsInput>;
     @Field(() => FavoriteEventCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
     @Field(() => StageCreateNestedManyWithoutEventInput, {nullable:true})
     stages?: InstanceType<typeof StageCreateNestedManyWithoutEventInput>;
     @Field(() => SaleScheduleCreateNestedManyWithoutEventInput, {nullable:true})
@@ -3740,7 +3739,7 @@ export class EventCreateWithoutSaleSchedulesInput {
     @Field(() => EventOrganizerCreateNestedOneWithoutEventsInput, {nullable:false})
     eventOrganizer!: InstanceType<typeof EventOrganizerCreateNestedOneWithoutEventsInput>;
     @Field(() => FavoriteEventCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
     @Field(() => FeaturedEventCreateNestedOneWithoutEventInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventCreateNestedOneWithoutEventInput>;
     @Field(() => StageCreateNestedManyWithoutEventInput, {nullable:true})
@@ -3776,7 +3775,7 @@ export class EventCreateWithoutStagesInput {
     @Field(() => EventOrganizerCreateNestedOneWithoutEventsInput, {nullable:false})
     eventOrganizer!: InstanceType<typeof EventOrganizerCreateNestedOneWithoutEventsInput>;
     @Field(() => FavoriteEventCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
     @Field(() => FeaturedEventCreateNestedOneWithoutEventInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventCreateNestedOneWithoutEventInput>;
     @Field(() => SaleScheduleCreateNestedManyWithoutEventInput, {nullable:true})
@@ -3812,7 +3811,7 @@ export class EventCreateInput {
     @Field(() => EventOrganizerCreateNestedOneWithoutEventsInput, {nullable:false})
     eventOrganizer!: InstanceType<typeof EventOrganizerCreateNestedOneWithoutEventsInput>;
     @Field(() => FavoriteEventCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventCreateNestedManyWithoutEventInput>;
     @Field(() => FeaturedEventCreateNestedOneWithoutEventInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventCreateNestedOneWithoutEventInput>;
     @Field(() => StageCreateNestedManyWithoutEventInput, {nullable:true})
@@ -3966,7 +3965,7 @@ export class EventOrderByWithRelationInput {
     @Field(() => EventOrganizerOrderByWithRelationInput, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerOrderByWithRelationInput>;
     @Field(() => FavoriteEventOrderByRelationAggregateInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventOrderByRelationAggregateInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventOrderByRelationAggregateInput>;
     @Field(() => FeaturedEventOrderByWithRelationInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventOrderByWithRelationInput>;
     @Field(() => StageOrderByRelationAggregateInput, {nullable:true})
@@ -4098,7 +4097,7 @@ export class EventUncheckedCreateWithoutEventOrganizerInput {
     @Field(() => Boolean, {nullable:true})
     isTokuteiKogyo?: boolean;
     @Field(() => FavoriteEventUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
     @Field(() => FeaturedEventUncheckedCreateNestedOneWithoutEventInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUncheckedCreateNestedOneWithoutEventInput>;
     @Field(() => StageUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
@@ -4108,7 +4107,7 @@ export class EventUncheckedCreateWithoutEventOrganizerInput {
 }
 
 @InputType()
-export class EventUncheckedCreateWithoutFavoritesInput {
+export class EventUncheckedCreateWithoutFavoriteEventsInput {
     @Field(() => String, {nullable:true})
     id?: string;
     @Field(() => Date, {nullable:true})
@@ -4172,7 +4171,7 @@ export class EventUncheckedCreateWithoutFeaturedEventInput {
     @Field(() => Boolean, {nullable:true})
     isTokuteiKogyo?: boolean;
     @Field(() => FavoriteEventUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
     @Field(() => StageUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
     stages?: InstanceType<typeof StageUncheckedCreateNestedManyWithoutEventInput>;
     @Field(() => SaleScheduleUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
@@ -4208,7 +4207,7 @@ export class EventUncheckedCreateWithoutSaleSchedulesInput {
     @Field(() => Boolean, {nullable:true})
     isTokuteiKogyo?: boolean;
     @Field(() => FavoriteEventUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
     @Field(() => FeaturedEventUncheckedCreateNestedOneWithoutEventInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUncheckedCreateNestedOneWithoutEventInput>;
     @Field(() => StageUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
@@ -4244,7 +4243,7 @@ export class EventUncheckedCreateWithoutStagesInput {
     @Field(() => Boolean, {nullable:true})
     isTokuteiKogyo?: boolean;
     @Field(() => FavoriteEventUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
     @Field(() => FeaturedEventUncheckedCreateNestedOneWithoutEventInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUncheckedCreateNestedOneWithoutEventInput>;
     @Field(() => SaleScheduleUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
@@ -4280,7 +4279,7 @@ export class EventUncheckedCreateInput {
     @Field(() => Boolean, {nullable:true})
     isTokuteiKogyo?: boolean;
     @Field(() => FavoriteEventUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedCreateNestedManyWithoutEventInput>;
     @Field(() => FeaturedEventUncheckedCreateNestedOneWithoutEventInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUncheckedCreateNestedOneWithoutEventInput>;
     @Field(() => StageUncheckedCreateNestedManyWithoutEventInput, {nullable:true})
@@ -4411,7 +4410,7 @@ export class EventUncheckedUpdateWithoutEventOrganizerInput {
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isTokuteiKogyo?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => FavoriteEventUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
     @Field(() => FeaturedEventUncheckedUpdateOneWithoutEventNestedInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUncheckedUpdateOneWithoutEventNestedInput>;
     @Field(() => StageUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -4421,7 +4420,7 @@ export class EventUncheckedUpdateWithoutEventOrganizerInput {
 }
 
 @InputType()
-export class EventUncheckedUpdateWithoutFavoritesInput {
+export class EventUncheckedUpdateWithoutFavoriteEventsInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -4485,7 +4484,7 @@ export class EventUncheckedUpdateWithoutFeaturedEventInput {
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isTokuteiKogyo?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => FavoriteEventUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
     @Field(() => StageUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
     stages?: InstanceType<typeof StageUncheckedUpdateManyWithoutEventNestedInput>;
     @Field(() => SaleScheduleUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -4521,7 +4520,7 @@ export class EventUncheckedUpdateWithoutSaleSchedulesInput {
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isTokuteiKogyo?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => FavoriteEventUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
     @Field(() => FeaturedEventUncheckedUpdateOneWithoutEventNestedInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUncheckedUpdateOneWithoutEventNestedInput>;
     @Field(() => StageUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -4557,7 +4556,7 @@ export class EventUncheckedUpdateWithoutStagesInput {
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isTokuteiKogyo?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => FavoriteEventUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
     @Field(() => FeaturedEventUncheckedUpdateOneWithoutEventNestedInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUncheckedUpdateOneWithoutEventNestedInput>;
     @Field(() => SaleScheduleUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -4593,7 +4592,7 @@ export class EventUncheckedUpdateInput {
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isTokuteiKogyo?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => FavoriteEventUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUncheckedUpdateManyWithoutEventNestedInput>;
     @Field(() => FeaturedEventUncheckedUpdateOneWithoutEventNestedInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUncheckedUpdateOneWithoutEventNestedInput>;
     @Field(() => StageUncheckedUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -4678,22 +4677,22 @@ export class EventUpdateManyWithoutEventOrganizerNestedInput {
 }
 
 @InputType()
-export class EventUpdateOneRequiredWithoutFavoritesNestedInput {
-    @Field(() => EventCreateWithoutFavoritesInput, {nullable:true})
-    @Type(() => EventCreateWithoutFavoritesInput)
-    create?: InstanceType<typeof EventCreateWithoutFavoritesInput>;
-    @Field(() => EventCreateOrConnectWithoutFavoritesInput, {nullable:true})
-    @Type(() => EventCreateOrConnectWithoutFavoritesInput)
-    connectOrCreate?: InstanceType<typeof EventCreateOrConnectWithoutFavoritesInput>;
-    @Field(() => EventUpsertWithoutFavoritesInput, {nullable:true})
-    @Type(() => EventUpsertWithoutFavoritesInput)
-    upsert?: InstanceType<typeof EventUpsertWithoutFavoritesInput>;
+export class EventUpdateOneRequiredWithoutFavoriteEventsNestedInput {
+    @Field(() => EventCreateWithoutFavoriteEventsInput, {nullable:true})
+    @Type(() => EventCreateWithoutFavoriteEventsInput)
+    create?: InstanceType<typeof EventCreateWithoutFavoriteEventsInput>;
+    @Field(() => EventCreateOrConnectWithoutFavoriteEventsInput, {nullable:true})
+    @Type(() => EventCreateOrConnectWithoutFavoriteEventsInput)
+    connectOrCreate?: InstanceType<typeof EventCreateOrConnectWithoutFavoriteEventsInput>;
+    @Field(() => EventUpsertWithoutFavoriteEventsInput, {nullable:true})
+    @Type(() => EventUpsertWithoutFavoriteEventsInput)
+    upsert?: InstanceType<typeof EventUpsertWithoutFavoriteEventsInput>;
     @Field(() => EventWhereUniqueInput, {nullable:true})
     @Type(() => EventWhereUniqueInput)
     connect?: Prisma.AtLeast<EventWhereUniqueInput, 'id'>;
-    @Field(() => EventUpdateToOneWithWhereWithoutFavoritesInput, {nullable:true})
-    @Type(() => EventUpdateToOneWithWhereWithoutFavoritesInput)
-    update?: InstanceType<typeof EventUpdateToOneWithWhereWithoutFavoritesInput>;
+    @Field(() => EventUpdateToOneWithWhereWithoutFavoriteEventsInput, {nullable:true})
+    @Type(() => EventUpdateToOneWithWhereWithoutFavoriteEventsInput)
+    update?: InstanceType<typeof EventUpdateToOneWithWhereWithoutFavoriteEventsInput>;
 }
 
 @InputType()
@@ -4754,13 +4753,13 @@ export class EventUpdateOneRequiredWithoutStagesNestedInput {
 }
 
 @InputType()
-export class EventUpdateToOneWithWhereWithoutFavoritesInput {
+export class EventUpdateToOneWithWhereWithoutFavoriteEventsInput {
     @Field(() => EventWhereInput, {nullable:true})
     @Type(() => EventWhereInput)
     where?: InstanceType<typeof EventWhereInput>;
-    @Field(() => EventUpdateWithoutFavoritesInput, {nullable:false})
-    @Type(() => EventUpdateWithoutFavoritesInput)
-    data!: InstanceType<typeof EventUpdateWithoutFavoritesInput>;
+    @Field(() => EventUpdateWithoutFavoriteEventsInput, {nullable:false})
+    @Type(() => EventUpdateWithoutFavoriteEventsInput)
+    data!: InstanceType<typeof EventUpdateWithoutFavoriteEventsInput>;
 }
 
 @InputType()
@@ -4830,7 +4829,7 @@ export class EventUpdateWithoutEventOrganizerInput {
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isTokuteiKogyo?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
     @Field(() => FavoriteEventUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
     @Field(() => FeaturedEventUpdateOneWithoutEventNestedInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUpdateOneWithoutEventNestedInput>;
     @Field(() => StageUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -4840,7 +4839,7 @@ export class EventUpdateWithoutEventOrganizerInput {
 }
 
 @InputType()
-export class EventUpdateWithoutFavoritesInput {
+export class EventUpdateWithoutFavoriteEventsInput {
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
@@ -4904,7 +4903,7 @@ export class EventUpdateWithoutFeaturedEventInput {
     @Field(() => EventOrganizerUpdateOneRequiredWithoutEventsNestedInput, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerUpdateOneRequiredWithoutEventsNestedInput>;
     @Field(() => FavoriteEventUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
     @Field(() => StageUpdateManyWithoutEventNestedInput, {nullable:true})
     stages?: InstanceType<typeof StageUpdateManyWithoutEventNestedInput>;
     @Field(() => SaleScheduleUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -4940,7 +4939,7 @@ export class EventUpdateWithoutSaleSchedulesInput {
     @Field(() => EventOrganizerUpdateOneRequiredWithoutEventsNestedInput, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerUpdateOneRequiredWithoutEventsNestedInput>;
     @Field(() => FavoriteEventUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
     @Field(() => FeaturedEventUpdateOneWithoutEventNestedInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUpdateOneWithoutEventNestedInput>;
     @Field(() => StageUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -4976,7 +4975,7 @@ export class EventUpdateWithoutStagesInput {
     @Field(() => EventOrganizerUpdateOneRequiredWithoutEventsNestedInput, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerUpdateOneRequiredWithoutEventsNestedInput>;
     @Field(() => FavoriteEventUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
     @Field(() => FeaturedEventUpdateOneWithoutEventNestedInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUpdateOneWithoutEventNestedInput>;
     @Field(() => SaleScheduleUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -5012,7 +5011,7 @@ export class EventUpdateInput {
     @Field(() => EventOrganizerUpdateOneRequiredWithoutEventsNestedInput, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerUpdateOneRequiredWithoutEventsNestedInput>;
     @Field(() => FavoriteEventUpdateManyWithoutEventNestedInput, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventUpdateManyWithoutEventNestedInput>;
     @Field(() => FeaturedEventUpdateOneWithoutEventNestedInput, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventUpdateOneWithoutEventNestedInput>;
     @Field(() => StageUpdateManyWithoutEventNestedInput, {nullable:true})
@@ -5043,13 +5042,13 @@ export class EventUpsertWithWhereUniqueWithoutEventOrganizerInput {
 }
 
 @InputType()
-export class EventUpsertWithoutFavoritesInput {
-    @Field(() => EventUpdateWithoutFavoritesInput, {nullable:false})
-    @Type(() => EventUpdateWithoutFavoritesInput)
-    update!: InstanceType<typeof EventUpdateWithoutFavoritesInput>;
-    @Field(() => EventCreateWithoutFavoritesInput, {nullable:false})
-    @Type(() => EventCreateWithoutFavoritesInput)
-    create!: InstanceType<typeof EventCreateWithoutFavoritesInput>;
+export class EventUpsertWithoutFavoriteEventsInput {
+    @Field(() => EventUpdateWithoutFavoriteEventsInput, {nullable:false})
+    @Type(() => EventUpdateWithoutFavoriteEventsInput)
+    update!: InstanceType<typeof EventUpdateWithoutFavoriteEventsInput>;
+    @Field(() => EventCreateWithoutFavoriteEventsInput, {nullable:false})
+    @Type(() => EventCreateWithoutFavoriteEventsInput)
+    create!: InstanceType<typeof EventCreateWithoutFavoriteEventsInput>;
     @Field(() => EventWhereInput, {nullable:true})
     @Type(() => EventWhereInput)
     where?: InstanceType<typeof EventWhereInput>;
@@ -5131,7 +5130,7 @@ export class EventWhereUniqueInput {
     @Field(() => EventOrganizerScalarRelationFilter, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerScalarRelationFilter>;
     @Field(() => FavoriteEventListRelationFilter, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventListRelationFilter>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventListRelationFilter>;
     @Field(() => FeaturedEventNullableScalarRelationFilter, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventNullableScalarRelationFilter>;
     @Field(() => StageListRelationFilter, {nullable:true})
@@ -5177,7 +5176,7 @@ export class EventWhereInput {
     @Field(() => EventOrganizerScalarRelationFilter, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerScalarRelationFilter>;
     @Field(() => FavoriteEventListRelationFilter, {nullable:true})
-    favorites?: InstanceType<typeof FavoriteEventListRelationFilter>;
+    favoriteEvents?: InstanceType<typeof FavoriteEventListRelationFilter>;
     @Field(() => FeaturedEventNullableScalarRelationFilter, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEventNullableScalarRelationFilter>;
     @Field(() => StageListRelationFilter, {nullable:true})
@@ -5217,7 +5216,7 @@ export class Event {
     @Field(() => EventOrganizer, {nullable:false})
     eventOrganizer?: InstanceType<typeof EventOrganizer>;
     @Field(() => [FavoriteEvent], {nullable:true})
-    favorites?: Array<FavoriteEvent>;
+    favoriteEvents?: Array<FavoriteEvent>;
     @Field(() => FeaturedEvent, {nullable:true})
     featuredEvent?: InstanceType<typeof FeaturedEvent> | null;
     @Field(() => [Stage], {nullable:true})
@@ -9210,8 +9209,8 @@ export class FavoriteEventCreateWithoutUserInput {
     createdAt?: Date | string;
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
-    @Field(() => EventCreateNestedOneWithoutFavoritesInput, {nullable:false})
-    event!: InstanceType<typeof EventCreateNestedOneWithoutFavoritesInput>;
+    @Field(() => EventCreateNestedOneWithoutFavoriteEventsInput, {nullable:false})
+    event!: InstanceType<typeof EventCreateNestedOneWithoutFavoriteEventsInput>;
 }
 
 @InputType()
@@ -9222,8 +9221,8 @@ export class FavoriteEventCreateInput {
     updatedAt?: Date | string;
     @Field(() => UserCreateNestedOneWithoutFavoriteEventsInput, {nullable:false})
     user!: InstanceType<typeof UserCreateNestedOneWithoutFavoriteEventsInput>;
-    @Field(() => EventCreateNestedOneWithoutFavoritesInput, {nullable:false})
-    event!: InstanceType<typeof EventCreateNestedOneWithoutFavoritesInput>;
+    @Field(() => EventCreateNestedOneWithoutFavoriteEventsInput, {nullable:false})
+    event!: InstanceType<typeof EventCreateNestedOneWithoutFavoriteEventsInput>;
 }
 
 @InputType()
@@ -9676,8 +9675,8 @@ export class FavoriteEventUpdateWithoutUserInput {
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => EventUpdateOneRequiredWithoutFavoritesNestedInput, {nullable:true})
-    event?: InstanceType<typeof EventUpdateOneRequiredWithoutFavoritesNestedInput>;
+    @Field(() => EventUpdateOneRequiredWithoutFavoriteEventsNestedInput, {nullable:true})
+    event?: InstanceType<typeof EventUpdateOneRequiredWithoutFavoriteEventsNestedInput>;
 }
 
 @InputType()
@@ -9688,8 +9687,8 @@ export class FavoriteEventUpdateInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => UserUpdateOneRequiredWithoutFavoriteEventsNestedInput, {nullable:true})
     user?: InstanceType<typeof UserUpdateOneRequiredWithoutFavoriteEventsNestedInput>;
-    @Field(() => EventUpdateOneRequiredWithoutFavoritesNestedInput, {nullable:true})
-    event?: InstanceType<typeof EventUpdateOneRequiredWithoutFavoritesNestedInput>;
+    @Field(() => EventUpdateOneRequiredWithoutFavoriteEventsNestedInput, {nullable:true})
+    event?: InstanceType<typeof EventUpdateOneRequiredWithoutFavoriteEventsNestedInput>;
 }
 
 @InputType()
@@ -24755,19 +24754,6 @@ export class TicketTypeCreateNestedOneWithoutTicketApplicationItemsInput {
 }
 
 @InputType()
-export class TicketTypeCreateNestedOneWithoutTicketTypeFeeDistributionsInput {
-    @Field(() => TicketTypeCreateWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    @Type(() => TicketTypeCreateWithoutTicketTypeFeeDistributionsInput)
-    create?: InstanceType<typeof TicketTypeCreateWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeCreateOrConnectWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    @Type(() => TicketTypeCreateOrConnectWithoutTicketTypeFeeDistributionsInput)
-    connectOrCreate?: InstanceType<typeof TicketTypeCreateOrConnectWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeWhereUniqueInput, {nullable:true})
-    @Type(() => TicketTypeWhereUniqueInput)
-    connect?: Prisma.AtLeast<TicketTypeWhereUniqueInput, 'id'>;
-}
-
-@InputType()
 export class TicketTypeCreateNestedOneWithoutTicketTypeFeesInput {
     @Field(() => TicketTypeCreateWithoutTicketTypeFeesInput, {nullable:true})
     @Type(() => TicketTypeCreateWithoutTicketTypeFeesInput)
@@ -24837,16 +24823,6 @@ export class TicketTypeCreateOrConnectWithoutTicketApplicationItemsInput {
 }
 
 @InputType()
-export class TicketTypeCreateOrConnectWithoutTicketTypeFeeDistributionsInput {
-    @Field(() => TicketTypeWhereUniqueInput, {nullable:false})
-    @Type(() => TicketTypeWhereUniqueInput)
-    where!: Prisma.AtLeast<TicketTypeWhereUniqueInput, 'id'>;
-    @Field(() => TicketTypeCreateWithoutTicketTypeFeeDistributionsInput, {nullable:false})
-    @Type(() => TicketTypeCreateWithoutTicketTypeFeeDistributionsInput)
-    create!: InstanceType<typeof TicketTypeCreateWithoutTicketTypeFeeDistributionsInput>;
-}
-
-@InputType()
 export class TicketTypeCreateOrConnectWithoutTicketTypeFeesInput {
     @Field(() => TicketTypeWhereUniqueInput, {nullable:false})
     @Type(() => TicketTypeWhereUniqueInput)
@@ -24908,8 +24884,6 @@ export class TicketTypeCreateWithoutSaleScheduleInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -24950,8 +24924,6 @@ export class TicketTypeCreateWithoutStageTicketTypesInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemCreateNestedManyWithoutTicketTypeInput>;
 }
@@ -24990,48 +24962,6 @@ export class TicketTypeCreateWithoutTicketApplicationItemsInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => StageTicketTypeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    stageTicketTypes?: InstanceType<typeof StageTicketTypeCreateNestedManyWithoutTicketTypeInput>;
-}
-
-@InputType()
-export class TicketTypeCreateWithoutTicketTypeFeeDistributionsInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => SeatType, {nullable:true})
-    seatType?: `${SeatType}`;
-    @Field(() => String, {nullable:false})
-    name!: string;
-    @Field(() => String, {nullable:false})
-    description!: string;
-    @Field(() => Int, {nullable:false})
-    basePrice!: number;
-    @Field(() => Int, {nullable:false})
-    capacity!: number;
-    @Field(() => Int, {nullable:true})
-    maxNumPerApply?: number;
-    @Field(() => Int, {nullable:true})
-    sortOrder?: number;
-    @Field(() => Boolean, {nullable:true})
-    isOnceApplyOnly?: boolean;
-    @Field(() => Boolean, {nullable:true})
-    isOnlyQrCodeEntry?: boolean;
-    @Field(() => SaleScheduleCreateNestedOneWithoutTicketTypesInput, {nullable:false})
-    saleSchedule!: InstanceType<typeof SaleScheduleCreateNestedOneWithoutTicketTypesInput>;
-    @Field(() => TicketCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    tickets?: InstanceType<typeof TicketCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFees?: InstanceType<typeof TicketTypeFeeCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketApplicationItemCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketApplicationItems?: InstanceType<typeof TicketApplicationItemCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     stageTicketTypes?: InstanceType<typeof StageTicketTypeCreateNestedManyWithoutTicketTypeInput>;
 }
@@ -25068,8 +24998,6 @@ export class TicketTypeCreateWithoutTicketTypeFeesInput {
     tickets?: InstanceType<typeof TicketCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25108,8 +25036,6 @@ export class TicketTypeCreateWithoutTicketTypePriceDistributionsInput {
     tickets?: InstanceType<typeof TicketCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypeFeeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25148,8 +25074,6 @@ export class TicketTypeCreateWithoutTicketsInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25190,8 +25114,6 @@ export class TicketTypeCreateInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25266,14 +25188,6 @@ export class TicketTypeMinOrderByAggregateInput {
     isOnceApplyOnly?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     isOnlyQrCodeEntry?: `${SortOrder}`;
-}
-
-@InputType()
-export class TicketTypeNullableScalarRelationFilter {
-    @Field(() => TicketTypeWhereInput, {nullable:true})
-    is?: InstanceType<typeof TicketTypeWhereInput>;
-    @Field(() => TicketTypeWhereInput, {nullable:true})
-    isNot?: InstanceType<typeof TicketTypeWhereInput>;
 }
 
 @InputType()
@@ -25358,8 +25272,6 @@ export class TicketTypeOrderByWithRelationInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeOrderByRelationAggregateInput>;
     @Field(() => TicketTypePriceDistributionOrderByRelationAggregateInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionOrderByRelationAggregateInput>;
-    @Field(() => TicketTypeFeeDistributionOrderByRelationAggregateInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionOrderByRelationAggregateInput>;
     @Field(() => TicketApplicationItemOrderByRelationAggregateInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemOrderByRelationAggregateInput>;
     @Field(() => StageTicketTypeOrderByRelationAggregateInput, {nullable:true})
@@ -25506,8 +25418,6 @@ export class TicketTypeUncheckedCreateWithoutSaleScheduleInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25548,8 +25458,6 @@ export class TicketTypeUncheckedCreateWithoutStageTicketTypesInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput>;
 }
@@ -25588,48 +25496,6 @@ export class TicketTypeUncheckedCreateWithoutTicketApplicationItemsInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    stageTicketTypes?: InstanceType<typeof StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput>;
-}
-
-@InputType()
-export class TicketTypeUncheckedCreateWithoutTicketTypeFeeDistributionsInput {
-    @Field(() => String, {nullable:true})
-    id?: string;
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => String, {nullable:false})
-    saleScheduleId!: string;
-    @Field(() => SeatType, {nullable:true})
-    seatType?: `${SeatType}`;
-    @Field(() => String, {nullable:false})
-    name!: string;
-    @Field(() => String, {nullable:false})
-    description!: string;
-    @Field(() => Int, {nullable:false})
-    basePrice!: number;
-    @Field(() => Int, {nullable:false})
-    capacity!: number;
-    @Field(() => Int, {nullable:true})
-    maxNumPerApply?: number;
-    @Field(() => Int, {nullable:true})
-    sortOrder?: number;
-    @Field(() => Boolean, {nullable:true})
-    isOnceApplyOnly?: boolean;
-    @Field(() => Boolean, {nullable:true})
-    isOnlyQrCodeEntry?: boolean;
-    @Field(() => TicketUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    tickets?: InstanceType<typeof TicketUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     stageTicketTypes?: InstanceType<typeof StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput>;
 }
@@ -25666,8 +25532,6 @@ export class TicketTypeUncheckedCreateWithoutTicketTypeFeesInput {
     tickets?: InstanceType<typeof TicketUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25706,8 +25570,6 @@ export class TicketTypeUncheckedCreateWithoutTicketTypePriceDistributionsInput {
     tickets?: InstanceType<typeof TicketUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25746,8 +25608,6 @@ export class TicketTypeUncheckedCreateWithoutTicketsInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25788,8 +25648,6 @@ export class TicketTypeUncheckedCreateInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedCreateNestedManyWithoutTicketTypeInput>;
     @Field(() => StageTicketTypeUncheckedCreateNestedManyWithoutTicketTypeInput, {nullable:true})
@@ -25923,8 +25781,6 @@ export class TicketTypeUncheckedUpdateWithoutSaleScheduleInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -25965,8 +25821,6 @@ export class TicketTypeUncheckedUpdateWithoutStageTicketTypesInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput>;
 }
@@ -26005,48 +25859,6 @@ export class TicketTypeUncheckedUpdateWithoutTicketApplicationItemsInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    stageTicketTypes?: InstanceType<typeof StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-}
-
-@InputType()
-export class TicketTypeUncheckedUpdateWithoutTicketTypeFeeDistributionsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    saleScheduleId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => EnumSeatTypeFieldUpdateOperationsInput, {nullable:true})
-    seatType?: InstanceType<typeof EnumSeatTypeFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    basePrice?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    capacity?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    maxNumPerApply?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    sortOrder?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isOnceApplyOnly?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isOnlyQrCodeEntry?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => TicketUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    tickets?: InstanceType<typeof TicketUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     stageTicketTypes?: InstanceType<typeof StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
 }
@@ -26083,8 +25895,6 @@ export class TicketTypeUncheckedUpdateWithoutTicketTypeFeesInput {
     tickets?: InstanceType<typeof TicketUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26123,8 +25933,6 @@ export class TicketTypeUncheckedUpdateWithoutTicketTypePriceDistributionsInput {
     tickets?: InstanceType<typeof TicketUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26163,8 +25971,6 @@ export class TicketTypeUncheckedUpdateWithoutTicketsInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26205,8 +26011,6 @@ export class TicketTypeUncheckedUpdateInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUncheckedUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUncheckedUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26384,31 +26188,6 @@ export class TicketTypeUpdateOneRequiredWithoutTicketsNestedInput {
 }
 
 @InputType()
-export class TicketTypeUpdateOneWithoutTicketTypeFeeDistributionsNestedInput {
-    @Field(() => TicketTypeCreateWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    @Type(() => TicketTypeCreateWithoutTicketTypeFeeDistributionsInput)
-    create?: InstanceType<typeof TicketTypeCreateWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeCreateOrConnectWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    @Type(() => TicketTypeCreateOrConnectWithoutTicketTypeFeeDistributionsInput)
-    connectOrCreate?: InstanceType<typeof TicketTypeCreateOrConnectWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeUpsertWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    @Type(() => TicketTypeUpsertWithoutTicketTypeFeeDistributionsInput)
-    upsert?: InstanceType<typeof TicketTypeUpsertWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeWhereInput, {nullable:true})
-    @Type(() => TicketTypeWhereInput)
-    disconnect?: InstanceType<typeof TicketTypeWhereInput>;
-    @Field(() => TicketTypeWhereInput, {nullable:true})
-    @Type(() => TicketTypeWhereInput)
-    delete?: InstanceType<typeof TicketTypeWhereInput>;
-    @Field(() => TicketTypeWhereUniqueInput, {nullable:true})
-    @Type(() => TicketTypeWhereUniqueInput)
-    connect?: Prisma.AtLeast<TicketTypeWhereUniqueInput, 'id'>;
-    @Field(() => TicketTypeUpdateToOneWithWhereWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    @Type(() => TicketTypeUpdateToOneWithWhereWithoutTicketTypeFeeDistributionsInput)
-    update?: InstanceType<typeof TicketTypeUpdateToOneWithWhereWithoutTicketTypeFeeDistributionsInput>;
-}
-
-@InputType()
 export class TicketTypeUpdateToOneWithWhereWithoutStageTicketTypesInput {
     @Field(() => TicketTypeWhereInput, {nullable:true})
     @Type(() => TicketTypeWhereInput)
@@ -26426,16 +26205,6 @@ export class TicketTypeUpdateToOneWithWhereWithoutTicketApplicationItemsInput {
     @Field(() => TicketTypeUpdateWithoutTicketApplicationItemsInput, {nullable:false})
     @Type(() => TicketTypeUpdateWithoutTicketApplicationItemsInput)
     data!: InstanceType<typeof TicketTypeUpdateWithoutTicketApplicationItemsInput>;
-}
-
-@InputType()
-export class TicketTypeUpdateToOneWithWhereWithoutTicketTypeFeeDistributionsInput {
-    @Field(() => TicketTypeWhereInput, {nullable:true})
-    @Type(() => TicketTypeWhereInput)
-    where?: InstanceType<typeof TicketTypeWhereInput>;
-    @Field(() => TicketTypeUpdateWithoutTicketTypeFeeDistributionsInput, {nullable:false})
-    @Type(() => TicketTypeUpdateWithoutTicketTypeFeeDistributionsInput)
-    data!: InstanceType<typeof TicketTypeUpdateWithoutTicketTypeFeeDistributionsInput>;
 }
 
 @InputType()
@@ -26510,8 +26279,6 @@ export class TicketTypeUpdateWithoutSaleScheduleInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26552,8 +26319,6 @@ export class TicketTypeUpdateWithoutStageTicketTypesInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput>;
 }
@@ -26592,48 +26357,6 @@ export class TicketTypeUpdateWithoutTicketApplicationItemsInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => StageTicketTypeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    stageTicketTypes?: InstanceType<typeof StageTicketTypeUpdateManyWithoutTicketTypeNestedInput>;
-}
-
-@InputType()
-export class TicketTypeUpdateWithoutTicketTypeFeeDistributionsInput {
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    id?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => EnumSeatTypeFieldUpdateOperationsInput, {nullable:true})
-    seatType?: InstanceType<typeof EnumSeatTypeFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    name?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    description?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    basePrice?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    capacity?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    maxNumPerApply?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    sortOrder?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isOnceApplyOnly?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
-    isOnlyQrCodeEntry?: InstanceType<typeof BoolFieldUpdateOperationsInput>;
-    @Field(() => SaleScheduleUpdateOneRequiredWithoutTicketTypesNestedInput, {nullable:true})
-    saleSchedule?: InstanceType<typeof SaleScheduleUpdateOneRequiredWithoutTicketTypesNestedInput>;
-    @Field(() => TicketUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    tickets?: InstanceType<typeof TicketUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFees?: InstanceType<typeof TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     stageTicketTypes?: InstanceType<typeof StageTicketTypeUpdateManyWithoutTicketTypeNestedInput>;
 }
@@ -26670,8 +26393,6 @@ export class TicketTypeUpdateWithoutTicketTypeFeesInput {
     tickets?: InstanceType<typeof TicketUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26710,8 +26431,6 @@ export class TicketTypeUpdateWithoutTicketTypePriceDistributionsInput {
     tickets?: InstanceType<typeof TicketUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26750,8 +26469,6 @@ export class TicketTypeUpdateWithoutTicketsInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26792,8 +26509,6 @@ export class TicketTypeUpdateInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionUpdateManyWithoutTicketTypeNestedInput>;
-    @Field(() => TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemUpdateManyWithoutTicketTypeNestedInput>;
     @Field(() => StageTicketTypeUpdateManyWithoutTicketTypeNestedInput, {nullable:true})
@@ -26834,19 +26549,6 @@ export class TicketTypeUpsertWithoutTicketApplicationItemsInput {
     @Field(() => TicketTypeCreateWithoutTicketApplicationItemsInput, {nullable:false})
     @Type(() => TicketTypeCreateWithoutTicketApplicationItemsInput)
     create!: InstanceType<typeof TicketTypeCreateWithoutTicketApplicationItemsInput>;
-    @Field(() => TicketTypeWhereInput, {nullable:true})
-    @Type(() => TicketTypeWhereInput)
-    where?: InstanceType<typeof TicketTypeWhereInput>;
-}
-
-@InputType()
-export class TicketTypeUpsertWithoutTicketTypeFeeDistributionsInput {
-    @Field(() => TicketTypeUpdateWithoutTicketTypeFeeDistributionsInput, {nullable:false})
-    @Type(() => TicketTypeUpdateWithoutTicketTypeFeeDistributionsInput)
-    update!: InstanceType<typeof TicketTypeUpdateWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeCreateWithoutTicketTypeFeeDistributionsInput, {nullable:false})
-    @Type(() => TicketTypeCreateWithoutTicketTypeFeeDistributionsInput)
-    create!: InstanceType<typeof TicketTypeCreateWithoutTicketTypeFeeDistributionsInput>;
     @Field(() => TicketTypeWhereInput, {nullable:true})
     @Type(() => TicketTypeWhereInput)
     where?: InstanceType<typeof TicketTypeWhereInput>;
@@ -26933,8 +26635,6 @@ export class TicketTypeWhereUniqueInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeListRelationFilter>;
     @Field(() => TicketTypePriceDistributionListRelationFilter, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionListRelationFilter>;
-    @Field(() => TicketTypeFeeDistributionListRelationFilter, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionListRelationFilter>;
     @Field(() => TicketApplicationItemListRelationFilter, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemListRelationFilter>;
     @Field(() => StageTicketTypeListRelationFilter, {nullable:true})
@@ -26983,8 +26683,6 @@ export class TicketTypeWhereInput {
     ticketTypeFees?: InstanceType<typeof TicketTypeFeeListRelationFilter>;
     @Field(() => TicketTypePriceDistributionListRelationFilter, {nullable:true})
     ticketTypePriceDistributions?: InstanceType<typeof TicketTypePriceDistributionListRelationFilter>;
-    @Field(() => TicketTypeFeeDistributionListRelationFilter, {nullable:true})
-    ticketTypeFeeDistributions?: InstanceType<typeof TicketTypeFeeDistributionListRelationFilter>;
     @Field(() => TicketApplicationItemListRelationFilter, {nullable:true})
     ticketApplicationItems?: InstanceType<typeof TicketApplicationItemListRelationFilter>;
     @Field(() => StageTicketTypeListRelationFilter, {nullable:true})
@@ -27027,8 +26725,6 @@ export class TicketType {
     ticketTypeFees?: Array<TicketTypeFee>;
     @Field(() => [TicketTypePriceDistribution], {nullable:true})
     ticketTypePriceDistributions?: Array<TicketTypePriceDistribution>;
-    @Field(() => [TicketTypeFeeDistribution], {nullable:true})
-    ticketTypeFeeDistributions?: Array<TicketTypeFeeDistribution>;
     @Field(() => [TicketApplicationItem], {nullable:true})
     ticketApplicationItems?: Array<TicketApplicationItem>;
     @Field(() => [StageTicketType], {nullable:true})
@@ -27796,8 +27492,6 @@ export class TicketTypeFeeDistributionCountOrderByAggregateInput {
     ticketTypeFeeId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     amount?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    ticketTypeId?: `${SortOrder}`;
 }
 
 @InputType()
@@ -27819,8 +27513,6 @@ export class TicketTypeFeeDistributionCreateManyEventOrganizerInput {
     ticketTypeFeeId!: string;
     @Field(() => Int, {nullable:false})
     amount!: number;
-    @Field(() => String, {nullable:true})
-    ticketTypeId?: string;
 }
 
 @InputType()
@@ -27842,31 +27534,6 @@ export class TicketTypeFeeDistributionCreateManyTicketTypeFeeInput {
     eventOrganizerId!: string;
     @Field(() => Int, {nullable:false})
     amount!: number;
-    @Field(() => String, {nullable:true})
-    ticketTypeId?: string;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope {
-    @Field(() => [TicketTypeFeeDistributionCreateManyTicketTypeInput], {nullable:false})
-    @Type(() => TicketTypeFeeDistributionCreateManyTicketTypeInput)
-    data!: Array<TicketTypeFeeDistributionCreateManyTicketTypeInput>;
-    @Field(() => Boolean, {nullable:true})
-    skipDuplicates?: boolean;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionCreateManyTicketTypeInput {
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => String, {nullable:false})
-    eventOrganizerId!: string;
-    @Field(() => String, {nullable:false})
-    ticketTypeFeeId!: string;
-    @Field(() => Int, {nullable:false})
-    amount!: number;
 }
 
 @InputType()
@@ -27881,8 +27548,6 @@ export class TicketTypeFeeDistributionCreateManyInput {
     ticketTypeFeeId!: string;
     @Field(() => Int, {nullable:false})
     amount!: number;
-    @Field(() => String, {nullable:true})
-    ticketTypeId?: string;
 }
 
 @InputType()
@@ -27918,22 +27583,6 @@ export class TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeFeeInput 
 }
 
 @InputType()
-export class TicketTypeFeeDistributionCreateNestedManyWithoutTicketTypeInput {
-    @Field(() => [TicketTypeFeeDistributionCreateWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateWithoutTicketTypeInput)
-    create?: Array<TicketTypeFeeDistributionCreateWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput)
-    connectOrCreate?: Array<TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope, {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope)
-    createMany?: InstanceType<typeof TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-}
-
-@InputType()
 export class TicketTypeFeeDistributionCreateOrConnectWithoutEventOrganizerInput {
     @Field(() => TicketTypeFeeDistributionWhereUniqueInput, {nullable:false})
     @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
@@ -27954,16 +27603,6 @@ export class TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeFeeInput {
 }
 
 @InputType()
-export class TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput {
-    @Field(() => TicketTypeFeeDistributionWhereUniqueInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    where!: Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>;
-    @Field(() => TicketTypeFeeDistributionCreateWithoutTicketTypeInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionCreateWithoutTicketTypeInput)
-    create!: InstanceType<typeof TicketTypeFeeDistributionCreateWithoutTicketTypeInput>;
-}
-
-@InputType()
 export class TicketTypeFeeDistributionCreateWithoutEventOrganizerInput {
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
@@ -27973,8 +27612,6 @@ export class TicketTypeFeeDistributionCreateWithoutEventOrganizerInput {
     amount!: number;
     @Field(() => TicketTypeFeeCreateNestedOneWithoutTicketTypeFeeDistributionsInput, {nullable:false})
     ticketTypeFee!: InstanceType<typeof TicketTypeFeeCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeCreateNestedOneWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
 }
 
 @InputType()
@@ -27987,22 +27624,6 @@ export class TicketTypeFeeDistributionCreateWithoutTicketTypeFeeInput {
     amount!: number;
     @Field(() => EventOrganizerCreateNestedOneWithoutTicketTypeFeeDistributionsInput, {nullable:false})
     eventOrganizer!: InstanceType<typeof EventOrganizerCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeCreateNestedOneWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionCreateWithoutTicketTypeInput {
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => Int, {nullable:false})
-    amount!: number;
-    @Field(() => EventOrganizerCreateNestedOneWithoutTicketTypeFeeDistributionsInput, {nullable:false})
-    eventOrganizer!: InstanceType<typeof EventOrganizerCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeFeeCreateNestedOneWithoutTicketTypeFeeDistributionsInput, {nullable:false})
-    ticketTypeFee!: InstanceType<typeof TicketTypeFeeCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
 }
 
 @InputType()
@@ -28017,8 +27638,6 @@ export class TicketTypeFeeDistributionCreateInput {
     eventOrganizer!: InstanceType<typeof EventOrganizerCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
     @Field(() => TicketTypeFeeCreateNestedOneWithoutTicketTypeFeeDistributionsInput, {nullable:false})
     ticketTypeFee!: InstanceType<typeof TicketTypeFeeCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
-    @Field(() => TicketTypeCreateNestedOneWithoutTicketTypeFeeDistributionsInput, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeCreateNestedOneWithoutTicketTypeFeeDistributionsInput>;
 }
 
 @InputType()
@@ -28051,8 +27670,6 @@ export class TicketTypeFeeDistributionMaxOrderByAggregateInput {
     ticketTypeFeeId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     amount?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    ticketTypeId?: `${SortOrder}`;
 }
 
 @InputType()
@@ -28067,8 +27684,6 @@ export class TicketTypeFeeDistributionMinOrderByAggregateInput {
     ticketTypeFeeId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     amount?: `${SortOrder}`;
-    @Field(() => SortOrder, {nullable:true})
-    ticketTypeId?: `${SortOrder}`;
 }
 
 @InputType()
@@ -28089,8 +27704,6 @@ export class TicketTypeFeeDistributionOrderByWithAggregationInput {
     ticketTypeFeeId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     amount?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    ticketTypeId?: InstanceType<typeof SortOrderInput>;
     @Field(() => TicketTypeFeeDistributionCountOrderByAggregateInput, {nullable:true})
     _count?: InstanceType<typeof TicketTypeFeeDistributionCountOrderByAggregateInput>;
     @Field(() => TicketTypeFeeDistributionAvgOrderByAggregateInput, {nullable:true})
@@ -28115,14 +27728,10 @@ export class TicketTypeFeeDistributionOrderByWithRelationInput {
     ticketTypeFeeId?: `${SortOrder}`;
     @Field(() => SortOrder, {nullable:true})
     amount?: `${SortOrder}`;
-    @Field(() => SortOrderInput, {nullable:true})
-    ticketTypeId?: InstanceType<typeof SortOrderInput>;
     @Field(() => EventOrganizerOrderByWithRelationInput, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerOrderByWithRelationInput>;
     @Field(() => TicketTypeFeeOrderByWithRelationInput, {nullable:true})
     ticketTypeFee?: InstanceType<typeof TicketTypeFeeOrderByWithRelationInput>;
-    @Field(() => TicketTypeOrderByWithRelationInput, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeOrderByWithRelationInput>;
 }
 
 @InputType()
@@ -28143,8 +27752,6 @@ export class TicketTypeFeeDistributionScalarWhereWithAggregatesInput {
     ticketTypeFeeId?: InstanceType<typeof StringWithAggregatesFilter>;
     @Field(() => IntWithAggregatesFilter, {nullable:true})
     amount?: InstanceType<typeof IntWithAggregatesFilter>;
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    ticketTypeId?: InstanceType<typeof StringNullableWithAggregatesFilter>;
 }
 
 @InputType()
@@ -28165,8 +27772,6 @@ export class TicketTypeFeeDistributionScalarWhereInput {
     ticketTypeFeeId?: InstanceType<typeof StringFilter>;
     @Field(() => IntFilter, {nullable:true})
     amount?: InstanceType<typeof IntFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    ticketTypeId?: InstanceType<typeof StringNullableFilter>;
 }
 
 @InputType()
@@ -28208,22 +27813,6 @@ export class TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketType
 }
 
 @InputType()
-export class TicketTypeFeeDistributionUncheckedCreateNestedManyWithoutTicketTypeInput {
-    @Field(() => [TicketTypeFeeDistributionCreateWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateWithoutTicketTypeInput)
-    create?: Array<TicketTypeFeeDistributionCreateWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput)
-    connectOrCreate?: Array<TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope, {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope)
-    createMany?: InstanceType<typeof TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-}
-
-@InputType()
 export class TicketTypeFeeDistributionUncheckedCreateWithoutEventOrganizerInput {
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
@@ -28233,8 +27822,6 @@ export class TicketTypeFeeDistributionUncheckedCreateWithoutEventOrganizerInput 
     ticketTypeFeeId!: string;
     @Field(() => Int, {nullable:false})
     amount!: number;
-    @Field(() => String, {nullable:true})
-    ticketTypeId?: string;
 }
 
 @InputType()
@@ -28245,22 +27832,6 @@ export class TicketTypeFeeDistributionUncheckedCreateWithoutTicketTypeFeeInput {
     updatedAt?: Date | string;
     @Field(() => String, {nullable:false})
     eventOrganizerId!: string;
-    @Field(() => Int, {nullable:false})
-    amount!: number;
-    @Field(() => String, {nullable:true})
-    ticketTypeId?: string;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionUncheckedCreateWithoutTicketTypeInput {
-    @Field(() => Date, {nullable:true})
-    createdAt?: Date | string;
-    @Field(() => Date, {nullable:true})
-    updatedAt?: Date | string;
-    @Field(() => String, {nullable:false})
-    eventOrganizerId!: string;
-    @Field(() => String, {nullable:false})
-    ticketTypeFeeId!: string;
     @Field(() => Int, {nullable:false})
     amount!: number;
 }
@@ -28277,8 +27848,6 @@ export class TicketTypeFeeDistributionUncheckedCreateInput {
     ticketTypeFeeId!: string;
     @Field(() => Int, {nullable:false})
     amount!: number;
-    @Field(() => String, {nullable:true})
-    ticketTypeId?: string;
 }
 
 @InputType()
@@ -28328,8 +27897,6 @@ export class TicketTypeFeeDistributionUncheckedUpdateManyWithoutEventOrganizerIn
     ticketTypeFeeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ticketTypeId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -28379,59 +27946,6 @@ export class TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeFeeInp
     eventOrganizerId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ticketTypeId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeNestedInput {
-    @Field(() => [TicketTypeFeeDistributionCreateWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateWithoutTicketTypeInput)
-    create?: Array<TicketTypeFeeDistributionCreateWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput)
-    connectOrCreate?: Array<TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionUpsertWithWhereUniqueWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionUpsertWithWhereUniqueWithoutTicketTypeInput)
-    upsert?: Array<TicketTypeFeeDistributionUpsertWithWhereUniqueWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope, {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope)
-    createMany?: InstanceType<typeof TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-    @Field(() => [TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutTicketTypeInput)
-    update?: Array<TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionUpdateManyWithWhereWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionUpdateManyWithWhereWithoutTicketTypeInput)
-    updateMany?: Array<TicketTypeFeeDistributionUpdateManyWithWhereWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionScalarWhereInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionScalarWhereInput)
-    deleteMany?: Array<TicketTypeFeeDistributionScalarWhereInput>;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionUncheckedUpdateManyWithoutTicketTypeInput {
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    eventOrganizerId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    ticketTypeFeeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -28446,8 +27960,6 @@ export class TicketTypeFeeDistributionUncheckedUpdateManyInput {
     ticketTypeFeeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ticketTypeId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -28460,8 +27972,6 @@ export class TicketTypeFeeDistributionUncheckedUpdateWithoutEventOrganizerInput 
     ticketTypeFeeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ticketTypeId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -28472,22 +27982,6 @@ export class TicketTypeFeeDistributionUncheckedUpdateWithoutTicketTypeFeeInput {
     updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     eventOrganizerId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ticketTypeId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionUncheckedUpdateWithoutTicketTypeInput {
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    eventOrganizerId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    ticketTypeFeeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
 }
@@ -28504,8 +27998,6 @@ export class TicketTypeFeeDistributionUncheckedUpdateInput {
     ticketTypeFeeId?: InstanceType<typeof StringFieldUpdateOperationsInput>;
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    ticketTypeId?: InstanceType<typeof NullableStringFieldUpdateOperationsInput>;
 }
 
 @InputType()
@@ -28530,16 +28022,6 @@ export class TicketTypeFeeDistributionUpdateManyWithWhereWithoutEventOrganizerIn
 
 @InputType()
 export class TicketTypeFeeDistributionUpdateManyWithWhereWithoutTicketTypeFeeInput {
-    @Field(() => TicketTypeFeeDistributionScalarWhereInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionScalarWhereInput)
-    where!: InstanceType<typeof TicketTypeFeeDistributionScalarWhereInput>;
-    @Field(() => TicketTypeFeeDistributionUpdateManyMutationInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionUpdateManyMutationInput)
-    data!: InstanceType<typeof TicketTypeFeeDistributionUpdateManyMutationInput>;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionUpdateManyWithWhereWithoutTicketTypeInput {
     @Field(() => TicketTypeFeeDistributionScalarWhereInput, {nullable:false})
     @Type(() => TicketTypeFeeDistributionScalarWhereInput)
     where!: InstanceType<typeof TicketTypeFeeDistributionScalarWhereInput>;
@@ -28623,43 +28105,6 @@ export class TicketTypeFeeDistributionUpdateManyWithoutTicketTypeFeeNestedInput 
 }
 
 @InputType()
-export class TicketTypeFeeDistributionUpdateManyWithoutTicketTypeNestedInput {
-    @Field(() => [TicketTypeFeeDistributionCreateWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateWithoutTicketTypeInput)
-    create?: Array<TicketTypeFeeDistributionCreateWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput)
-    connectOrCreate?: Array<TicketTypeFeeDistributionCreateOrConnectWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionUpsertWithWhereUniqueWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionUpsertWithWhereUniqueWithoutTicketTypeInput)
-    upsert?: Array<TicketTypeFeeDistributionUpsertWithWhereUniqueWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope, {nullable:true})
-    @Type(() => TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope)
-    createMany?: InstanceType<typeof TicketTypeFeeDistributionCreateManyTicketTypeInputEnvelope>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-    @Field(() => [TicketTypeFeeDistributionWhereUniqueInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>>;
-    @Field(() => [TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutTicketTypeInput)
-    update?: Array<TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionUpdateManyWithWhereWithoutTicketTypeInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionUpdateManyWithWhereWithoutTicketTypeInput)
-    updateMany?: Array<TicketTypeFeeDistributionUpdateManyWithWhereWithoutTicketTypeInput>;
-    @Field(() => [TicketTypeFeeDistributionScalarWhereInput], {nullable:true})
-    @Type(() => TicketTypeFeeDistributionScalarWhereInput)
-    deleteMany?: Array<TicketTypeFeeDistributionScalarWhereInput>;
-}
-
-@InputType()
 export class TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutEventOrganizerInput {
     @Field(() => TicketTypeFeeDistributionWhereUniqueInput, {nullable:false})
     @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
@@ -28680,16 +28125,6 @@ export class TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutTicketTypeFeeI
 }
 
 @InputType()
-export class TicketTypeFeeDistributionUpdateWithWhereUniqueWithoutTicketTypeInput {
-    @Field(() => TicketTypeFeeDistributionWhereUniqueInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    where!: Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>;
-    @Field(() => TicketTypeFeeDistributionUpdateWithoutTicketTypeInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionUpdateWithoutTicketTypeInput)
-    data!: InstanceType<typeof TicketTypeFeeDistributionUpdateWithoutTicketTypeInput>;
-}
-
-@InputType()
 export class TicketTypeFeeDistributionUpdateWithoutEventOrganizerInput {
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
@@ -28699,8 +28134,6 @@ export class TicketTypeFeeDistributionUpdateWithoutEventOrganizerInput {
     amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => TicketTypeFeeUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput, {nullable:true})
     ticketTypeFee?: InstanceType<typeof TicketTypeFeeUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput>;
-    @Field(() => TicketTypeUpdateOneWithoutTicketTypeFeeDistributionsNestedInput, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeUpdateOneWithoutTicketTypeFeeDistributionsNestedInput>;
 }
 
 @InputType()
@@ -28713,22 +28146,6 @@ export class TicketTypeFeeDistributionUpdateWithoutTicketTypeFeeInput {
     amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
     @Field(() => EventOrganizerUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput>;
-    @Field(() => TicketTypeUpdateOneWithoutTicketTypeFeeDistributionsNestedInput, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeUpdateOneWithoutTicketTypeFeeDistributionsNestedInput>;
-}
-
-@InputType()
-export class TicketTypeFeeDistributionUpdateWithoutTicketTypeInput {
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    createdAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
-    updatedAt?: InstanceType<typeof DateTimeFieldUpdateOperationsInput>;
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    amount?: InstanceType<typeof IntFieldUpdateOperationsInput>;
-    @Field(() => EventOrganizerUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput, {nullable:true})
-    eventOrganizer?: InstanceType<typeof EventOrganizerUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput>;
-    @Field(() => TicketTypeFeeUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput, {nullable:true})
-    ticketTypeFee?: InstanceType<typeof TicketTypeFeeUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput>;
 }
 
 @InputType()
@@ -28743,8 +28160,6 @@ export class TicketTypeFeeDistributionUpdateInput {
     eventOrganizer?: InstanceType<typeof EventOrganizerUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput>;
     @Field(() => TicketTypeFeeUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput, {nullable:true})
     ticketTypeFee?: InstanceType<typeof TicketTypeFeeUpdateOneRequiredWithoutTicketTypeFeeDistributionsNestedInput>;
-    @Field(() => TicketTypeUpdateOneWithoutTicketTypeFeeDistributionsNestedInput, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeUpdateOneWithoutTicketTypeFeeDistributionsNestedInput>;
 }
 
 @InputType()
@@ -28774,19 +28189,6 @@ export class TicketTypeFeeDistributionUpsertWithWhereUniqueWithoutTicketTypeFeeI
 }
 
 @InputType()
-export class TicketTypeFeeDistributionUpsertWithWhereUniqueWithoutTicketTypeInput {
-    @Field(() => TicketTypeFeeDistributionWhereUniqueInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionWhereUniqueInput)
-    where!: Prisma.AtLeast<TicketTypeFeeDistributionWhereUniqueInput, 'eventOrganizerId_ticketTypeFeeId'>;
-    @Field(() => TicketTypeFeeDistributionUpdateWithoutTicketTypeInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionUpdateWithoutTicketTypeInput)
-    update!: InstanceType<typeof TicketTypeFeeDistributionUpdateWithoutTicketTypeInput>;
-    @Field(() => TicketTypeFeeDistributionCreateWithoutTicketTypeInput, {nullable:false})
-    @Type(() => TicketTypeFeeDistributionCreateWithoutTicketTypeInput)
-    create!: InstanceType<typeof TicketTypeFeeDistributionCreateWithoutTicketTypeInput>;
-}
-
-@InputType()
 export class TicketTypeFeeDistributionWhereUniqueInput {
     @Field(() => TicketTypeFeeDistributionEventOrganizerIdTicketTypeFeeIdCompoundUniqueInput, {nullable:true})
     eventOrganizerId_ticketTypeFeeId?: InstanceType<typeof TicketTypeFeeDistributionEventOrganizerIdTicketTypeFeeIdCompoundUniqueInput>;
@@ -28806,14 +28208,10 @@ export class TicketTypeFeeDistributionWhereUniqueInput {
     ticketTypeFeeId?: InstanceType<typeof StringFilter>;
     @Field(() => IntFilter, {nullable:true})
     amount?: InstanceType<typeof IntFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    ticketTypeId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => EventOrganizerScalarRelationFilter, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerScalarRelationFilter>;
     @Field(() => TicketTypeFeeScalarRelationFilter, {nullable:true})
     ticketTypeFee?: InstanceType<typeof TicketTypeFeeScalarRelationFilter>;
-    @Field(() => TicketTypeNullableScalarRelationFilter, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeNullableScalarRelationFilter>;
 }
 
 @InputType()
@@ -28834,14 +28232,10 @@ export class TicketTypeFeeDistributionWhereInput {
     ticketTypeFeeId?: InstanceType<typeof StringFilter>;
     @Field(() => IntFilter, {nullable:true})
     amount?: InstanceType<typeof IntFilter>;
-    @Field(() => StringNullableFilter, {nullable:true})
-    ticketTypeId?: InstanceType<typeof StringNullableFilter>;
     @Field(() => EventOrganizerScalarRelationFilter, {nullable:true})
     eventOrganizer?: InstanceType<typeof EventOrganizerScalarRelationFilter>;
     @Field(() => TicketTypeFeeScalarRelationFilter, {nullable:true})
     ticketTypeFee?: InstanceType<typeof TicketTypeFeeScalarRelationFilter>;
-    @Field(() => TicketTypeNullableScalarRelationFilter, {nullable:true})
-    ticketType?: InstanceType<typeof TicketTypeNullableScalarRelationFilter>;
 }
 
 @ObjectType()
@@ -28856,14 +28250,10 @@ export class TicketTypeFeeDistribution {
     ticketTypeFeeId!: string;
     @Field(() => Int, {nullable:false})
     amount!: number;
-    @Field(() => String, {nullable:true})
-    ticketTypeId!: string | null;
     @Field(() => EventOrganizer, {nullable:false})
     eventOrganizer?: InstanceType<typeof EventOrganizer>;
     @Field(() => TicketTypeFee, {nullable:false})
     ticketTypeFee?: InstanceType<typeof TicketTypeFee>;
-    @Field(() => TicketType, {nullable:true})
-    ticketType?: InstanceType<typeof TicketType> | null;
 }
 
 @InputType()

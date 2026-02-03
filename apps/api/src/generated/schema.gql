@@ -426,7 +426,7 @@ type Event {
   description: String!
   eventOrganizer: EventOrganizer!
   eventOrganizerId: String!
-  favorites: [FavoriteEvent!]
+  favoriteEvents: [FavoriteEvent!]
   featuredEvent: FeaturedEvent
   id: ID!
   inquiry: String!
@@ -487,7 +487,7 @@ input EventOrderByWithRelationInput {
   description: SortOrder
   eventOrganizer: EventOrganizerOrderByWithRelationInput
   eventOrganizerId: SortOrder
-  favorites: FavoriteEventOrderByRelationAggregateInput
+  favoriteEvents: FavoriteEventOrderByRelationAggregateInput
   featuredEvent: FeaturedEventOrderByWithRelationInput
   id: SortOrder
   inquiry: SortOrder
@@ -746,7 +746,7 @@ input EventWhereInput {
   description: StringFilter
   eventOrganizer: EventOrganizerScalarRelationFilter
   eventOrganizerId: StringFilter
-  favorites: FavoriteEventListRelationFilter
+  favoriteEvents: FavoriteEventListRelationFilter
   featuredEvent: FeaturedEventNullableScalarRelationFilter
   id: StringFilter
   inquiry: StringFilter
@@ -2170,7 +2170,6 @@ type TicketType {
   sortOrder: Int!
   stageTicketTypes: [StageTicketType!]
   ticketApplicationItems: [TicketApplicationItem!]
-  ticketTypeFeeDistributions: [TicketTypeFeeDistribution!]
   ticketTypeFees: [TicketTypeFee!]
   ticketTypePriceDistributions: [TicketTypePriceDistribution!]
   tickets: [Ticket!]
@@ -2212,10 +2211,8 @@ type TicketTypeFeeDistribution {
   createdAt: DateTime!
   eventOrganizer: EventOrganizer!
   eventOrganizerId: String!
-  ticketType: TicketType
   ticketTypeFee: TicketTypeFee!
   ticketTypeFeeId: String!
-  ticketTypeId: String
   updatedAt: DateTime!
 }
 
@@ -2237,10 +2234,8 @@ input TicketTypeFeeDistributionWhereInput {
   createdAt: DateTimeFilter
   eventOrganizer: EventOrganizerScalarRelationFilter
   eventOrganizerId: StringFilter
-  ticketType: TicketTypeNullableScalarRelationFilter
   ticketTypeFee: TicketTypeFeeScalarRelationFilter
   ticketTypeFeeId: StringFilter
-  ticketTypeId: StringNullableFilter
   updatedAt: DateTimeFilter
 }
 
@@ -2302,11 +2297,6 @@ input TicketTypeListRelationFilter {
   some: TicketTypeWhereInput
 }
 
-input TicketTypeNullableScalarRelationFilter {
-  is: TicketTypeWhereInput
-  isNot: TicketTypeWhereInput
-}
-
 input TicketTypeOrderByRelationAggregateInput {
   _count: SortOrder
 }
@@ -2327,7 +2317,6 @@ input TicketTypeOrderByWithRelationInput {
   sortOrder: SortOrder
   stageTicketTypes: StageTicketTypeOrderByRelationAggregateInput
   ticketApplicationItems: TicketApplicationItemOrderByRelationAggregateInput
-  ticketTypeFeeDistributions: TicketTypeFeeDistributionOrderByRelationAggregateInput
   ticketTypeFees: TicketTypeFeeOrderByRelationAggregateInput
   ticketTypePriceDistributions: TicketTypePriceDistributionOrderByRelationAggregateInput
   tickets: TicketOrderByRelationAggregateInput
@@ -2398,7 +2387,6 @@ input TicketTypeWhereInput {
   sortOrder: IntFilter
   stageTicketTypes: StageTicketTypeListRelationFilter
   ticketApplicationItems: TicketApplicationItemListRelationFilter
-  ticketTypeFeeDistributions: TicketTypeFeeDistributionListRelationFilter
   ticketTypeFees: TicketTypeFeeListRelationFilter
   ticketTypePriceDistributions: TicketTypePriceDistributionListRelationFilter
   tickets: TicketListRelationFilter

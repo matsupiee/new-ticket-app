@@ -222,7 +222,7 @@ model Event {
   isTokuteiKogyo Boolean @default(false) // 特定興行の場合はtrue
 
   eventOrganizer EventOrganizer  @relation(fields: [eventOrganizerId], references: [id])
-  favorites      FavoriteEvent[]
+  favoriteEvents FavoriteEvent[]
   featuredEvent  FeaturedEvent?
   stages         Stage[]
   saleSchedules  SaleSchedule[]
@@ -409,7 +409,6 @@ model TicketType {
   tickets                      Ticket[]
   ticketTypeFees               TicketTypeFee[]
   ticketTypePriceDistributions TicketTypePriceDistribution[]
-  ticketTypeFeeDistributions   TicketTypeFeeDistribution[]
   ticketApplicationItems       TicketApplicationItem[]
   stageTicketTypes             StageTicketType[]
 }
@@ -457,8 +456,6 @@ model TicketTypeFeeDistribution {
 
   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
   ticketTypeFee  TicketTypeFee  @relation(fields: [ticketTypeFeeId], references: [id])
-  ticketType     TicketType?    @relation(fields: [ticketTypeId], references: [id])
-  ticketTypeId   String?
 
   @@id([eventOrganizerId, ticketTypeFeeId])
 }
