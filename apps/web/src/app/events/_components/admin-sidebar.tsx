@@ -2,7 +2,20 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutList, TrendingUp, Clock, Settings } from 'lucide-react';
+import {
+  LayoutList,
+  TrendingUp,
+  Clock,
+  Settings,
+  Mail,
+  Lock,
+  Users,
+  Ban,
+  FileText,
+  HelpCircle,
+  LogOut,
+  CreditCard,
+} from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +27,13 @@ import {
   SidebarGroup,
   SidebarGroupContent,
 } from '@/shared/components/ui/sidebar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shared/components/ui/dropdown-menu';
 
 const navItems = [
   { href: '/events', label: 'イベント一覧', icon: LayoutList },
@@ -55,12 +75,67 @@ export function AdminSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild isActive={pathname === '/settings'}>
-              <Link href="/settings">
-                <Settings className="size-4" />
-                <span>設定</span>
-              </Link>
-            </SidebarMenuButton>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  <Settings className="size-4" />
+                  <span>設定</span>
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="top" align="start" className="w-56">
+                <DropdownMenuItem asChild>
+                  <Link href="/settings/email" className="cursor-pointer">
+                    <Mail className="size-4 mr-2" />
+                    メールアドレスの変更
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/settings/password" className="cursor-pointer">
+                    <Lock className="size-4 mr-2" />
+                    パスワードの変更
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/settings/members" className="cursor-pointer">
+                    <Users className="size-4 mr-2" />
+                    管理メンバー
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/settings/ban" className="cursor-pointer">
+                    <Ban className="size-4 mr-2" />
+                    アカウントBAN
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/settings/bank-account"
+                    className="cursor-pointer"
+                  >
+                    <CreditCard className="size-4 mr-2" />
+                    銀行口座の登録
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/settings/billing" className="cursor-pointer">
+                    <FileText className="size-4 mr-2" />
+                    精算書の確認
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/help" className="cursor-pointer">
+                    <HelpCircle className="size-4 mr-2" />
+                    よくある質問
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-red-600 focus:text-red-600 cursor-pointer">
+                  <LogOut className="size-4 mr-2" />
+                  ログアウト
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
