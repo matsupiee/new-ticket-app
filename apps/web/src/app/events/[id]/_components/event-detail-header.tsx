@@ -19,13 +19,60 @@ const EventUpdatePublishStatusMutation = graphql(`
   }
 `);
 
+type Stage = {
+  id: string;
+  name: string | null;
+  doorsOpenAt: string;
+  startAt: string;
+  venue: {
+    id: string;
+    name: string;
+  } | null;
+  stageArtists: Array<{
+    artist: {
+      id: string;
+      name: string;
+    };
+  }> | null;
+};
+
+type SaleSchedule = {
+  id: string;
+  name: string;
+  description: string | null;
+  saleType: string | null;
+  publishAt: string | null;
+  saleStartAt: string;
+  saleEndAt: string;
+  lotteryMode: string | null;
+  lotteryStartAt: string | null;
+  lotteryResultAnnounceAt: string | null;
+  isSmsAuthRequired: boolean | null;
+  publishStatus: string | null;
+  ticketTypes: Array<{
+    id: string;
+    name: string;
+    description: string | null;
+    seatType: string | null;
+    basePrice: number;
+    capacity: number;
+    maxNumPerApply: number;
+    isOnceApplyOnly: boolean | null;
+    isOnlyQrCodeEntry: boolean | null;
+  }> | null;
+};
+
 export function EventDetailHeader({
   event,
 }: {
   event: {
     id: string;
     name: string;
+    description?: string | null;
+    inquiry?: string | null;
     publishStatus: string | null;
+    stages?: Stage[] | null;
+    saleSchedules?: SaleSchedule[] | null;
   };
 }) {
   const [updatePublishStatusResult, updatePublishStatus] = useMutation(
@@ -105,7 +152,22 @@ export function EventDetailHeader({
         open={showPublishDialog}
         onOpenChange={setShowPublishDialog}
         onConfirm={handlePublish}
-        event={event}
+        event={{
+          id: event.id,
+          name: event.name,
+          description: event.description || undefined,
+          url: `https://dev.t-dv.com/${event.id}`,
+          contactInfo: event.inquiry || undefined,
+          stages: event.stages?.map((stage) => ({
+            id: stage.id,
+            date: new Date(stage.startAt),
+            startTime: new Date(stage.doorsOpenAt),
+            endTime: new Date(stage.startAt),
+            venueName: stage.venue?.name || '未設定',
+            artists: stage.stageArtists?.map((sa) => sa.artist.name) || [],
+          })),
+          saleSchedules: event.saleSchedules || undefined,
+        }}
       />
 
       <UnpublishConfirmationDialog
@@ -117,4 +179,3 @@ export function EventDetailHeader({
     </>
   );
 }
-
