@@ -41,16 +41,25 @@ model User {
   role UserRole @default(TICKET_PURCHASER)
 
   // 認証関連テーブル
+  /// @HideField()
   sessions Session[]
+  /// @HideField()
   accounts Account[]
 
   // その他
+  /// @HideField()
   userRestrictions   UserRestriction[]
+  /// @HideField()
   eventOrganizers    EventOrganizer[]
+  /// @HideField()
   ticketApplications TicketApplication[]
+  /// @HideField()
   paymentCards       PaymentCard[]
+  /// @HideField()
   tickets            Ticket[]
+  /// @HideField()
   favoriteArtists    FavoriteArtist[]
+  /// @HideField()
   favoriteEvents     FavoriteEvent[]
 
   @@map("user")
@@ -73,6 +82,7 @@ model Session {
   userAgent String?
   userId    String   @unique
 
+  /// @HideField()
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -95,6 +105,7 @@ model Account {
   scope                 String?
   password              String?
 
+  /// @HideField()
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
@@ -122,6 +133,7 @@ model UserRestriction {
   reason    String
   expiresAt DateTime? // nullの場合は無期限
 
+  /// @HideField()
   user User @relation(fields: [userId], references: [id])
 }
 
@@ -141,12 +153,19 @@ model EventOrganizer {
   notifyEmail           String?
   notifySlackWebhookUrl String?
 
+  /// @HideField()
   user                         User                          @relation(fields: [userId], references: [id])
+  /// @HideField()
   events                       Event[]
+  /// @HideField()
   bankAccounts                 BankAccount[]
+  /// @HideField()
   eventOrganizerReferrers      EventOrganizerReferrer[]
+  /// @HideField()
   ticketTypePriceDistributions TicketTypePriceDistribution[]
+  /// @HideField()
   ticketTypeFeeDistributions   TicketTypeFeeDistribution[]
+  /// @HideField()
   eventOrganizerFeatures       EventOrganizerFeature[]
 }
 
@@ -160,6 +179,7 @@ model EventOrganizerFeature {
   key              String
   enabled          Boolean @default(false)
 
+  /// @HideField()
   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
 }
 
@@ -179,6 +199,7 @@ model BankAccount {
 
   isDefault Boolean @default(false)
 
+  /// @HideField()
   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
 }
 
@@ -196,6 +217,7 @@ model EventOrganizerReferrer {
   name             String
   referrerSource   String
 
+  /// @HideField()
   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
 }
 
@@ -221,10 +243,15 @@ model Event {
   // 特定興行の場合は、チケットの不正転売を防止するために、入場券に特定興行入場券という印を押す必要がある
   isTokuteiKogyo Boolean @default(false) // 特定興行の場合はtrue
 
+  /// @HideField()
   eventOrganizer EventOrganizer  @relation(fields: [eventOrganizerId], references: [id])
+  /// @HideField()
   favoriteEvents FavoriteEvent[]
+  /// @HideField()
   featuredEvent  FeaturedEvent?
+  /// @HideField()
   stages         Stage[]
+  /// @HideField()
   saleSchedules  SaleSchedule[]
 }
 
@@ -246,9 +273,13 @@ model Stage {
   doorsOpenAt DateTime // 会場時間
   startAt     DateTime // 公演開始時間
 
+  /// @HideField()
   event            Event             @relation(fields: [eventId], references: [id])
+  /// @HideField()
   venue            Venue?            @relation(fields: [venueId], references: [id])
+  /// @HideField()
   stageArtists     StageArtist[]
+  /// @HideField()
   stageTicketTypes StageTicketType[]
 }
 
@@ -257,7 +288,9 @@ model Venue {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  name   String // 会場名
+  name String // 会場名
+
+  /// @HideField()
   stages Stage[]
 }
 
@@ -271,7 +304,9 @@ model Artist {
   profileImageUrl String?
   twitterAccount  String?
 
+  /// @HideField()
   stageArtists StageArtist[]
+  /// @HideField()
   favorites    FavoriteArtist[]
 }
 
@@ -286,7 +321,9 @@ model StageArtist {
   // 同じステージ内でのアーティストの表示順
   sortOrder Int @default(0)
 
+  /// @HideField()
   stage  Stage  @relation(fields: [stageId], references: [id])
+  /// @HideField()
   artist Artist @relation(fields: [artistId], references: [id])
 
   @@id([stageId, artistId])
@@ -335,8 +372,11 @@ model SaleSchedule {
 
   deletedAt DateTime?
 
+  /// @HideField()
   event                   Event                    @relation(fields: [eventId], references: [id])
+  /// @HideField()
   ticketTypes             TicketType[]
+  /// @HideField()
   availablePaymentMethods AvailablePaymentMethod[]
 }
 
@@ -370,6 +410,7 @@ model AvailablePaymentMethod {
   saleScheduleId String
   paymentMethod  PaymentMethodType
 
+  /// @HideField()
   saleSchedule SaleSchedule @relation(fields: [saleScheduleId], references: [id])
 }
 
@@ -380,7 +421,9 @@ model StageTicketType {
   stageId      String
   ticketTypeId String
 
+  /// @HideField()
   stage      Stage      @relation(fields: [stageId], references: [id])
+  /// @HideField()
   ticketType TicketType @relation(fields: [ticketTypeId], references: [id])
 
   @@id([stageId, ticketTypeId])
@@ -405,11 +448,17 @@ model TicketType {
   isOnceApplyOnly   Boolean @default(false) // 一度のみ申込可能かどうか
   isOnlyQrCodeEntry Boolean @default(false) // QRコードのみで入場可能かどうか
 
+  /// @HideField()
   saleSchedule                 SaleSchedule                  @relation(fields: [saleScheduleId], references: [id])
+  /// @HideField()
   tickets                      Ticket[]
+  /// @HideField()
   ticketTypeFees               TicketTypeFee[]
+  /// @HideField()
   ticketTypePriceDistributions TicketTypePriceDistribution[]
+  /// @HideField()
   ticketApplicationItems       TicketApplicationItem[]
+  /// @HideField()
   stageTicketTypes             StageTicketType[]
 }
 
@@ -427,7 +476,9 @@ model TicketTypePriceDistribution {
   ticketTypeId     String
   amount           Int
 
+  /// @HideField()
   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+  /// @HideField()
   ticketType     TicketType     @relation(fields: [ticketTypeId], references: [id])
 
   @@id([eventOrganizerId, ticketTypeId])
@@ -442,7 +493,9 @@ model TicketTypeFee {
   amount       Int
   ticketTypeId String
 
+  /// @HideField()
   ticketType                 TicketType                  @relation(fields: [ticketTypeId], references: [id])
+  /// @HideField()
   ticketTypeFeeDistributions TicketTypeFeeDistribution[]
 }
 
@@ -454,7 +507,9 @@ model TicketTypeFeeDistribution {
   ticketTypeFeeId  String
   amount           Int
 
+  /// @HideField()
   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+  /// @HideField()
   ticketTypeFee  TicketTypeFee  @relation(fields: [ticketTypeFeeId], references: [id])
 
   @@id([eventOrganizerId, ticketTypeFeeId])
@@ -473,8 +528,11 @@ model TicketApplication {
   cancelReason String? // キャンセル扱いになった理由（当選したが、結局支払いができなかったという場合はLOSTになる）
   cancelledAt  DateTime?
 
+  /// @HideField()
   user                   User                    @relation(fields: [userId], references: [id])
+  /// @HideField()
   ticketApplicationItems TicketApplicationItem[]
+  /// @HideField()
   payments               Payment[]
 }
 
@@ -496,9 +554,13 @@ model TicketApplicationItem {
   quantity Int // 申し込み枚数
   priority Int // 複数のチケットに同時に申し込む際に希望順位をつける
 
+  /// @HideField()
   ticketApplication TicketApplication @relation(fields: [ticketApplicationId], references: [id])
+  /// @HideField()
   ticketType        TicketType        @relation(fields: [ticketTypeId], references: [id])
+  /// @HideField()
   tickets           Ticket[] // 1TicketApplicationItemで複数枚申し込めるので、複数のticketが紐づけられる
+  /// @HideField()
   paymentItems      PaymentItem[]
 
   @@unique([ticketApplicationId, ticketTypeId])
@@ -527,8 +589,11 @@ model Payment {
 
   externalId String? // 外部決済ID
 
+  /// @HideField()
   ticketApplication TicketApplication @relation(fields: [ticketApplicationId], references: [id])
+  /// @HideField()
   paymentCard       PaymentCard?      @relation(fields: [cardId], references: [id])
+  /// @HideField()
   paymentItems      PaymentItem[]
 }
 
@@ -554,7 +619,9 @@ model PaymentItem {
   paymentId               String
   ticketApplicationItemId String
 
+  /// @HideField()
   payment               Payment               @relation(fields: [paymentId], references: [id])
+  /// @HideField()
   ticketApplicationItem TicketApplicationItem @relation(fields: [ticketApplicationItemId], references: [id])
 
   // 決済を複数回試みる可能性があるので、ticketApplicationId単体ではunique制約を貼らない
@@ -576,7 +643,9 @@ model PaymentCard {
   expiryYear  Int
   isDefault   Boolean         @default(false)
 
+  /// @HideField()
   user     User      @relation(fields: [userId], references: [id])
+  /// @HideField()
   payments Payment[]
 }
 
@@ -600,8 +669,11 @@ model Ticket {
 
   method AdmissionMethod
 
+  /// @HideField()
   ticketApplicationItem TicketApplicationItem @relation(fields: [ticketApplicationItemId], references: [id])
+  /// @HideField()
   user                  User                  @relation(fields: [userId], references: [id])
+  /// @HideField()
   ticketType            TicketType            @relation(fields: [ticketTypeId], references: [id])
 }
 
@@ -630,7 +702,9 @@ model FavoriteArtist {
   userId   String
   artistId String
 
+  /// @HideField()
   user   User   @relation(fields: [userId], references: [id])
+  /// @HideField()
   artist Artist @relation(fields: [artistId], references: [id])
 
   @@id([userId, artistId])
@@ -644,7 +718,9 @@ model FavoriteEvent {
   userId  String
   eventId String
 
+  /// @HideField()
   user  User  @relation(fields: [userId], references: [id])
+  /// @HideField()
   event Event @relation(fields: [eventId], references: [id])
 
   @@id([userId, eventId])
@@ -662,6 +738,7 @@ model FeaturedEvent {
   publishAt DateTime?
   endAt     DateTime?
 
+  /// @HideField()
   event Event @relation(fields: [eventId], references: [id])
 }
 

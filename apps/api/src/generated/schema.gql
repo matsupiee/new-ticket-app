@@ -15,7 +15,6 @@ type Account {
   refreshTokenExpiresAt: DateTime
   scope: String
   updatedAt: DateTime!
-  user: User!
   userId: String!
 }
 
@@ -94,11 +93,9 @@ enum AdmissionMethod {
 type Artist {
   createdAt: DateTime!
   description: String
-  favorites: [FavoriteArtist!]
   id: ID!
   name: String!
   profileImageUrl: String
-  stageArtists: [StageArtist!]
   twitterAccount: String
   updatedAt: DateTime!
 }
@@ -166,7 +163,6 @@ type AvailablePaymentMethod {
   createdAt: DateTime!
   id: ID!
   paymentMethod: PaymentMethodType!
-  saleSchedule: SaleSchedule!
   saleScheduleId: String!
   updatedAt: DateTime!
 }
@@ -230,7 +226,6 @@ type BankAccount {
   branchCode: String!
   branchName: String!
   createdAt: DateTime!
-  eventOrganizer: EventOrganizer!
   eventOrganizerId: String!
   id: ID!
   isDefault: Boolean!
@@ -434,7 +429,7 @@ type Event {
   description: String!
   eventOrganizer: EventOrganizer!
   eventOrganizerId: String!
-  favoriteEvents: [FavoriteEvent!]
+  favoriteEvents: [FavoriteEvent!]!
   featuredEvent: FeaturedEvent
   id: ID!
   inquiry: String!
@@ -444,8 +439,8 @@ type Event {
   name: String!
   publishAt: DateTime
   publishStatus: EventPublishStatus!
-  saleSchedules: [SaleSchedule!]
-  stages: [Stage!]
+  saleSchedules: [SaleSchedule!]!
+  stages: [Stage!]!
   thumbnailUrls: [String!]
   updatedAt: DateTime!
 }
@@ -512,21 +507,14 @@ input EventOrderByWithRelationInput {
 }
 
 type EventOrganizer {
-  bankAccounts: [BankAccount!]
   createdAt: DateTime!
-  eventOrganizerFeatures: [EventOrganizerFeature!]
-  eventOrganizerReferrers: [EventOrganizerReferrer!]
-  events: [Event!]
   id: ID!
   inquiryEmail: String!
   inquirySubject: String!
   name: String!
   notifyEmail: String
   notifySlackWebhookUrl: String
-  ticketTypeFeeDistributions: [TicketTypeFeeDistribution!]
-  ticketTypePriceDistributions: [TicketTypePriceDistribution!]
   updatedAt: DateTime!
-  user: User!
   userId: String!
 }
 
@@ -545,7 +533,6 @@ type EventOrganizerEdge {
 type EventOrganizerFeature {
   createdAt: DateTime!
   enabled: Boolean!
-  eventOrganizer: EventOrganizer!
   eventOrganizerId: String!
   id: ID!
   key: String!
@@ -642,7 +629,6 @@ type EventOrganizerPageInfo {
 
 type EventOrganizerReferrer {
   createdAt: DateTime!
-  eventOrganizer: EventOrganizer!
   eventOrganizerId: String!
   id: ID!
   name: String!
@@ -792,15 +778,6 @@ input EventWhereInput {
   updatedAt: DateTimeFilter
 }
 
-type FavoriteArtist {
-  artist: Artist!
-  artistId: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: User!
-  userId: String!
-}
-
 input FavoriteArtistListRelationFilter {
   every: FavoriteArtistWhereInput
   none: FavoriteArtistWhereInput
@@ -857,7 +834,6 @@ input FavoriteEventWhereInput {
 type FeaturedEvent {
   createdAt: DateTime!
   endAt: DateTime
-  event: Event!
   eventId: String!
   id: ID!
   publishAt: DateTime
@@ -1158,11 +1134,8 @@ type Payment {
   failedAt: DateTime
   failureReason: String
   id: ID!
-  paymentCard: PaymentCard
-  paymentItems: [PaymentItem!]
   paymentMethod: PaymentMethodType!
   status: PaymentStatus!
-  ticketApplication: TicketApplication!
   ticketApplicationId: String!
   totalPaymentAmount: Int!
   updatedAt: DateTime!
@@ -1177,10 +1150,8 @@ type PaymentCard {
   expiryYear: Int!
   id: ID!
   isDefault: Boolean!
-  payments: [Payment!]
   provider: PaymentProvider!
   updatedAt: DateTime!
-  user: User!
   userId: String!
 }
 
@@ -1268,9 +1239,7 @@ type PaymentEdge {
 type PaymentItem {
   createdAt: DateTime!
   id: ID!
-  payment: Payment!
   paymentId: String!
-  ticketApplicationItem: TicketApplicationItem!
   ticketApplicationItemId: String!
   updatedAt: DateTime!
 }
@@ -1561,7 +1530,7 @@ enum QueryMode {
 }
 
 type SaleSchedule {
-  availablePaymentMethods: [AvailablePaymentMethod!]
+  availablePaymentMethods: [AvailablePaymentMethod!]!
   createdAt: DateTime!
   deletedAt: DateTime
   description: String!
@@ -1589,7 +1558,7 @@ type SaleSchedule {
   saleStartAt: DateTime!
   saleType: SaleType!
   sortOrder: Int!
-  ticketTypes: [TicketType!]
+  ticketTypes: [TicketType!]!
   transferPolicy: TicketTransferPolicy!
   updatedAt: DateTime!
 }
@@ -1758,7 +1727,6 @@ type Session {
   ipAddress: String
   token: String!
   updatedAt: DateTime!
-  user: User!
   userAgent: String
   userId: String!
 }
@@ -1832,12 +1800,11 @@ input SortOrderInput {
 type Stage {
   createdAt: DateTime!
   doorsOpenAt: DateTime!
-  event: Event!
   eventId: String!
   id: ID!
   name: String!
-  stageArtists: [StageArtist!]
-  stageTicketTypes: [StageTicketType!]
+  stageArtists: [StageArtist!]!
+  stageTicketTypes: [StageTicketType!]!
   startAt: DateTime!
   updatedAt: DateTime!
   venue: Venue
@@ -1849,7 +1816,6 @@ type StageArtist {
   artistId: String!
   createdAt: DateTime!
   sortOrder: Int!
-  stage: Stage!
   stageId: String!
   updatedAt: DateTime!
 }
@@ -1936,9 +1902,7 @@ input StageScalarRelationFilter {
 
 type StageTicketType {
   createdAt: DateTime!
-  stage: Stage!
   stageId: String!
-  ticketType: TicketType!
   ticketTypeId: String!
   updatedAt: DateTime!
 }
@@ -2044,12 +2008,9 @@ type Ticket {
   id: ID!
   method: AdmissionMethod!
   name: String!
-  ticketApplicationItem: TicketApplicationItem!
   ticketApplicationItemId: String!
-  ticketType: TicketType!
   ticketTypeId: String!
   updatedAt: DateTime!
-  user: User!
   userId: String!
 }
 
@@ -2058,11 +2019,8 @@ type TicketApplication {
   cancelledAt: DateTime
   createdAt: DateTime!
   id: ID!
-  payments: [Payment!]
   status: TicketApplicationStatus!
-  ticketApplicationItems: [TicketApplicationItem!]
   updatedAt: DateTime!
-  user: User!
   userId: String!
 }
 
@@ -2081,14 +2039,10 @@ type TicketApplicationEdge {
 type TicketApplicationItem {
   createdAt: DateTime!
   id: ID!
-  paymentItems: [PaymentItem!]
   priority: Int!
   quantity: Int!
-  ticketApplication: TicketApplication!
   ticketApplicationId: String!
-  ticketType: TicketType!
   ticketTypeId: String!
-  tickets: [Ticket!]
   updatedAt: DateTime!
 }
 
@@ -2279,11 +2233,11 @@ type TicketType {
   saleScheduleId: String!
   seatType: SeatType!
   sortOrder: Int!
-  stageTicketTypes: [StageTicketType!]
-  ticketApplicationItems: [TicketApplicationItem!]
-  ticketTypeFees: [TicketTypeFee!]
-  ticketTypePriceDistributions: [TicketTypePriceDistribution!]
-  tickets: [Ticket!]
+  stageTicketTypes: [StageTicketType!]!
+  ticketApplicationItems: [TicketApplicationItem!]!
+  ticketTypeFees: [TicketTypeFee!]!
+  ticketTypePriceDistributions: [TicketTypePriceDistribution!]!
+  tickets: [Ticket!]!
   updatedAt: DateTime!
 }
 
@@ -2320,8 +2274,6 @@ type TicketTypeFee {
   createdAt: DateTime!
   id: ID!
   name: String!
-  ticketType: TicketType!
-  ticketTypeFeeDistributions: [TicketTypeFeeDistribution!]
   ticketTypeId: String!
   updatedAt: DateTime!
 }
@@ -2331,16 +2283,6 @@ type TicketTypeFeeConnection {
   nodes: [TicketTypeFee!]!
   pageInfo: TicketTypeFeePageInfo!
   totalCount: Int!
-}
-
-type TicketTypeFeeDistribution {
-  amount: Int!
-  createdAt: DateTime!
-  eventOrganizer: EventOrganizer!
-  eventOrganizerId: String!
-  ticketTypeFee: TicketTypeFee!
-  ticketTypeFeeId: String!
-  updatedAt: DateTime!
 }
 
 input TicketTypeFeeDistributionListRelationFilter {
@@ -2460,9 +2402,7 @@ type TicketTypePageInfo {
 type TicketTypePriceDistribution {
   amount: Int!
   createdAt: DateTime!
-  eventOrganizer: EventOrganizer!
   eventOrganizerId: String!
-  ticketType: TicketType!
   ticketTypeId: String!
   updatedAt: DateTime!
 }
@@ -2555,23 +2495,14 @@ input TicketWhereInput {
 }
 
 type User {
-  accounts: [Account!]
   createdAt: DateTime!
   email: String!
   emailVerified: Boolean!
-  eventOrganizers: [EventOrganizer!]
-  favoriteArtists: [FavoriteArtist!]
-  favoriteEvents: [FavoriteEvent!]
   id: ID!
   image: String
   name: String!
-  paymentCards: [PaymentCard!]
   role: UserRole!
-  sessions: [Session!]
-  ticketApplications: [TicketApplication!]
-  tickets: [Ticket!]
   updatedAt: DateTime!
-  userRestrictions: [UserRestriction!]
 }
 
 type UserConnection {
@@ -2619,7 +2550,6 @@ type UserRestriction {
   id: ID!
   reason: String!
   updatedAt: DateTime!
-  user: User!
   userId: String!
 }
 
@@ -2713,7 +2643,6 @@ type Venue {
   createdAt: DateTime!
   id: ID!
   name: String!
-  stages: [Stage!]
   updatedAt: DateTime!
 }
 

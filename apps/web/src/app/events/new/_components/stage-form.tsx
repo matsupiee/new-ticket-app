@@ -108,14 +108,7 @@ export function StageForm({
           name={`stages.${index}.name`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                公演名
-                {isFirst && (
-                  <span className="text-xs text-gray-500 ml-2">
-                    (空欄の場合はイベント名を使用)
-                  </span>
-                )}
-              </FormLabel>
+              <FormLabel>公演名</FormLabel>
               <FormControl>
                 <Input
                   {...field}
