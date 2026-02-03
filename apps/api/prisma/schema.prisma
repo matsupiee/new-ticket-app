@@ -158,8 +158,6 @@ model EventOrganizer {
   /// @HideField()
   events                       Event[]
   /// @HideField()
-  bankAccounts                 BankAccount[]
-  /// @HideField()
   eventOrganizerReferrers      EventOrganizerReferrer[]
   /// @HideField()
   ticketTypePriceDistributions TicketTypePriceDistribution[]
@@ -183,30 +181,28 @@ model EventOrganizerFeature {
   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
 }
 
-model BankAccount {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+// model BankAccount {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @default(now()) @updatedAt
 
-  eventOrganizerId String
-  bankCode         String
-  bankName         String
-  branchCode       String
-  branchName       String
-  accountType      BankAccountType
-  accountNumber    String
-  accountHolder    String
+//   eventOrganizerId String @unique
+//   bankCode         String
+//   bankName         String
+//   branchCode       String
+//   branchName       String
+//   accountType      BankAccountType
+//   accountNumber    String
+//   accountHolder    String
 
-  isDefault Boolean @default(false)
+//   /// @HideField()
+//   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+// }
 
-  /// @HideField()
-  eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
-}
-
-enum BankAccountType {
-  SAVINGS // 普通
-  CHECKING // 当座
-}
+// enum BankAccountType {
+//   SAVINGS // 普通
+//   CHECKING // 当座
+// }
 
 model EventOrganizerReferrer {
   id        String   @id @default(cuid())

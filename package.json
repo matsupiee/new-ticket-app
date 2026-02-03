@@ -12,6 +12,7 @@
     "db:up": "docker compose up",
     "build": "turbo run build",
     "db:push": "turbo -F api db:push",
+    "db:migrate": "turbo -F api db:migrate",
     "db:generate": "turbo -F api db:generate",
     "db:seed": "turbo -F api db:seed",
     "db:reset": "turbo -F api db:reset",

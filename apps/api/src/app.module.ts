@@ -13,7 +13,7 @@ import { VerificationModule } from './components/verification/verification.modul
 import { UserRestrictionModule } from './components/user-restriction/user-restriction.module';
 import { EventOrganizerModule } from './components/event-organizer/event-organizer.module';
 import { EventOrganizerFeatureModule } from './components/event-organizer-feature/event-organizer-feature.module';
-import { BankAccountModule } from './components/bank-account/bank-account.module';
+// import { BankAccountModule } from './components/bank-account/bank-account.module';
 import { EventOrganizerReferrerModule } from './components/event-organizer-referrer/event-organizer-referrer.module';
 import { StageModule } from './components/stage/stage.module';
 import { VenueModule } from './components/venue/venue.module';
@@ -53,7 +53,7 @@ import { FeaturedEventModule } from './components/featured-event/featured-event.
     UserRestrictionModule,
     EventOrganizerModule,
     EventOrganizerFeatureModule,
-    BankAccountModule,
+    // BankAccountModule,
     EventOrganizerReferrerModule,
     StageModule,
     VenueModule,

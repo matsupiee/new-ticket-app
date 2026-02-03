@@ -102,7 +102,7 @@ apps/server/.env.exampleファイルをそのままコピーしましょう
 ## prisma スキーマをデータベースに反映
 
 ```
-pnpm db:push
+pnpm db:migrate
 ```
 
 ## prismaクライアントを作成

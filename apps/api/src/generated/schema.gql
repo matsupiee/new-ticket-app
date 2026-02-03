@@ -217,90 +217,6 @@ input AvailablePaymentMethodWhereInput {
   updatedAt: DateTimeFilter
 }
 
-type BankAccount {
-  accountHolder: String!
-  accountNumber: String!
-  accountType: BankAccountType!
-  bankCode: String!
-  bankName: String!
-  branchCode: String!
-  branchName: String!
-  createdAt: DateTime!
-  eventOrganizerId: String!
-  id: ID!
-  isDefault: Boolean!
-  updatedAt: DateTime!
-}
-
-type BankAccountConnection {
-  edges: [BankAccountEdge!]!
-  nodes: [BankAccount!]!
-  pageInfo: BankAccountPageInfo!
-  totalCount: Int!
-}
-
-type BankAccountEdge {
-  cursor: String!
-  node: BankAccount!
-}
-
-input BankAccountListRelationFilter {
-  every: BankAccountWhereInput
-  none: BankAccountWhereInput
-  some: BankAccountWhereInput
-}
-
-input BankAccountOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input BankAccountOrderByWithRelationInput {
-  accountHolder: SortOrder
-  accountNumber: SortOrder
-  accountType: SortOrder
-  bankCode: SortOrder
-  bankName: SortOrder
-  branchCode: SortOrder
-  branchName: SortOrder
-  createdAt: SortOrder
-  eventOrganizer: EventOrganizerOrderByWithRelationInput
-  eventOrganizerId: SortOrder
-  id: SortOrder
-  isDefault: SortOrder
-  updatedAt: SortOrder
-}
-
-type BankAccountPageInfo {
-  endCursor: String
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-}
-
-enum BankAccountType {
-  CHECKING
-  SAVINGS
-}
-
-input BankAccountWhereInput {
-  AND: [BankAccountWhereInput!]
-  NOT: [BankAccountWhereInput!]
-  OR: [BankAccountWhereInput!]
-  accountHolder: StringFilter
-  accountNumber: StringFilter
-  accountType: EnumBankAccountTypeFilter
-  bankCode: StringFilter
-  bankName: StringFilter
-  branchCode: StringFilter
-  branchName: StringFilter
-  createdAt: DateTimeFilter
-  eventOrganizer: EventOrganizerScalarRelationFilter
-  eventOrganizerId: StringFilter
-  id: StringFilter
-  isDefault: BoolFilter
-  updatedAt: DateTimeFilter
-}
-
 input BoolFilter {
   equals: Boolean
   not: NestedBoolFilter
@@ -338,13 +254,6 @@ input EnumAdmissionMethodFilter {
   in: [AdmissionMethod!]
   not: NestedEnumAdmissionMethodFilter
   notIn: [AdmissionMethod!]
-}
-
-input EnumBankAccountTypeFilter {
-  equals: BankAccountType
-  in: [BankAccountType!]
-  not: NestedEnumBankAccountTypeFilter
-  notIn: [BankAccountType!]
 }
 
 input EnumEventPublishStatusFilter {
@@ -602,7 +511,6 @@ input EventOrganizerOrderByRelationAggregateInput {
 }
 
 input EventOrganizerOrderByWithRelationInput {
-  bankAccounts: BankAccountOrderByRelationAggregateInput
   createdAt: SortOrder
   eventOrganizerFeatures: EventOrganizerFeatureOrderByRelationAggregateInput
   eventOrganizerReferrers: EventOrganizerReferrerOrderByRelationAggregateInput
@@ -697,7 +605,6 @@ input EventOrganizerWhereInput {
   AND: [EventOrganizerWhereInput!]
   NOT: [EventOrganizerWhereInput!]
   OR: [EventOrganizerWhereInput!]
-  bankAccounts: BankAccountListRelationFilter
   createdAt: DateTimeFilter
   eventOrganizerFeatures: EventOrganizerFeatureListRelationFilter
   eventOrganizerReferrers: EventOrganizerReferrerListRelationFilter
@@ -993,13 +900,6 @@ input NestedEnumAdmissionMethodFilter {
   in: [AdmissionMethod!]
   not: NestedEnumAdmissionMethodFilter
   notIn: [AdmissionMethod!]
-}
-
-input NestedEnumBankAccountTypeFilter {
-  equals: BankAccountType
-  in: [BankAccountType!]
-  not: NestedEnumBankAccountTypeFilter
-  notIn: [BankAccountType!]
 }
 
 input NestedEnumEventPublishStatusFilter {
@@ -1405,12 +1305,6 @@ type Query {
 
   """利用可能な支払い方法を複数取得する"""
   availablePaymentMethods(after: String, before: String, first: Int, last: Int, orderBy: [AvailablePaymentMethodOrderByWithRelationInput!], where: AvailablePaymentMethodWhereInput): AvailablePaymentMethodConnection!
-
-  """銀行口座を1件取得する"""
-  bankAccount(id: ID!): BankAccount
-
-  """銀行口座を複数取得する"""
-  bankAccounts(after: String, before: String, first: Int, last: Int, orderBy: [BankAccountOrderByWithRelationInput!], where: BankAccountWhereInput): BankAccountConnection!
 
   """イベントを1件取得する"""
   event(id: ID!): Event
