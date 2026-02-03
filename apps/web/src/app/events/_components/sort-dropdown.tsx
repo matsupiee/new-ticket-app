@@ -16,8 +16,6 @@ export type SortOption = {
 };
 
 export const sortOptions: SortOption[] = [
-  { label: '開催日新しい順', field: 'startAt', order: 'desc' },
-  { label: '開催日古い順', field: 'startAt', order: 'asc' },
   { label: '作成日新しい順', field: 'createdAt', order: 'desc' },
   { label: '作成日古い順', field: 'createdAt', order: 'asc' },
 ];

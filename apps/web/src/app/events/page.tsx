@@ -29,7 +29,6 @@ const EventsQuery = graphql(`
         createdAt
         name
         description
-        startAt
       }
       totalCount
     }
@@ -172,7 +171,7 @@ function EventList({
           id={event.id}
           title={event.name}
           venue=""
-          date={event.startAt}
+          date={event.createdAt}
           isEnded={isEndedTab}
         />
       ))}
