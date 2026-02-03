@@ -25,6 +25,8 @@ import { TicketTypeService } from './ticket-type.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketTypeUpdateInput } from './dto/ticket-type-update.input';
 import { TicketTypeUpdatePayload } from './dto/ticket-type-update.payload';
+import { TicketTypeCreateInput } from './dto/ticket-type-create.input';
+import { TicketTypeCreatePayload } from './dto/ticket-type-create.payload';
 import { UseGuards } from '@nestjs/common';
 import { EasyGuard } from '../guard/easy-guard';
 
@@ -51,6 +53,17 @@ export class TicketTypeResolver {
     @Info() resolveInfo: GraphQLResolveInfo,
   ): Promise<TicketTypeConnection> {
     return this.ticketTypeService.findMany(args, resolveInfo);
+  }
+
+  @Mutation(() => TicketTypeCreatePayload, {
+    description: 'チケットタイプを作成する',
+  })
+  @UseGuards(EasyGuard)
+  async ticketTypeCreate(
+    @Args('input') input: TicketTypeCreateInput,
+  ): Promise<TicketTypeCreatePayload> {
+    const ticketType = await this.ticketTypeService.create(input);
+    return { ticketType };
   }
 
   @Mutation(() => TicketTypeUpdatePayload, {

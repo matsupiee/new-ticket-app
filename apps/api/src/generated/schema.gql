@@ -943,6 +943,9 @@ type Mutation {
   """イベントのステージ情報を更新する"""
   stagesUpdate(input: StagesUpdateInput!): StagesUpdatePayload!
 
+  """チケットタイプを作成する"""
+  ticketTypeCreate(input: TicketTypeCreateInput!): TicketTypeCreatePayload!
+
   """チケットタイプを更新する"""
   ticketTypeUpdate(input: TicketTypeUpdateInput!): TicketTypeUpdatePayload!
 }
@@ -2262,6 +2265,22 @@ type TicketTypeConnection {
   nodes: [TicketType!]!
   pageInfo: TicketTypePageInfo!
   totalCount: Int!
+}
+
+input TicketTypeCreateInput {
+  basePrice: Int!
+  capacity: Int!
+  description: String = ""
+  isOnceApplyOnly: Boolean = false
+  isOnlyQrCodeEntry: Boolean = false
+  maxNumPerApply: Int = 1
+  name: String!
+  saleScheduleId: ID!
+  seatType: SeatType = FREE
+}
+
+type TicketTypeCreatePayload {
+  ticketType: TicketType!
 }
 
 type TicketTypeEdge {

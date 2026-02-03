@@ -22,6 +22,7 @@ import { EditStagesDialog } from './_components/edit-stages-dialog';
 import { EditSaleScheduleDialog } from './_components/edit-sale-schedule-dialog';
 import { CreateSaleScheduleDialog } from './_components/create-sale-schedule-dialog';
 import { EditTicketTypeDialog } from './_components/edit-ticket-type-dialog';
+import { CreateTicketTypeDialog } from './_components/create-ticket-type-dialog';
 
 const EventDetailQuery = graphql(`
   query EventDetail($id: ID!) {
@@ -94,6 +95,12 @@ export default function EventDetailPage() {
   const [selectedTicketTypeId, setSelectedTicketTypeId] = useState<
     string | null
   >(null);
+  const [createTicketTypeDialogOpen, setCreateTicketTypeDialogOpen] =
+    useState(false);
+  const [
+    selectedSaleScheduleIdForTicketType,
+    setSelectedSaleScheduleIdForTicketType,
+  ] = useState<string | null>(null);
 
   const [{ data, fetching, error }] = useQuery({
     query: EventDetailQuery,
@@ -397,77 +404,92 @@ export default function EventDetailPage() {
                           )}
                         </div>
 
-                        {saleSchedule.ticketTypes &&
-                          saleSchedule.ticketTypes.length > 0 && (
-                            <div>
-                              <h4 className="font-medium text-gray-900 mb-2">
-                                チケット種別
-                              </h4>
-                              <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                  <thead>
-                                    <tr className="border-b">
-                                      <th className="text-left py-2 px-3 text-gray-700">
-                                        券名
-                                      </th>
-                                      <th className="text-right py-2 px-3 text-gray-700">
-                                        価格
-                                      </th>
-                                      <th className="text-right py-2 px-3 text-gray-700">
-                                        枠数
-                                      </th>
-                                      <th className="text-right py-2 px-3 text-gray-700">
-                                        制限
-                                      </th>
-                                      <th className="text-right py-2 px-3 text-gray-700">
-                                        操作
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {saleSchedule.ticketTypes.map(
-                                      (ticketType) => (
-                                        <tr
-                                          key={ticketType.id}
-                                          className="border-b hover:bg-gray-50"
-                                        >
-                                          <td className="py-2 px-3 text-gray-900">
-                                            {ticketType.name}
-                                          </td>
-                                          <td className="py-2 px-3 text-right text-gray-900">
-                                            ¥
-                                            {ticketType.basePrice.toLocaleString()}
-                                          </td>
-                                          <td className="py-2 px-3 text-right text-gray-900">
-                                            {ticketType.capacity.toLocaleString()}
-                                          </td>
-                                          <td className="py-2 px-3 text-right text-gray-900">
-                                            {ticketType.maxNumPerApply}枚まで
-                                          </td>
-                                          <td className="py-2 px-3 text-right">
-                                            <Button
-                                              variant="ghost"
-                                              size="sm"
-                                              onClick={() => {
-                                                setSelectedTicketTypeId(
-                                                  ticketType.id,
-                                                );
-                                                setEditTicketTypeDialogOpen(
-                                                  true,
-                                                );
-                                              }}
-                                            >
-                                              <Pencil className="size-3" />
-                                            </Button>
-                                          </td>
-                                        </tr>
-                                      ),
-                                    )}
-                                  </tbody>
-                                </table>
-                              </div>
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-medium text-gray-900">
+                              チケット種別
+                            </h4>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedSaleScheduleIdForTicketType(
+                                  saleSchedule.id,
+                                );
+                                setCreateTicketTypeDialogOpen(true);
+                              }}
+                            >
+                              <Plus className="size-3 mr-1" />
+                              券種を追加
+                            </Button>
+                          </div>
+                          {saleSchedule.ticketTypes &&
+                          saleSchedule.ticketTypes.length > 0 ? (
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-sm">
+                                <thead>
+                                  <tr className="border-b">
+                                    <th className="text-left py-2 px-3 text-gray-700">
+                                      券名
+                                    </th>
+                                    <th className="text-right py-2 px-3 text-gray-700">
+                                      価格
+                                    </th>
+                                    <th className="text-right py-2 px-3 text-gray-700">
+                                      枠数
+                                    </th>
+                                    <th className="text-right py-2 px-3 text-gray-700">
+                                      制限
+                                    </th>
+                                    <th className="text-right py-2 px-3 text-gray-700"></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {saleSchedule.ticketTypes.map(
+                                    (ticketType) => (
+                                      <tr
+                                        key={ticketType.id}
+                                        className="border-b hover:bg-gray-50"
+                                      >
+                                        <td className="py-2 px-3 text-gray-900">
+                                          {ticketType.name}
+                                        </td>
+                                        <td className="py-2 px-3 text-right text-gray-900">
+                                          ¥
+                                          {ticketType.basePrice.toLocaleString()}
+                                        </td>
+                                        <td className="py-2 px-3 text-right text-gray-900">
+                                          {ticketType.capacity.toLocaleString()}
+                                        </td>
+                                        <td className="py-2 px-3 text-right text-gray-900">
+                                          {ticketType.maxNumPerApply}枚まで
+                                        </td>
+                                        <td className="py-2 px-3 text-right">
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => {
+                                              setSelectedTicketTypeId(
+                                                ticketType.id,
+                                              );
+                                              setEditTicketTypeDialogOpen(true);
+                                            }}
+                                          >
+                                            <Pencil className="size-3" />
+                                          </Button>
+                                        </td>
+                                      </tr>
+                                    ),
+                                  )}
+                                </tbody>
+                              </table>
                             </div>
+                          ) : (
+                            <p className="text-sm text-gray-400">
+                              券種が登録されていません
+                            </p>
                           )}
+                        </div>
                       </div>
                     );
                   })}
@@ -584,6 +606,16 @@ export default function EventDetailPage() {
                   )
                 );
               })()}
+            {selectedSaleScheduleIdForTicketType && (
+              <CreateTicketTypeDialog
+                open={createTicketTypeDialogOpen}
+                onOpenChange={setCreateTicketTypeDialogOpen}
+                saleScheduleId={selectedSaleScheduleIdForTicketType}
+                onSuccess={() => {
+                  setSelectedSaleScheduleIdForTicketType(null);
+                }}
+              />
+            )}
           </>
         )}
       </div>

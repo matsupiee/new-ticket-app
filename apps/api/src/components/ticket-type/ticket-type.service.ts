@@ -6,6 +6,7 @@ import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection
 import { TicketTypesArgs } from './dto/ticket-types.args';
 import { TicketTypeConnection } from './dto/ticket-type.connection';
 import { TicketTypeUpdateInput } from './dto/ticket-type-update.input';
+import { TicketTypeCreateInput } from './dto/ticket-type-create.input';
 
 @Injectable()
 export class TicketTypeService {
@@ -59,6 +60,35 @@ export class TicketTypeService {
     return this.prisma.ticketType.update({
       where: { id },
       data: updateData,
+    });
+  }
+
+  async create(input: TicketTypeCreateInput): Promise<TicketType> {
+    const saleSchedule = await this.prisma.saleSchedule.findUnique({
+      where: { id: input.saleScheduleId },
+    });
+
+    if (!saleSchedule) {
+      throw new BadRequestException('販売スケジュールが見つかりません');
+    }
+
+    const existingCount = await this.prisma.ticketType.count({
+      where: { saleScheduleId: input.saleScheduleId },
+    });
+
+    return this.prisma.ticketType.create({
+      data: {
+        saleScheduleId: input.saleScheduleId,
+        name: input.name,
+        description: input.description ?? '',
+        seatType: input.seatType ?? 'FREE',
+        basePrice: input.basePrice,
+        capacity: input.capacity,
+        maxNumPerApply: input.maxNumPerApply ?? 1,
+        sortOrder: existingCount,
+        isOnceApplyOnly: input.isOnceApplyOnly ?? false,
+        isOnlyQrCodeEntry: input.isOnlyQrCodeEntry ?? false,
+      },
     });
   }
 }
