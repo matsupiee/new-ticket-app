@@ -10,8 +10,8 @@ import {
 } from '@/shared/components/ui/dropdown-menu';
 
 export type SortOption = {
-  label: string;
-  field: 'startAt' | 'createdAt';
+  label: '作成日新しい順' | '作成日古い順';
+  field: 'createdAt';
   order: 'asc' | 'desc';
 };
 
@@ -27,14 +27,13 @@ type SortDropdownProps = {
 
 export function SortDropdown({ current, onChange }: SortDropdownProps) {
   const Icon = current.order === 'asc' ? ArrowUp : ArrowDown;
-  const fieldLabel = current.field === 'startAt' ? '開催日' : '作成日';
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="gap-2 border-gray-200">
           <Icon className="size-4" />
-          {fieldLabel}
+          {current.label}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

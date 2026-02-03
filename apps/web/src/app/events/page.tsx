@@ -40,13 +40,11 @@ type EventNode = ResultOf<typeof EventsQuery>['events']['nodes'][number];
 export default function EventsPage() {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortOption>({
-    label: '開催日新しい順',
-    field: 'startAt',
+    label: '作成日新しい順',
+    field: 'createdAt',
     order: 'desc',
   });
   const [tab, setTab] = useState('active');
-
-  const now = useMemo(() => new Date().toISOString(), []);
 
   const [{ data, fetching, error }] = useQuery({
     query: EventsQuery,
@@ -55,7 +53,6 @@ export default function EventsPage() {
       orderBy: [{ [sort.field]: sort.order }],
       where: {
         name: { contains: search },
-        startAt: tab === 'ended' ? { gte: now } : { lte: now },
       },
     },
   });
