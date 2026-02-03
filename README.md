@@ -78,7 +78,7 @@ mise install
 
 pnpm install
 
-# データベースサーバーを起動（Docker を入れる必要があります）
+# データベースサーバーを起動（事前にDocker を入れておく必要があります）
 
 pnpm db:up
 
@@ -88,14 +88,21 @@ pnpm db:up
 
 pnpm db:push
 
+# prismaクライアントを作成
+pnpm db:generate
+
+# apiサーバーの環境変数を設定しましょう
+
+apps/api/.env.example
+
 # 開発サーバー(バックエンド、フロントエンド両方)を起動
 
 pnpm dev
 
 ```
 
-バックエンド → http://localhost:3070
-フロントエンド → http://localhost:3071
+バックエンド → http://localhost:4020
+フロントエンド → http://localhost:4021
 
 バックエンドとフロントエンドを個別に起動したい場合は以下を実行
 
@@ -103,20 +110,6 @@ pnpm dev
 
 pnpm dev:server # バックエンド
 pnpm dev:web # フロントエンド
-
-```
-
-## リント&フォーマット
-
-```
-
-# Oxlint と Oxfmt を実行
-
-pnpm check
-
-# アプリ全体の型をチェック
-
-pnpm check-types
 
 ```
 
@@ -135,41 +128,3 @@ pnpm db:studio
 [参照](https://www.prisma.io/studio)
 
 [Table plus](https://envader.plus/article/119) というツールを使うのも便利です！
-
-```
-
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```bash
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```bash
-npx turbo link
-```
-
-## Useful Links
-
-This example take some inspiration the [with-nextjs](https://github.com/vercel/turborepo/tree/main/examples/with-nextjs) `Turbo` example and [01-cats-app](https://github.com/nestjs/nest/tree/master/sample/01-cats-app) `NestJs` sample.
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)

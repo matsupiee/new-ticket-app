@@ -15,6 +15,7 @@
     "db:generate": "turbo -F api db:generate",
     "db:seed": "turbo -F api db:seed",
     "db:reset": "turbo -F api db:reset",
+    "db:studio": "turbo -F api db:studio",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",
