@@ -23,6 +23,7 @@ import { EditSaleScheduleDialog } from './_components/edit-sale-schedule-dialog'
 import { CreateSaleScheduleDialog } from './_components/create-sale-schedule-dialog';
 import { EditTicketTypeDialog } from './_components/edit-ticket-type-dialog';
 import { CreateTicketTypeDialog } from './_components/create-ticket-type-dialog';
+import { EventDetailHeader } from './_components/event-detail-header';
 
 const EventDetailQuery = graphql(`
   query EventDetail($id: ID!) {
@@ -31,6 +32,7 @@ const EventDetailQuery = graphql(`
       name
       description
       inquiry
+      publishStatus
       thumbnailUrls
       stages {
         id
@@ -106,7 +108,7 @@ export default function EventDetailPage() {
     query: EventDetailQuery,
     variables: { id: eventId },
     context: useMemo(
-      () => ({ additionalTypenames: ['Stage', 'SaleSchedule', 'TicketType'] }),
+      () => ({ additionalTypenames: ['Event', 'Stage', 'SaleSchedule', 'TicketType'] }),
       [],
     ),
   });
@@ -142,13 +144,7 @@ export default function EventDetailPage() {
   return (
     <div className="flex-1 p-8">
       <div className="mx-auto max-w-6xl">
-        {/* ヘッダー */}
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{event.name}</h1>
-            <p className="text-sm text-gray-500 mt-1">ID: {event.id}</p>
-          </div>
-        </div>
+        <EventDetailHeader event={event} />
 
         {/* タブ */}
         <Tabs
@@ -498,30 +494,18 @@ export default function EventDetailPage() {
             </div>
           </TabsContent>
 
-          {/* その他のタブは空 */}
-          <TabsContent value="sales">
-            <div className="border rounded-lg p-6 bg-white">
-              <p className="text-center text-gray-400 py-8">売上情報</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="applicants">
-            <div className="border rounded-lg p-6 bg-white">
-              <p className="text-center text-gray-400 py-8">申込者情報</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="favorites">
-            <div className="border rounded-lg p-6 bg-white">
-              <p className="text-center text-gray-400 py-8">お目当て情報</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="mail">
-            <div className="border rounded-lg p-6 bg-white">
-              <p className="text-center text-gray-400 py-8">メール情報</p>
-            </div>
-          </TabsContent>
+          {[
+            { value: 'sales', label: '売上情報' },
+            { value: 'applicants', label: '申込者情報' },
+            { value: 'favorites', label: 'お目当て情報' },
+            { value: 'mail', label: 'メール情報' },
+          ].map((tab) => (
+            <TabsContent key={tab.value} value={tab.value}>
+              <div className="border rounded-lg p-6 bg-white">
+                <p className="text-center text-gray-400 py-8">{tab.label}</p>
+              </div>
+            </TabsContent>
+          ))}
         </Tabs>
 
         {/* 編集ダイアログ */}
@@ -565,9 +549,7 @@ export default function EventDetailPage() {
                       (s) => s.id === selectedSaleScheduleId,
                     )!
                   }
-                  onSuccess={() => {
-                    setSelectedSaleScheduleId(null);
-                  }}
+                  onSuccess={() => setSelectedSaleScheduleId(null)}
                 />
               )}
             <CreateSaleScheduleDialog
@@ -589,19 +571,14 @@ export default function EventDetailPage() {
                         id: ticketType.id,
                         name: ticketType.name,
                         description: ticketType.description,
-                        seatType: ticketType.seatType as
-                          | 'RESERVED'
-                          | 'ENTRY_NUMBER'
-                          | 'FREE',
+                        seatType: ticketType.seatType as 'RESERVED' | 'ENTRY_NUMBER' | 'FREE',
                         basePrice: ticketType.basePrice,
                         capacity: ticketType.capacity,
                         maxNumPerApply: ticketType.maxNumPerApply,
                         isOnceApplyOnly: ticketType.isOnceApplyOnly,
                         isOnlyQrCodeEntry: ticketType.isOnlyQrCodeEntry,
                       }}
-                      onSuccess={() => {
-                        setSelectedTicketTypeId(null);
-                      }}
+                      onSuccess={() => setSelectedTicketTypeId(null)}
                     />
                   )
                 );
@@ -611,9 +588,7 @@ export default function EventDetailPage() {
                 open={createTicketTypeDialogOpen}
                 onOpenChange={setCreateTicketTypeDialogOpen}
                 saleScheduleId={selectedSaleScheduleIdForTicketType}
-                onSuccess={() => {
-                  setSelectedSaleScheduleIdForTicketType(null);
-                }}
+                onSuccess={() => setSelectedSaleScheduleIdForTicketType(null)}
               />
             )}
           </>

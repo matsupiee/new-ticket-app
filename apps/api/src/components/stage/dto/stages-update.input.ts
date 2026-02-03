@@ -2,11 +2,14 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 
 @InputType()
 class StageUpdateInput {
+  @Field(() => ID, { nullable: false })
+  id!: string;
+
   @Field(() => String, { nullable: true })
   name?: string;
 
   @Field(() => String, { nullable: true })
-  venueName?: string;
+  venueId?: string;
 
   @Field(() => Date, { nullable: true })
   doorsOpenAt?: Date;
@@ -15,7 +18,7 @@ class StageUpdateInput {
   startAt?: Date;
 
   @Field(() => [String], { nullable: true })
-  artistNames?: string[];
+  artistIds?: string[];
 }
 
 @InputType()

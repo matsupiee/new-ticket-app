@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
@@ -12,13 +13,31 @@ import {
   FormLabel,
   FormMessage,
 } from '@/shared/components/ui/form';
+import { useMutation } from 'urql';
+import { graphql } from 'gql.tada';
+
+const ArtistCreateMutation = graphql(`
+  mutation ArtistCreate($input: ArtistCreateInput!) {
+    artistCreate(input: $input) {
+      artist {
+        id
+        name
+      }
+    }
+  }
+`);
+
+export type ArtistFormData = {
+  id: string;
+  name: string;
+};
 
 export type StageFormData = {
   name: string;
   venueName: string;
   doorsOpenAt: string;
   startAt: string;
-  artists: string[];
+  artists: ArtistFormData[];
 };
 
 export type EventFormData = {
@@ -43,7 +62,28 @@ export function StageForm({
   isFirst: boolean;
   eventName: string;
 }) {
-  const artists = form.watch(`stages.${index}.artists`) || [''];
+  const artists = form.watch(`stages.${index}.artists`) || [];
+  const [newArtistName, setNewArtistName] = useState('');
+
+  const [{ fetching: isCreatingArtist }, createArtist] =
+    useMutation(ArtistCreateMutation);
+
+  const handleAddArtist = async () => {
+    if (!newArtistName.trim()) return;
+
+    const { error, data } = await createArtist({
+      input: { name: newArtistName.trim() },
+    });
+    if (error || !data) {
+      alert('アーティストの作成に失敗しました');
+      return;
+    }
+
+    const artist = data.artistCreate.artist;
+    const currentArtists = form.getValues(`stages.${index}.artists`);
+    form.setValue(`stages.${index}.artists`, [...currentArtists, artist]);
+    setNewArtistName('');
+  };
 
   return (
     <div className="border rounded-lg p-6 space-y-4 bg-gray-50">
@@ -166,15 +206,20 @@ export function StageForm({
 
       <div className="space-y-2">
         <Label>出演アーティスト</Label>
-        {artists.map((_, artistIndex) => (
-          <div key={artistIndex} className="flex gap-2">
+        {artists.map((artist, artistIndex) => (
+          <div key={artist.id || artistIndex} className="flex gap-2">
             <FormField
               control={form.control}
-              name={`stages.${index}.artists.${artistIndex}`}
+              name={`stages.${index}.artists.${artistIndex}.name`}
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormControl>
-                    <Input {...field} placeholder="アーティスト名" />
+                    <Input
+                      {...field}
+                      placeholder="アーティスト名"
+                      readOnly
+                      className="bg-gray-100"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -200,18 +245,30 @@ export function StageForm({
             )}
           </div>
         ))}
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            const currentArtists = form.getValues(`stages.${index}.artists`);
-            form.setValue(`stages.${index}.artists`, [...currentArtists, '']);
-          }}
-        >
-          <Plus className="size-4 mr-2" />
-          アーティストを追加
-        </Button>
+        <div className="flex gap-2">
+          <Input
+            value={newArtistName}
+            onChange={(e) => setNewArtistName(e.target.value)}
+            placeholder="アーティスト名を入力"
+            onKeyDown={async (e) => {
+              if (e.key === 'Enter' && newArtistName.trim()) {
+                e.preventDefault();
+                await handleAddArtist();
+              }
+            }}
+            disabled={isCreatingArtist}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleAddArtist}
+            disabled={!newArtistName.trim() || isCreatingArtist}
+          >
+            <Plus className="size-4 mr-2" />
+            {isCreatingArtist ? '追加中...' : 'アーティストを追加'}
+          </Button>
+        </div>
       </div>
     </div>
   );

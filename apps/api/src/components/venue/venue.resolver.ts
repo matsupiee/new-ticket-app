@@ -1,9 +1,13 @@
-import { Args, ID, Info, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Venue } from 'src/generated/prisma-nestjs-graphql';
 import { VenueConnection } from './dto/venue.connection';
 import { type GraphQLResolveInfo } from 'graphql';
 import { VenuesArgs } from './dto/venues.args';
 import { VenueService } from './venue.service';
+import { VenueCreateInput } from './dto/venue-create.input';
+import { VenueCreatePayload } from './dto/venue-create.payload';
+import { UseGuards } from '@nestjs/common';
+import { EasyGuard } from '../guard/easy-guard';
 
 @Resolver(() => Venue)
 export class VenueResolver {
@@ -25,5 +29,16 @@ export class VenueResolver {
     @Info() resolveInfo: GraphQLResolveInfo,
   ): Promise<VenueConnection> {
     return this.venueService.findMany(args, resolveInfo);
+  }
+
+  @Mutation(() => VenueCreatePayload, {
+    description: '会場を作成する',
+  })
+  @UseGuards(EasyGuard)
+  async venueCreate(
+    @Args('input') input: VenueCreateInput,
+  ): Promise<VenueCreatePayload> {
+    const venue = await this.venueService.create(input);
+    return { venue };
   }
 }

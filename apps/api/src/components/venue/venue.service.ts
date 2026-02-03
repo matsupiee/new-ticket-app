@@ -33,4 +33,17 @@ export class VenueService {
       { resolveInfo },
     );
   }
+
+  async create(input: { name: string }): Promise<Venue> {
+    // 既存の会場を検索
+    const existing = await this.prisma.venue.findFirst({
+      where: { name: input.name },
+    });
+    if (existing) {
+      return existing;
+    }
+    return this.prisma.venue.create({
+      data: { name: input.name },
+    });
+  }
 }

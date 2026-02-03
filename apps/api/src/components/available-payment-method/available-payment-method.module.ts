@@ -3,9 +3,6 @@ import { AvailablePaymentMethodResolver } from './available-payment-method.resol
 import { AvailablePaymentMethodService } from './available-payment-method.service';
 
 @Module({
-  providers: [
-    AvailablePaymentMethodResolver,
-    AvailablePaymentMethodService,
-  ],
+  providers: [AvailablePaymentMethodResolver, AvailablePaymentMethodService],
 })
 export class AvailablePaymentMethodModule {}

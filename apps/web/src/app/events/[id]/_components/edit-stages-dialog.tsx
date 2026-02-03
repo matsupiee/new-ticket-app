@@ -22,31 +22,26 @@ import type { EventFormData } from '../../../events/new/_components/stage-form';
 const StagesUpdateMutation = graphql(`
   mutation StagesUpdate($input: StagesUpdateInput!) {
     stagesUpdate(input: $input) {
-      event {
+      stages {
         id
-        stages {
-          id
-          name
-          doorsOpenAt
-          startAt
-          venue {
-            id
-            name
-          }
-          stageArtists {
-            artist {
-              id
-              name
-            }
-          }
-        }
+      }
+    }
+  }
+`);
+
+const VenueCreateMutation = graphql(`
+  mutation VenueCreate($input: VenueCreateInput!) {
+    venueCreate(input: $input) {
+      venue {
+        id
+        name
       }
     }
   }
 `);
 
 type StagesFormData = {
-  stages: StageFormData[];
+  stages: (StageFormData & { id?: string })[];
   eventName: string;
 };
 
@@ -73,18 +68,23 @@ export function EditStagesDialog({
   onSuccess?: () => void;
 }) {
   const [stagesUpdateResult, updateStages] = useMutation(StagesUpdateMutation);
+  const [venueCreateResult, createVenue] = useMutation(VenueCreateMutation);
 
-  const defaultStages: StageFormData[] =
+  const defaultStages: (StageFormData & { id?: string })[] =
     event.stages && event.stages.length > 0
       ? event.stages.map((stage) => ({
+          id: stage.id,
           name: stage.name || '',
           venueName: stage.venue?.name || '',
           doorsOpenAt: new Date(stage.doorsOpenAt).toISOString().slice(0, 16),
           startAt: new Date(stage.startAt).toISOString().slice(0, 16),
           artists:
             stage.stageArtists && stage.stageArtists.length > 0
-              ? stage.stageArtists.map((sa) => sa.artist.name)
-              : [''],
+              ? stage.stageArtists.map((sa) => ({
+                  id: sa.artist.id,
+                  name: sa.artist.name,
+                }))
+              : [],
         }))
       : [
           {
@@ -92,7 +92,7 @@ export function EditStagesDialog({
             venueName: '',
             doorsOpenAt: '',
             startAt: '',
-            artists: [''],
+            artists: [],
           },
         ];
 
@@ -114,28 +114,62 @@ export function EditStagesDialog({
       data.stages.at(0)!.name = data.eventName;
     }
 
-    // ステージ情報を更新
-    const stagesResult = await updateStages({
-      input: {
-        eventId: event.id,
-        stages: data.stages.map((stage) => ({
-          name: stage.name,
-          venueName: stage.venueName,
-          doorsOpenAt: new Date(stage.doorsOpenAt).toISOString(),
-          startAt: new Date(stage.startAt).toISOString(),
-          artistNames: stage.artists.filter((name) => name.trim() !== ''),
-        })),
-      },
-    });
+    try {
+      // 各ステージの会場とアーティストのIDを取得または作成
+      const stagesWithIds = await Promise.all(
+        data.stages.map(async (stage) => {
+          // 会場IDを取得または作成
+          let venueId: string | undefined = undefined;
+          if (stage.venueName && stage.venueName.trim() !== '') {
+            // 既存の会場を検索（ここでは簡易的にcreateを使用）
+            // 実際の実装では、findFirst的なクエリが必要な場合があります
+            const venueResult = await createVenue({
+              input: { name: stage.venueName.trim() },
+            });
+            if (venueResult.error) {
+              throw new Error(
+                `会場の作成に失敗しました: ${venueResult.error.message}`,
+              );
+            }
+            venueId = venueResult.data?.venueCreate.venue.id;
+          }
 
-    if (stagesResult.error) {
-      console.error('Error updating stages:', stagesResult.error);
-      alert(`エラーが発生しました: ${stagesResult.error.message}`);
-      return;
+          // アーティストIDを取得（既にフォームに保存されている）
+          const artistIds = stage.artists.map((artist) => artist.id);
+
+          return {
+            id: stage.id || '', // 既存のステージのID、新規の場合は空文字（バックエンドで処理）
+            name: stage.name,
+            venueId,
+            doorsOpenAt: new Date(stage.doorsOpenAt).toISOString(),
+            startAt: new Date(stage.startAt).toISOString(),
+            artistIds: artistIds.filter((id): id is string => id !== undefined),
+          };
+        }),
+      );
+
+      // ステージ情報を更新
+      const stagesResult = await updateStages({
+        input: {
+          eventId: event.id,
+          stages: stagesWithIds,
+        },
+      });
+
+      if (stagesResult.error) {
+        console.error('Error updating stages:', stagesResult.error);
+        alert(`エラーが発生しました: ${stagesResult.error.message}`);
+        return;
+      }
+
+      onSuccess?.();
+      onOpenChange(false);
+    } catch (error) {
+      console.error('Error in onSubmit:', error);
+      alert(
+        `エラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`,
+      );
     }
-
-    onSuccess?.();
-    onOpenChange(false);
   };
 
   return (
@@ -175,7 +209,7 @@ export function EditStagesDialog({
                     venueName: '',
                     doorsOpenAt: '',
                     startAt: '',
-                    artists: [''],
+                    artists: [],
                   })
                 }
               >
@@ -192,8 +226,15 @@ export function EditStagesDialog({
               >
                 キャンセル
               </Button>
-              <Button type="submit" disabled={stagesUpdateResult.fetching}>
-                {stagesUpdateResult.fetching ? '更新中...' : '更新'}
+              <Button
+                type="submit"
+                disabled={
+                  stagesUpdateResult.fetching || venueCreateResult.fetching
+                }
+              >
+                {stagesUpdateResult.fetching || venueCreateResult.fetching
+                  ? '更新中...'
+                  : '更新'}
               </Button>
             </DialogFooter>
           </form>

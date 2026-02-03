@@ -1,9 +1,13 @@
-import { Args, ID, Info, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Artist } from 'src/generated/prisma-nestjs-graphql';
 import { ArtistConnection } from './dto/artist.connection';
 import { type GraphQLResolveInfo } from 'graphql';
 import { ArtistsArgs } from './dto/artists.args';
 import { ArtistService } from './artist.service';
+import { ArtistCreateInput } from './dto/artist-create.input';
+import { ArtistCreatePayload } from './dto/artist-create.payload';
+import { UseGuards } from '@nestjs/common';
+import { EasyGuard } from '../guard/easy-guard';
 
 @Resolver(() => Artist)
 export class ArtistResolver {
@@ -25,5 +29,16 @@ export class ArtistResolver {
     @Info() resolveInfo: GraphQLResolveInfo,
   ): Promise<ArtistConnection> {
     return this.artistService.findMany(args, resolveInfo);
+  }
+
+  @Mutation(() => ArtistCreatePayload, {
+    description: 'アーティストを作成する',
+  })
+  @UseGuards(EasyGuard)
+  async artistCreate(
+    @Args('input') input: ArtistCreateInput,
+  ): Promise<ArtistCreatePayload> {
+    const artist = await this.artistService.create(input);
+    return { artist };
   }
 }

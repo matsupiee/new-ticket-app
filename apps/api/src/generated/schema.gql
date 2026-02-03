@@ -110,6 +110,14 @@ type ArtistConnection {
   totalCount: Int!
 }
 
+input ArtistCreateInput {
+  name: String!
+}
+
+type ArtistCreatePayload {
+  artist: Artist!
+}
+
 type ArtistEdge {
   cursor: String!
   node: Artist!
@@ -751,6 +759,15 @@ type EventUpdatePayload {
   event: Event!
 }
 
+input EventUpdatePublishStatusInput {
+  id: ID!
+  publishStatus: EventPublishStatus!
+}
+
+type EventUpdatePublishStatusPayload {
+  event: Event!
+}
+
 input EventWhereInput {
   AND: [EventWhereInput!]
   NOT: [EventWhereInput!]
@@ -925,6 +942,9 @@ enum LotteryMode {
 }
 
 type Mutation {
+  """アーティストを作成する"""
+  artistCreate(input: ArtistCreateInput!): ArtistCreatePayload!
+
   """イベントを作成する"""
   eventCreate(input: EventCreateInput!): EventCreatePayload!
 
@@ -933,6 +953,9 @@ type Mutation {
 
   """イベントを更新する"""
   eventUpdate(input: EventUpdateInput!): EventUpdatePayload!
+
+  """イベントの公開状態を更新する"""
+  eventUpdatePublishStatus(input: EventUpdatePublishStatusInput!): EventUpdatePublishStatusPayload!
 
   """販売スケジュールを作成する"""
   saleScheduleCreate(input: SaleScheduleCreateInput!): SaleScheduleCreatePayload!
@@ -948,6 +971,9 @@ type Mutation {
 
   """チケットタイプを更新する"""
   ticketTypeUpdate(input: TicketTypeUpdateInput!): TicketTypeUpdatePayload!
+
+  """会場を作成する"""
+  venueCreate(input: VenueCreateInput!): VenueCreatePayload!
 }
 
 input NestedBoolFilter {
@@ -1940,11 +1966,12 @@ input StageTicketTypeWhereInput {
 }
 
 input StageUpdateInput {
-  artistNames: [String!]
+  artistIds: [String!]
   doorsOpenAt: DateTime
+  id: ID!
   name: String
   startAt: DateTime
-  venueName: String
+  venueId: String
 }
 
 input StageWhereInput {
@@ -1971,7 +1998,7 @@ input StagesUpdateInput {
 }
 
 type StagesUpdatePayload {
-  event: Event!
+  stages: [Stage!]!
 }
 
 input StringFilter {
@@ -2695,6 +2722,14 @@ type VenueConnection {
   nodes: [Venue!]!
   pageInfo: VenuePageInfo!
   totalCount: Int!
+}
+
+input VenueCreateInput {
+  name: String!
+}
+
+type VenueCreatePayload {
+  venue: Venue!
 }
 
 type VenueEdge {

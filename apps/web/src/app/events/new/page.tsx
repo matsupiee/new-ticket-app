@@ -30,9 +30,21 @@ const EventCreateMutation = graphql(`
   }
 `);
 
+const ArtistCreateMutation = graphql(`
+  mutation ArtistCreate($input: ArtistCreateInput!) {
+    artistCreate(input: $input) {
+      artist {
+        id
+        name
+      }
+    }
+  }
+`);
+
 export default function NewEventPage() {
   const router = useRouter();
   const [createResult, createEvent] = useMutation(EventCreateMutation);
+  const [artistCreateResult, createArtist] = useMutation(ArtistCreateMutation);
 
   const form = useForm<EventFormData>({
     defaultValues: {
@@ -47,7 +59,7 @@ export default function NewEventPage() {
           venueName: '',
           doorsOpenAt: '',
           startAt: '',
-          artists: [''],
+          artists: [],
         },
       ],
     },
@@ -81,7 +93,7 @@ export default function NewEventPage() {
           venueName: stage.venueName,
           doorsOpenAt: new Date(stage.doorsOpenAt).toISOString(),
           startAt: new Date(stage.startAt).toISOString(),
-          artistNames: stage.artists.filter((name) => name.trim() !== ''),
+          artistNames: stage.artists.map((artist) => artist.name),
         })),
       },
     };
@@ -263,6 +275,21 @@ export default function NewEventPage() {
                   onRemove={() => remove(index)}
                   isFirst={index === 0}
                   eventName={form.watch('name')}
+                  onCreateArtist={async (name: string) => {
+                    const artistResult = await createArtist({
+                      input: { name },
+                    });
+                    if (artistResult.error) {
+                      throw new Error(
+                        `アーティストの作成に失敗しました: ${artistResult.error.message}`,
+                      );
+                    }
+                    const artist = artistResult.data?.artistCreate.artist;
+                    if (!artist) {
+                      throw new Error('アーティストの作成に失敗しました');
+                    }
+                    return { id: artist.id, name: artist.name };
+                  }}
                 />
               ))}
             </div>

@@ -33,4 +33,17 @@ export class ArtistService {
       { resolveInfo },
     );
   }
+
+  async create(input: { name: string }): Promise<Artist> {
+    // 既存のアーティストを検索
+    const existing = await this.prisma.artist.findFirst({
+      where: { name: input.name },
+    });
+    if (existing) {
+      return existing;
+    }
+    return this.prisma.artist.create({
+      data: { name: input.name },
+    });
+  }
 }
