@@ -2,6 +2,7 @@ import {
   Args,
   ID,
   Info,
+  Mutation,
   Parent,
   Query,
   ResolveField,
@@ -22,6 +23,10 @@ import { type GraphQLResolveInfo } from 'graphql';
 import { TicketTypesArgs } from './dto/ticket-types.args';
 import { TicketTypeService } from './ticket-type.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { TicketTypeUpdateInput } from './dto/ticket-type-update.input';
+import { TicketTypeUpdatePayload } from './dto/ticket-type-update.payload';
+import { UseGuards } from '@nestjs/common';
+import { EasyGuard } from '../guard/easy-guard';
 
 @Resolver(() => TicketType)
 export class TicketTypeResolver {
@@ -46,6 +51,17 @@ export class TicketTypeResolver {
     @Info() resolveInfo: GraphQLResolveInfo,
   ): Promise<TicketTypeConnection> {
     return this.ticketTypeService.findMany(args, resolveInfo);
+  }
+
+  @Mutation(() => TicketTypeUpdatePayload, {
+    description: 'チケットタイプを更新する',
+  })
+  @UseGuards(EasyGuard)
+  async ticketTypeUpdate(
+    @Args('input') input: TicketTypeUpdateInput,
+  ): Promise<TicketTypeUpdatePayload> {
+    const ticketType = await this.ticketTypeService.update(input);
+    return { ticketType };
   }
 
   @ResolveField(() => SaleSchedule)

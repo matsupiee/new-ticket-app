@@ -97,7 +97,9 @@ export function EditSaleScheduleDialog({
       description: saleSchedule.description,
       saleType: saleSchedule.saleType,
       publishAt: new Date(saleSchedule.publishAt).toISOString().slice(0, 16),
-      saleStartAt: new Date(saleSchedule.saleStartAt).toISOString().slice(0, 16),
+      saleStartAt: new Date(saleSchedule.saleStartAt)
+        .toISOString()
+        .slice(0, 16),
       saleEndAt: new Date(saleSchedule.saleEndAt).toISOString().slice(0, 16),
       lotteryMode: saleSchedule.lotteryMode || null,
       lotteryStartAt: saleSchedule.lotteryStartAt
@@ -115,43 +117,36 @@ export function EditSaleScheduleDialog({
   const saleType = form.watch('saleType');
 
   const onSubmit = async (data: SaleScheduleFormData) => {
-    try {
-      const result = await updateSaleSchedule({
-        input: {
-          id: saleSchedule.id,
-          name: data.name,
-          description: data.description,
-          saleType: data.saleType,
-          publishAt: new Date(data.publishAt).toISOString(),
-          saleStartAt: new Date(data.saleStartAt).toISOString(),
-          saleEndAt: new Date(data.saleEndAt).toISOString(),
-          lotteryMode: data.saleType === 'LOTTERY' ? data.lotteryMode : undefined,
-          lotteryStartAt:
-            data.saleType === 'LOTTERY' && data.lotteryStartAt
-              ? new Date(data.lotteryStartAt).toISOString()
-              : undefined,
-          lotteryResultAnnounceAt:
-            data.saleType === 'LOTTERY' && data.lotteryResultAnnounceAt
-              ? new Date(data.lotteryResultAnnounceAt).toISOString()
-              : undefined,
-          isSmsAuthRequired: data.isSmsAuthRequired,
-        },
-      });
+    const result = await updateSaleSchedule({
+      input: {
+        id: saleSchedule.id,
+        name: data.name,
+        description: data.description,
+        saleType: data.saleType,
+        publishAt: new Date(data.publishAt).toISOString(),
+        saleStartAt: new Date(data.saleStartAt).toISOString(),
+        saleEndAt: new Date(data.saleEndAt).toISOString(),
+        lotteryMode: data.saleType === 'LOTTERY' ? data.lotteryMode : undefined,
+        lotteryStartAt:
+          data.saleType === 'LOTTERY' && data.lotteryStartAt
+            ? new Date(data.lotteryStartAt).toISOString()
+            : undefined,
+        lotteryResultAnnounceAt:
+          data.saleType === 'LOTTERY' && data.lotteryResultAnnounceAt
+            ? new Date(data.lotteryResultAnnounceAt).toISOString()
+            : undefined,
+        isSmsAuthRequired: data.isSmsAuthRequired,
+      },
+    });
 
-      if (result.error) {
-        console.error('Error updating sale schedule:', result.error);
-        alert(`エラーが発生しました: ${result.error.message}`);
-        return;
-      }
-
-      onSuccess?.();
-      onOpenChange(false);
-    } catch (error) {
-      console.error('Error updating sale schedule:', error);
-      alert(
-        `エラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+    if (result.error) {
+      console.error('Error updating sale schedule:', result.error);
+      alert(`エラーが発生しました: ${result.error.message}`);
+      return;
     }
+
+    onSuccess?.();
+    onOpenChange(false);
   };
 
   const isPublished = saleSchedule.publishStatus === 'PUBLISHED';
@@ -379,9 +374,7 @@ export function EditSaleScheduleDialog({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel className="text-base">
-                      SMS認証必須
-                    </FormLabel>
+                    <FormLabel className="text-base">SMS認証必須</FormLabel>
                   </div>
                   <FormControl>
                     <input

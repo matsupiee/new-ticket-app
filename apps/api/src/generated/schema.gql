@@ -942,6 +942,9 @@ type Mutation {
 
   """イベントのステージ情報を更新する"""
   stagesUpdate(input: StagesUpdateInput!): StagesUpdatePayload!
+
+  """チケットタイプを更新する"""
+  ticketTypeUpdate(input: TicketTypeUpdateInput!): TicketTypeUpdatePayload!
 }
 
 input NestedBoolFilter {
@@ -2444,6 +2447,23 @@ input TicketTypePriceDistributionWhereInput {
 input TicketTypeScalarRelationFilter {
   is: TicketTypeWhereInput
   isNot: TicketTypeWhereInput
+}
+
+input TicketTypeUpdateInput {
+  basePrice: Int
+  capacity: Int
+  description: String
+  id: ID!
+  isOnceApplyOnly: Boolean
+  isOnlyQrCodeEntry: Boolean
+  maxNumPerApply: Int
+  name: String
+  seatType: SeatType
+  sortOrder: Int
+}
+
+type TicketTypeUpdatePayload {
+  ticketType: TicketType!
 }
 
 input TicketTypeWhereInput {

@@ -125,9 +125,7 @@ export class SaleScheduleService {
 
     // バリデーション: スケジュールが公開中ステータスの場合はいじれない
     if (existingSchedule.publishStatus === 'PUBLISHED') {
-      throw new BadRequestException(
-        '公開中のスケジュールは編集できません',
-      );
+      throw new BadRequestException('公開中のスケジュールは編集できません');
     }
 
     // イベントの最初のステージの開演日時を取得（最も早い開演日時）

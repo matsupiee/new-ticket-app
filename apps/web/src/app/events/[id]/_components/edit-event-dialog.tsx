@@ -69,30 +69,23 @@ export function EditEventDialog({
   });
 
   const onSubmit = async (data: EventFormData) => {
-    try {
-      const eventResult = await updateEvent({
-        input: {
-          id: event.id,
-          name: data.name,
-          description: data.description,
-          inquiry: data.inquiry,
-        },
-      });
+    const eventResult = await updateEvent({
+      input: {
+        id: event.id,
+        name: data.name,
+        description: data.description,
+        inquiry: data.inquiry,
+      },
+    });
 
-      if (eventResult.error) {
-        console.error('Error updating event:', eventResult.error);
-        alert(`エラーが発生しました: ${eventResult.error.message}`);
-        return;
-      }
-
-      onSuccess?.();
-      onOpenChange(false);
-    } catch (error) {
-      console.error('Error updating event:', error);
-      alert(
-        `エラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+    if (eventResult.error) {
+      console.error('Error updating event:', eventResult.error);
+      alert(`エラーが発生しました: ${eventResult.error.message}`);
+      return;
     }
+
+    onSuccess?.();
+    onOpenChange(false);
   };
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from 'urql';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
@@ -21,6 +21,7 @@ import { EditEventDialog } from './_components/edit-event-dialog';
 import { EditStagesDialog } from './_components/edit-stages-dialog';
 import { EditSaleScheduleDialog } from './_components/edit-sale-schedule-dialog';
 import { CreateSaleScheduleDialog } from './_components/create-sale-schedule-dialog';
+import { EditTicketTypeDialog } from './_components/edit-ticket-type-dialog';
 
 const EventDetailQuery = graphql(`
   query EventDetail($id: ID!) {
@@ -62,9 +63,13 @@ const EventDetailQuery = graphql(`
         ticketTypes {
           id
           name
+          description
+          seatType
           basePrice
           capacity
           maxNumPerApply
+          isOnceApplyOnly
+          isOnlyQrCodeEntry
         }
       }
     }
@@ -84,10 +89,19 @@ export default function EventDetailPage() {
   const [selectedSaleScheduleId, setSelectedSaleScheduleId] = useState<
     string | null
   >(null);
+  const [editTicketTypeDialogOpen, setEditTicketTypeDialogOpen] =
+    useState(false);
+  const [selectedTicketTypeId, setSelectedTicketTypeId] = useState<
+    string | null
+  >(null);
 
-  const [{ data, fetching, error }, refetch] = useQuery({
+  const [{ data, fetching, error }] = useQuery({
     query: EventDetailQuery,
     variables: { id: eventId },
+    context: useMemo(
+      () => ({ additionalTypenames: ['Stage', 'SaleSchedule', 'TicketType'] }),
+      [],
+    ),
   });
 
   if (fetching) {
@@ -405,6 +419,9 @@ export default function EventDetailPage() {
                                       <th className="text-right py-2 px-3 text-gray-700">
                                         制限
                                       </th>
+                                      <th className="text-right py-2 px-3 text-gray-700">
+                                        操作
+                                      </th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -426,6 +443,22 @@ export default function EventDetailPage() {
                                           </td>
                                           <td className="py-2 px-3 text-right text-gray-900">
                                             {ticketType.maxNumPerApply}枚まで
+                                          </td>
+                                          <td className="py-2 px-3 text-right">
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              onClick={() => {
+                                                setSelectedTicketTypeId(
+                                                  ticketType.id,
+                                                );
+                                                setEditTicketTypeDialogOpen(
+                                                  true,
+                                                );
+                                              }}
+                                            >
+                                              <Pencil className="size-3" />
+                                            </Button>
                                           </td>
                                         </tr>
                                       ),
@@ -481,9 +514,6 @@ export default function EventDetailPage() {
                 description: data.event.description || '',
                 inquiry: data.event.inquiry || '',
               }}
-              onSuccess={() => {
-                refetch();
-              }}
             />
             <EditStagesDialog
               open={editStagesDialogOpen}
@@ -500,9 +530,6 @@ export default function EventDetailPage() {
                   stageArtists: stage.stageArtists,
                 })),
               }}
-              onSuccess={() => {
-                refetch();
-              }}
             />
             {selectedSaleScheduleId &&
               data.event.saleSchedules?.find(
@@ -517,7 +544,6 @@ export default function EventDetailPage() {
                     )!
                   }
                   onSuccess={() => {
-                    refetch();
                     setSelectedSaleScheduleId(null);
                   }}
                 />
@@ -526,10 +552,38 @@ export default function EventDetailPage() {
               open={createSaleScheduleDialogOpen}
               onOpenChange={setCreateSaleScheduleDialogOpen}
               eventId={data.event.id}
-              onSuccess={() => {
-                refetch();
-              }}
             />
+            {selectedTicketTypeId &&
+              (() => {
+                const ticketType = data.event.saleSchedules
+                  ?.flatMap((s) => s.ticketTypes ?? [])
+                  .find((t) => t.id === selectedTicketTypeId);
+                return (
+                  ticketType && (
+                    <EditTicketTypeDialog
+                      open={editTicketTypeDialogOpen}
+                      onOpenChange={setEditTicketTypeDialogOpen}
+                      ticketType={{
+                        id: ticketType.id,
+                        name: ticketType.name,
+                        description: ticketType.description,
+                        seatType: ticketType.seatType as
+                          | 'RESERVED'
+                          | 'ENTRY_NUMBER'
+                          | 'FREE',
+                        basePrice: ticketType.basePrice,
+                        capacity: ticketType.capacity,
+                        maxNumPerApply: ticketType.maxNumPerApply,
+                        isOnceApplyOnly: ticketType.isOnceApplyOnly,
+                        isOnlyQrCodeEntry: ticketType.isOnlyQrCodeEntry,
+                      }}
+                      onSuccess={() => {
+                        setSelectedTicketTypeId(null);
+                      }}
+                    />
+                  )
+                );
+              })()}
           </>
         )}
       </div>

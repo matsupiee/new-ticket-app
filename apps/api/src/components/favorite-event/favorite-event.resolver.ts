@@ -1,10 +1,9 @@
+import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import {
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
-import { Event, FavoriteEvent, User } from 'src/generated/prisma-nestjs-graphql';
+  Event,
+  FavoriteEvent,
+  User,
+} from 'src/generated/prisma-nestjs-graphql';
 import { FavoriteEventService } from './favorite-event.service';
 import { PrismaService } from '../prisma/prisma.service';
 

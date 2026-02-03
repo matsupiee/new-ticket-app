@@ -96,45 +96,37 @@ export function CreateSaleScheduleDialog({
   const saleType = form.watch('saleType');
 
   const onSubmit = async (data: SaleScheduleFormData) => {
-    try {
-      const result = await createSaleSchedule({
-        input: {
-          eventId,
-          name: data.name,
-          description: data.description,
-          saleType: data.saleType,
-          publishAt: new Date(data.publishAt).toISOString(),
-          saleStartAt: new Date(data.saleStartAt).toISOString(),
-          saleEndAt: new Date(data.saleEndAt).toISOString(),
-          lotteryMode:
-            data.saleType === 'LOTTERY' ? data.lotteryMode : undefined,
-          lotteryStartAt:
-            data.saleType === 'LOTTERY' && data.lotteryStartAt
-              ? new Date(data.lotteryStartAt).toISOString()
-              : undefined,
-          lotteryResultAnnounceAt:
-            data.saleType === 'LOTTERY' && data.lotteryResultAnnounceAt
-              ? new Date(data.lotteryResultAnnounceAt).toISOString()
-              : undefined,
-          isSmsAuthRequired: data.isSmsAuthRequired,
-        },
-      });
+    const result = await createSaleSchedule({
+      input: {
+        eventId,
+        name: data.name,
+        description: data.description,
+        saleType: data.saleType,
+        publishAt: new Date(data.publishAt).toISOString(),
+        saleStartAt: new Date(data.saleStartAt).toISOString(),
+        saleEndAt: new Date(data.saleEndAt).toISOString(),
+        lotteryMode: data.saleType === 'LOTTERY' ? data.lotteryMode : undefined,
+        lotteryStartAt:
+          data.saleType === 'LOTTERY' && data.lotteryStartAt
+            ? new Date(data.lotteryStartAt).toISOString()
+            : undefined,
+        lotteryResultAnnounceAt:
+          data.saleType === 'LOTTERY' && data.lotteryResultAnnounceAt
+            ? new Date(data.lotteryResultAnnounceAt).toISOString()
+            : undefined,
+        isSmsAuthRequired: data.isSmsAuthRequired,
+      },
+    });
 
-      if (result.error) {
-        console.error('Error creating sale schedule:', result.error);
-        alert(`エラーが発生しました: ${result.error.message}`);
-        return;
-      }
-
-      form.reset();
-      onSuccess?.();
-      onOpenChange(false);
-    } catch (error) {
-      console.error('Error creating sale schedule:', error);
-      alert(
-        `エラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+    if (result.error) {
+      console.error('Error creating sale schedule:', result.error);
+      alert(`エラーが発生しました: ${result.error.message}`);
+      return;
     }
+
+    form.reset();
+    onSuccess?.();
+    onOpenChange(false);
   };
 
   return (

@@ -59,49 +59,42 @@ export default function NewEventPage() {
   });
 
   const onSubmit = async (data: EventFormData) => {
-    try {
-      // 1ステージしかない場合で公演名が空欄だったら、イベント名をそのままコピー
-      if (data.stages.length === 1 && !data.stages.at(0)?.name) {
-        data.stages.at(0)!.name = data.name;
-      }
-
-      // TODO: 画像のアップロード処理（現在はスキップ）
-      // 画像は別途アップロードAPIで処理する想定
-
-      // GraphQLミューテーションを実行
-      const variables = {
-        input: {
-          name: data.name,
-          description: data.description,
-          thumbnailUrls: [], // TODO: 画像アップロード後にURLを設定
-          lineThumbnailUrl: null,
-          eventOrganizerId: 'organizer1',
-          inquiry: data.inquiry,
-          stages: data.stages.map((stage) => ({
-            name: stage.name,
-            venueName: stage.venueName,
-            doorsOpenAt: new Date(stage.doorsOpenAt).toISOString(),
-            startAt: new Date(stage.startAt).toISOString(),
-            artistNames: stage.artists.filter((name) => name.trim() !== ''),
-          })),
-        },
-      };
-      const result = await createEvent(variables);
-
-      if (result.error) {
-        console.error('Error creating event:', result.error);
-        alert(`エラーが発生しました: ${result.error.message}`);
-        return;
-      }
-
-      // 成功したらイベント一覧ページにリダイレクト
-      router.push('/events');
-    } catch (error) {
-      console.error('Error creating event:', error);
-      alert(
-        `エラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+    // 1ステージしかない場合で公演名が空欄だったら、イベント名をそのままコピー
+    if (data.stages.length === 1 && !data.stages.at(0)?.name) {
+      data.stages.at(0)!.name = data.name;
     }
+
+    // TODO: 画像のアップロード処理（現在はスキップ）
+    // 画像は別途アップロードAPIで処理する想定
+
+    // GraphQLミューテーションを実行
+    const variables = {
+      input: {
+        name: data.name,
+        description: data.description,
+        thumbnailUrls: [], // TODO: 画像アップロード後にURLを設定
+        lineThumbnailUrl: null,
+        eventOrganizerId: 'organizer1',
+        inquiry: data.inquiry,
+        stages: data.stages.map((stage) => ({
+          name: stage.name,
+          venueName: stage.venueName,
+          doorsOpenAt: new Date(stage.doorsOpenAt).toISOString(),
+          startAt: new Date(stage.startAt).toISOString(),
+          artistNames: stage.artists.filter((name) => name.trim() !== ''),
+        })),
+      },
+    };
+    const result = await createEvent(variables);
+
+    if (result.error) {
+      console.error('Error creating event:', result.error);
+      alert(`エラーが発生しました: ${result.error.message}`);
+      return;
+    }
+
+    // 成功したらイベント一覧ページにリダイレクト
+    router.push('/events');
   };
 
   return (

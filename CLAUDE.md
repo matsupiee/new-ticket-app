@@ -97,3 +97,63 @@ _hooks/
 _schemas/
 _utils/
 ```
+
+## urql エラーハンドリング
+
+urqlを使用する際は、**try-catchを使用しない**でください。
+
+urqlの`useMutation`や`useQuery`の結果には`error`プロパティが含まれており、エラーハンドリングは`result.error`をチェックするだけで十分です。
+
+```typescript
+// ✅ 正しいパターン: result.errorをチェック
+const [result, executeMutation] = useMutation(SomeMutation);
+
+const onSubmit = async (data: FormData) => {
+  const result = await executeMutation({ input: data });
+
+  if (result.error) {
+    console.error('Error:', result.error);
+    alert(`エラーが発生しました: ${result.error.message}`);
+    return;
+  }
+
+  // 成功時の処理
+  onSuccess?.();
+};
+
+// ❌ 禁止パターン: try-catchを使用
+const onSubmit = async (data: FormData) => {
+  try {
+    const result = await executeMutation({ input: data });
+    // 成功時の処理
+  } catch (error) {
+    console.error('Error:', error);
+    alert(`エラーが発生しました: ${error.message}`);
+  }
+};
+```
+
+**理由**:
+
+- urqlはエラーを`result.error`として返すため、try-catchは不要
+- try-catchを使用すると、urqlのエラーハンドリングと重複し、コードが冗長になる
+- `result.error`をチェックする方が、urqlの設計思想に沿った実装になる
+
+## urql additionalTypenames について
+
+useQuery で additionalTypenames を指定している場合、  
+該当 Type が mutation で更新されると URQL のキャッシュ無効化により自動で再フェッチが発生します。
+
+そのため、明示的に refetch 関数を呼ぶ必要はありません
+
+例：
+
+```ts
+useQuery({
+  query: EventDetailQuery,
+  variables: { id: eventId },
+  context: {
+    additionalTypenames: ['Stage', 'SaleSchedule', 'TicketType'],
+  },
+});
+```

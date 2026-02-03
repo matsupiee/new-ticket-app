@@ -109,40 +109,33 @@ export function EditStagesDialog({
   });
 
   const onSubmit = async (data: StagesFormData) => {
-    try {
-      // 1ステージしかない場合で公演名が空欄だったら、イベント名をそのままコピー
-      if (data.stages.length === 1 && !data.stages.at(0)?.name) {
-        data.stages.at(0)!.name = data.eventName;
-      }
-
-      // ステージ情報を更新
-      const stagesResult = await updateStages({
-        input: {
-          eventId: event.id,
-          stages: data.stages.map((stage) => ({
-            name: stage.name,
-            venueName: stage.venueName,
-            doorsOpenAt: new Date(stage.doorsOpenAt).toISOString(),
-            startAt: new Date(stage.startAt).toISOString(),
-            artistNames: stage.artists.filter((name) => name.trim() !== ''),
-          })),
-        },
-      });
-
-      if (stagesResult.error) {
-        console.error('Error updating stages:', stagesResult.error);
-        alert(`エラーが発生しました: ${stagesResult.error.message}`);
-        return;
-      }
-
-      onSuccess?.();
-      onOpenChange(false);
-    } catch (error) {
-      console.error('Error updating stages:', error);
-      alert(
-        `エラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+    // 1ステージしかない場合で公演名が空欄だったら、イベント名をそのままコピー
+    if (data.stages.length === 1 && !data.stages.at(0)?.name) {
+      data.stages.at(0)!.name = data.eventName;
     }
+
+    // ステージ情報を更新
+    const stagesResult = await updateStages({
+      input: {
+        eventId: event.id,
+        stages: data.stages.map((stage) => ({
+          name: stage.name,
+          venueName: stage.venueName,
+          doorsOpenAt: new Date(stage.doorsOpenAt).toISOString(),
+          startAt: new Date(stage.startAt).toISOString(),
+          artistNames: stage.artists.filter((name) => name.trim() !== ''),
+        })),
+      },
+    });
+
+    if (stagesResult.error) {
+      console.error('Error updating stages:', stagesResult.error);
+      alert(`エラーが発生しました: ${stagesResult.error.message}`);
+      return;
+    }
+
+    onSuccess?.();
+    onOpenChange(false);
   };
 
   return (
