@@ -934,6 +934,12 @@ type Mutation {
   """イベントを更新する"""
   eventUpdate(input: EventUpdateInput!): EventUpdatePayload!
 
+  """販売スケジュールを作成する"""
+  saleScheduleCreate(input: SaleScheduleCreateInput!): SaleScheduleCreatePayload!
+
+  """販売スケジュールを更新する"""
+  saleScheduleUpdate(input: SaleScheduleUpdateInput!): SaleScheduleUpdatePayload!
+
   """イベントのステージ情報を更新する"""
   stagesUpdate(input: StagesUpdateInput!): StagesUpdatePayload!
 }
@@ -1563,6 +1569,24 @@ type SaleScheduleConnection {
   totalCount: Int!
 }
 
+input SaleScheduleCreateInput {
+  description: String!
+  eventId: ID!
+  isSmsAuthRequired: Boolean = false
+  lotteryMode: LotteryMode
+  lotteryResultAnnounceAt: DateTime
+  lotteryStartAt: DateTime
+  name: String!
+  publishAt: DateTime!
+  saleEndAt: DateTime!
+  saleStartAt: DateTime!
+  saleType: SaleType!
+}
+
+type SaleScheduleCreatePayload {
+  saleSchedule: SaleSchedule!
+}
+
 type SaleScheduleEdge {
   cursor: String!
   node: SaleSchedule!
@@ -1627,6 +1651,24 @@ enum SaleSchedulePublishStatus {
 input SaleScheduleScalarRelationFilter {
   is: SaleScheduleWhereInput
   isNot: SaleScheduleWhereInput
+}
+
+input SaleScheduleUpdateInput {
+  description: String
+  id: ID!
+  isSmsAuthRequired: Boolean
+  lotteryMode: LotteryMode
+  lotteryResultAnnounceAt: DateTime
+  lotteryStartAt: DateTime
+  name: String
+  publishAt: DateTime
+  saleEndAt: DateTime
+  saleStartAt: DateTime
+  saleType: SaleType
+}
+
+type SaleScheduleUpdatePayload {
+  saleSchedule: SaleSchedule!
 }
 
 input SaleScheduleWhereInput {

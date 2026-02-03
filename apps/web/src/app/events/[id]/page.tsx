@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery } from 'urql';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { Calendar, MapPin, Mic, Pencil } from 'lucide-react';
+import { Calendar, MapPin, Mic, Pencil, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { graphql } from '../../../libs/graphql/tada';
@@ -19,6 +19,8 @@ import {
 } from '@/shared/components/ui/tabs';
 import { EditEventDialog } from './_components/edit-event-dialog';
 import { EditStagesDialog } from './_components/edit-stages-dialog';
+import { EditSaleScheduleDialog } from './_components/edit-sale-schedule-dialog';
+import { CreateSaleScheduleDialog } from './_components/create-sale-schedule-dialog';
 
 const EventDetailQuery = graphql(`
   query EventDetail($id: ID!) {
@@ -47,10 +49,15 @@ const EventDetailQuery = graphql(`
       saleSchedules {
         id
         name
+        description
+        saleType
+        publishAt
         saleStartAt
         saleEndAt
+        lotteryMode
         lotteryStartAt
         lotteryResultAnnounceAt
+        isSmsAuthRequired
         publishStatus
         ticketTypes {
           id
@@ -67,8 +74,16 @@ const EventDetailQuery = graphql(`
 export default function EventDetailPage() {
   const params = useParams();
   const eventId = params.id as string;
+  const [activeTab, setActiveTab] = useState('event');
   const [editEventDialogOpen, setEditEventDialogOpen] = useState(false);
   const [editStagesDialogOpen, setEditStagesDialogOpen] = useState(false);
+  const [editSaleScheduleDialogOpen, setEditSaleScheduleDialogOpen] =
+    useState(false);
+  const [createSaleScheduleDialogOpen, setCreateSaleScheduleDialogOpen] =
+    useState(false);
+  const [selectedSaleScheduleId, setSelectedSaleScheduleId] = useState<
+    string | null
+  >(null);
 
   const [{ data, fetching, error }, refetch] = useQuery({
     query: EventDetailQuery,
@@ -115,7 +130,11 @@ export default function EventDetailPage() {
         </div>
 
         {/* タブ */}
-        <Tabs defaultValue="event" className="space-y-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
           <TabsList variant="line">
             <TabsTrigger value="event">イベント情報</TabsTrigger>
             <TabsTrigger value="tickets">チケット情報</TabsTrigger>
@@ -265,9 +284,19 @@ export default function EventDetailPage() {
           {/* チケット情報タブ */}
           <TabsContent value="tickets" className="space-y-6">
             <div className="border rounded-lg p-6 bg-white">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">
-                チケット情報
-              </h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold text-gray-900">
+                  チケット情報
+                </h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCreateSaleScheduleDialogOpen(true)}
+                >
+                  <Plus className="size-4 mr-2" />
+                  販売スケジュールを新規作成
+                </Button>
+              </div>
 
               {!event.saleSchedules || event.saleSchedules.length === 0 ? (
                 <p className="text-center text-gray-400 py-8">
@@ -306,6 +335,17 @@ export default function EventDetailPage() {
                               </Badge>
                             )}
                           </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedSaleScheduleId(saleSchedule.id);
+                              setEditSaleScheduleDialogOpen(true);
+                            }}
+                          >
+                            <Pencil className="size-4 mr-2" />
+                            編集する
+                          </Button>
                         </div>
 
                         <div className="space-y-2 text-sm">
@@ -460,6 +500,32 @@ export default function EventDetailPage() {
                   stageArtists: stage.stageArtists,
                 })),
               }}
+              onSuccess={() => {
+                refetch();
+              }}
+            />
+            {selectedSaleScheduleId &&
+              data.event.saleSchedules?.find(
+                (s) => s.id === selectedSaleScheduleId,
+              ) && (
+                <EditSaleScheduleDialog
+                  open={editSaleScheduleDialogOpen}
+                  onOpenChange={setEditSaleScheduleDialogOpen}
+                  saleSchedule={
+                    data.event.saleSchedules.find(
+                      (s) => s.id === selectedSaleScheduleId,
+                    )!
+                  }
+                  onSuccess={() => {
+                    refetch();
+                    setSelectedSaleScheduleId(null);
+                  }}
+                />
+              )}
+            <CreateSaleScheduleDialog
+              open={createSaleScheduleDialogOpen}
+              onOpenChange={setCreateSaleScheduleDialogOpen}
+              eventId={data.event.id}
               onSuccess={() => {
                 refetch();
               }}

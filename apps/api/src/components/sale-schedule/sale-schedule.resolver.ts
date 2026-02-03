@@ -2,6 +2,7 @@ import {
   Args,
   ID,
   Info,
+  Mutation,
   Parent,
   Query,
   ResolveField,
@@ -18,6 +19,12 @@ import { type GraphQLResolveInfo } from 'graphql';
 import { SaleSchedulesArgs } from './dto/sale-schedules.args';
 import { SaleScheduleService } from './sale-schedule.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { SaleScheduleUpdateInput } from './dto/sale-schedule-update.input';
+import { SaleScheduleUpdatePayload } from './dto/sale-schedule-update.payload';
+import { SaleScheduleCreateInput } from './dto/sale-schedule-create.input';
+import { SaleScheduleCreatePayload } from './dto/sale-schedule-create.payload';
+import { UseGuards } from '@nestjs/common';
+import { EasyGuard } from '../guard/easy-guard';
 
 @Resolver(() => SaleSchedule)
 export class SaleScheduleResolver {
@@ -63,5 +70,27 @@ export class SaleScheduleResolver {
     return await this.prisma.saleSchedule
       .findUnique({ where: { id: saleSchedule.id } })
       .availablePaymentMethods();
+  }
+
+  @Mutation(() => SaleScheduleCreatePayload, {
+    description: '販売スケジュールを作成する',
+  })
+  @UseGuards(EasyGuard)
+  async saleScheduleCreate(
+    @Args('input') input: SaleScheduleCreateInput,
+  ): Promise<SaleScheduleCreatePayload> {
+    const saleSchedule = await this.saleScheduleService.create(input);
+    return { saleSchedule };
+  }
+
+  @Mutation(() => SaleScheduleUpdatePayload, {
+    description: '販売スケジュールを更新する',
+  })
+  @UseGuards(EasyGuard)
+  async saleScheduleUpdate(
+    @Args('input') input: SaleScheduleUpdateInput,
+  ): Promise<SaleScheduleUpdatePayload> {
+    const saleSchedule = await this.saleScheduleService.update(input);
+    return { saleSchedule };
   }
 }
