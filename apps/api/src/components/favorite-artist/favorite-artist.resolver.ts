@@ -1,4 +1,4 @@
-import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import {
   Artist,
   FavoriteArtist,

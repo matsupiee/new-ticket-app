@@ -778,6 +778,15 @@ input EventWhereInput {
   updatedAt: DateTimeFilter
 }
 
+type FavoriteArtist {
+  artist: Artist!
+  artistId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
 input FavoriteArtistListRelationFilter {
   every: FavoriteArtistWhereInput
   none: FavoriteArtistWhereInput
@@ -2498,6 +2507,7 @@ type User {
   createdAt: DateTime!
   email: String!
   emailVerified: Boolean!
+  favoriteArtists: [FavoriteArtist!]!
   id: ID!
   image: String
   name: String!

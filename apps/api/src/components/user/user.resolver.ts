@@ -1,13 +1,25 @@
-import { Args, ID, Info, Query, Resolver } from '@nestjs/graphql';
-import { User } from 'src/generated/prisma-nestjs-graphql';
+import {
+  Args,
+  ID,
+  Info,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { FavoriteArtist, User } from 'src/generated/prisma-nestjs-graphql';
 import { UserConnection } from './dto/user.connection';
 import { type GraphQLResolveInfo } from 'graphql';
 import { UsersArgs } from './dto/users.args';
 import { UserService } from './user.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Query(() => User, {
     description: '[Shared]: Userを取得する',
@@ -25,5 +37,14 @@ export class UserResolver {
     @Info() resolveInfo: GraphQLResolveInfo,
   ): Promise<UserConnection> {
     return this.userService.findMany(args, resolveInfo);
+  }
+
+  @ResolveField(() => [FavoriteArtist])
+  async favoriteArtists(@Parent() user: User) {
+    return await this.prisma.user
+      .findUnique({
+        where: { id: user.id },
+      })
+      .favoriteArtists();
   }
 }
