@@ -5,7 +5,7 @@ import { useQuery } from 'urql';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Pencil, Plus } from 'lucide-react';
-import { graphql } from '../../../libs/graphql/tada';
+import { graphql } from '../../../../libs/graphql/tada';
 import { Button } from '@/shared/components/ui/button';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import {

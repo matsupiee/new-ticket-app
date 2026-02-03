@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'urql';
-import { graphql } from '../../../../libs/graphql/tada';
+import { graphql } from '../../../../../libs/graphql/tada';
 import {
   Dialog,
   DialogContent,

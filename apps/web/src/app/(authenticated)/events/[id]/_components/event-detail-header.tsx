@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useMutation } from 'urql';
-import { graphql } from '../../../../libs/graphql/tada';
+import { graphql } from '../../../../../libs/graphql/tada';
 import { Button } from '@/shared/components/ui/button';
 import { Badge } from '@/shared/components/ui/badge';
 import { PublishConfirmationDialog } from './publish-confirmation-dialog';

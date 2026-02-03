@@ -3,7 +3,7 @@
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useMutation } from 'urql';
 import { Plus } from 'lucide-react';
-import { graphql } from '../../../../libs/graphql/tada';
+import { graphql } from '../../../../../libs/graphql/tada';
 import {
   Dialog,
   DialogContent,
@@ -16,8 +16,8 @@ import { Form } from '@/shared/components/ui/form';
 import {
   StageForm,
   type StageFormData,
-} from '../../../events/new/_components/stage-form';
-import type { EventFormData } from '../../../events/new/_components/stage-form';
+} from '../../new/_components/stage-form';
+import type { EventFormData } from '../../new/_components/stage-form';
 
 const StagesUpdateMutation = graphql(`
   mutation StagesUpdate($input: StagesUpdateInput!) {

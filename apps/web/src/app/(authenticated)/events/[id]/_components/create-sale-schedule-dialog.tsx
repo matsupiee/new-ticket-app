@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'urql';
-import { graphql } from '../../../../libs/graphql/tada';
+import { graphql } from '../../../../../libs/graphql/tada';
 import {
   Dialog,
   DialogContent,
@@ -29,9 +29,9 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select';
 
-const SaleScheduleUpdateMutation = graphql(`
-  mutation SaleScheduleUpdate($input: SaleScheduleUpdateInput!) {
-    saleScheduleUpdate(input: $input) {
+const SaleScheduleCreateMutation = graphql(`
+  mutation SaleScheduleCreate($input: SaleScheduleCreateInput!) {
+    saleScheduleCreate(input: $input) {
       saleSchedule {
         id
         name
@@ -63,63 +63,42 @@ type SaleScheduleFormData = {
   isSmsAuthRequired: boolean;
 };
 
-export function EditSaleScheduleDialog({
+export function CreateSaleScheduleDialog({
   open,
   onOpenChange,
-  saleSchedule,
+  eventId,
   onSuccess,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  saleSchedule: {
-    id: string;
-    name: string;
-    description: string;
-    saleType: 'FIRST_COME' | 'LOTTERY';
-    publishAt: string;
-    saleStartAt: string;
-    saleEndAt: string;
-    lotteryMode?: 'MANUAL' | 'AUTO' | null;
-    lotteryStartAt?: string | null;
-    lotteryResultAnnounceAt?: string | null;
-    isSmsAuthRequired: boolean;
-    publishStatus: 'PUBLISHED' | 'UNPUBLISHED';
-  };
+  eventId: string;
   onSuccess?: () => void;
 }) {
-  const [saleScheduleUpdateResult, updateSaleSchedule] = useMutation(
-    SaleScheduleUpdateMutation,
+  const [saleScheduleCreateResult, createSaleSchedule] = useMutation(
+    SaleScheduleCreateMutation,
   );
 
   const form = useForm<SaleScheduleFormData>({
     defaultValues: {
-      name: saleSchedule.name,
-      description: saleSchedule.description,
-      saleType: saleSchedule.saleType,
-      publishAt: new Date(saleSchedule.publishAt).toISOString().slice(0, 16),
-      saleStartAt: new Date(saleSchedule.saleStartAt)
-        .toISOString()
-        .slice(0, 16),
-      saleEndAt: new Date(saleSchedule.saleEndAt).toISOString().slice(0, 16),
-      lotteryMode: saleSchedule.lotteryMode || null,
-      lotteryStartAt: saleSchedule.lotteryStartAt
-        ? new Date(saleSchedule.lotteryStartAt).toISOString().slice(0, 16)
-        : null,
-      lotteryResultAnnounceAt: saleSchedule.lotteryResultAnnounceAt
-        ? new Date(saleSchedule.lotteryResultAnnounceAt)
-            .toISOString()
-            .slice(0, 16)
-        : null,
-      isSmsAuthRequired: saleSchedule.isSmsAuthRequired,
+      name: '',
+      description: '',
+      saleType: 'FIRST_COME',
+      publishAt: '',
+      saleStartAt: '',
+      saleEndAt: '',
+      lotteryMode: null,
+      lotteryStartAt: null,
+      lotteryResultAnnounceAt: null,
+      isSmsAuthRequired: false,
     },
   });
 
   const saleType = form.watch('saleType');
 
   const onSubmit = async (data: SaleScheduleFormData) => {
-    const result = await updateSaleSchedule({
+    const result = await createSaleSchedule({
       input: {
-        id: saleSchedule.id,
+        eventId,
         name: data.name,
         description: data.description,
         saleType: data.saleType,
@@ -140,31 +119,22 @@ export function EditSaleScheduleDialog({
     });
 
     if (result.error) {
-      console.error('Error updating sale schedule:', result.error);
+      console.error('Error creating sale schedule:', result.error);
       alert(`エラーが発生しました: ${result.error.message}`);
       return;
     }
 
+    form.reset();
     onSuccess?.();
     onOpenChange(false);
   };
-
-  const isPublished = saleSchedule.publishStatus === 'PUBLISHED';
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>販売スケジュールを編集</DialogTitle>
+          <DialogTitle>販売スケジュールを新規作成</DialogTitle>
         </DialogHeader>
-
-        {isPublished && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-            <p className="text-sm text-yellow-800">
-              このスケジュールは公開中のため編集できません。
-            </p>
-          </div>
-        )}
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -178,11 +148,7 @@ export function EditSaleScheduleDialog({
                 <FormItem>
                   <FormLabel>スケジュール名</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="例: 先行抽選"
-                      disabled={isPublished}
-                    />
+                    <Input {...field} placeholder="例: 先行抽選" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -200,7 +166,6 @@ export function EditSaleScheduleDialog({
                       {...field}
                       rows={4}
                       placeholder="説明文を入力してください"
-                      disabled={isPublished}
                     />
                   </FormControl>
                   <FormMessage />
@@ -220,7 +185,6 @@ export function EditSaleScheduleDialog({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    disabled={isPublished}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -247,11 +211,7 @@ export function EditSaleScheduleDialog({
                 <FormItem>
                   <FormLabel>公開日時</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="datetime-local"
-                      disabled={isPublished}
-                    />
+                    <Input {...field} type="datetime-local" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -268,11 +228,7 @@ export function EditSaleScheduleDialog({
                 <FormItem>
                   <FormLabel>販売開始日時</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="datetime-local"
-                      disabled={isPublished}
-                    />
+                    <Input {...field} type="datetime-local" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -289,11 +245,7 @@ export function EditSaleScheduleDialog({
                 <FormItem>
                   <FormLabel>販売終了日時</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="datetime-local"
-                      disabled={isPublished}
-                    />
+                    <Input {...field} type="datetime-local" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -311,7 +263,6 @@ export function EditSaleScheduleDialog({
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value || undefined}
-                        disabled={isPublished}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -339,7 +290,6 @@ export function EditSaleScheduleDialog({
                           {...field}
                           value={field.value || ''}
                           type="datetime-local"
-                          disabled={isPublished}
                         />
                       </FormControl>
                       <FormMessage />
@@ -358,7 +308,6 @@ export function EditSaleScheduleDialog({
                           {...field}
                           value={field.value || ''}
                           type="datetime-local"
-                          disabled={isPublished}
                         />
                       </FormControl>
                       <FormMessage />
@@ -381,7 +330,6 @@ export function EditSaleScheduleDialog({
                       type="checkbox"
                       checked={field.value}
                       onChange={field.onChange}
-                      disabled={isPublished}
                       className="h-4 w-4"
                     />
                   </FormControl>
@@ -393,15 +341,18 @@ export function EditSaleScheduleDialog({
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => onOpenChange(false)}
+                onClick={() => {
+                  form.reset();
+                  onOpenChange(false);
+                }}
               >
                 キャンセル
               </Button>
               <Button
                 type="submit"
-                disabled={saleScheduleUpdateResult.fetching || isPublished}
+                disabled={saleScheduleCreateResult.fetching}
               >
-                {saleScheduleUpdateResult.fetching ? '更新中...' : '更新'}
+                {saleScheduleCreateResult.fetching ? '作成中...' : '作成'}
               </Button>
             </DialogFooter>
           </form>

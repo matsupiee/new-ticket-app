@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useQuery } from 'urql';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
-import { graphql, ResultOf } from '../../libs/graphql/tada';
+import { graphql, ResultOf } from '../../../libs/graphql/tada';
 import { Button } from '@/shared/components/ui/button';
 import {
   Tabs,

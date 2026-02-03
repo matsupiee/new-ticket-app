@@ -186,7 +186,7 @@ model EventOrganizerFeature {
 //   createdAt DateTime @default(now())
 //   updatedAt DateTime @default(now()) @updatedAt
 
-//   eventOrganizerId String @unique
+//   eventOrganizerId String
 //   bankCode         String
 //   bankName         String
 //   branchCode       String
@@ -197,6 +197,7 @@ model EventOrganizerFeature {
 
 //   /// @HideField()
 //   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+//   @@unique([bankCode, branchCode, accountNumber])
 // }
 
 // enum BankAccountType {

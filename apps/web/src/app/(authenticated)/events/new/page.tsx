@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useMutation } from 'urql';
 import { Plus, X } from 'lucide-react';
-import { graphql } from '../../../libs/graphql/tada';
+import { graphql } from '../../../../libs/graphql/tada';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Textarea } from '@/shared/components/ui/textarea';

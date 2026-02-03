@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'urql';
-import { graphql } from '../../../../libs/graphql/tada';
+import { graphql } from '../../../../../libs/graphql/tada';
 import {
   Dialog,
   DialogContent,
@@ -273,7 +273,9 @@ export function EditTicketTypeDialog({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel className="text-base">一度のみ申込可能</FormLabel>
+                    <FormLabel className="text-base">
+                      一度のみ申込可能
+                    </FormLabel>
                   </div>
                   <FormControl>
                     <input
@@ -317,10 +319,7 @@ export function EditTicketTypeDialog({
               >
                 キャンセル
               </Button>
-              <Button
-                type="submit"
-                disabled={ticketTypeUpdateResult.fetching}
-              >
+              <Button type="submit" disabled={ticketTypeUpdateResult.fetching}>
                 {ticketTypeUpdateResult.fetching ? '更新中...' : '更新'}
               </Button>
             </DialogFooter>
