@@ -64,65 +64,84 @@ catalog:
 
 ## 開発の始め方
 
+## miseの導入
+
+nodejsやpnpmのバージョン管理のために、mise というバージョン管理ツールを導入します
+miseについてより詳しく知りたい方は[公式 docs](https://mise.jdx.dev/getting-started.html#quickstart)を参照
+
 ```
-
-# mise というバージョン管理ツールを導入
-# miseについてより詳しく知りたい方は[公式 docs](https://mise.jdx.dev/getting-started.html#quickstart)を参照
-
 brew install mise
 echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
 source ~/.zshrc
 mise install
+```
 
-# 依存関係のインストール
+## 依存関係のインストール
 
+```
 pnpm install
+```
 
-# データベースサーバーを起動（事前にDocker を入れておく必要があります）
+## データベースサーバーを起動
 
+まず、Docker Desktop をダウンロードしておく必要があります。
+
+https://www.docker.com/ja-jp/get-started/
+
+Dockerをダウンロード・インストールできたら以下のコマンドを実行しましょう。
+
+```
 pnpm db:up
+```
 
-# apps/server/.env にデータベースサーバーの接続先を記載
+## 環境変数ファイルの設定
 
-# prisma スキーマをデータベースに反映
+apps/server/.env にデータベースサーバーの接続先を記載します。
+apps/server/.env.exampleファイルをそのままコピーしましょう
 
+## prisma スキーマをデータベースに反映
+
+```
 pnpm db:push
+```
 
-# prismaクライアントを作成
+## prismaクライアントを作成
+
+```
 pnpm db:generate
+```
 
-# apiサーバーの環境変数を設定しましょう
+## seedデータを作成
 
-apps/api/.env.example
+```
+pnpm db:seed
+```
 
-# 開発サーバー(バックエンド、フロントエンド両方)を起動
+## 開発サーバー(バックエンド、フロントエンド両方)を起動
 
+```
 pnpm dev
-
 ```
 
-バックエンド → http://localhost:4020
-フロントエンド → http://localhost:4021
+以下にサーバーが立ち上がります。
 
-バックエンドとフロントエンドを個別に起動したい場合は以下を実行
+- バックエンド → http://localhost:4020
+- フロントエンド → http://localhost:4021
+
+※ もし、バックエンドとフロントエンドを個別に起動したい場合は以下を実行すればOKです
 
 ```
-
-pnpm dev:server # バックエンド
+pnpm dev:api # バックエンド
 pnpm dev:web # フロントエンド
-
 ```
 
 ## データベースの中身をチェックしたり操作したりしたい場合
 
+以下のコマンドを実行して、指定された localhost の url を開いてください
+ブラウザで DB を GUI 上で直観的に見たり操作したりできます
+
 ```
-
-# 以下のコマンドを実行して、指定された localhost の url を開いてください
-
-# ブラウザで DB を GUI 上で直観的に見たり操作したりできます
-
 pnpm db:studio
-
 ```
 
 [参照](https://www.prisma.io/studio)
