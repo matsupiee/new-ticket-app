@@ -12,8 +12,8 @@ services:
     ports:
       - "55440:5432"
     volumes:
-      - ./docker//postgresql/data:/var/lib/postgresql/data
-      - ./docker/initdb:/docker-entrypoint-initdb.d
+      - ./docker/ticket-app/postgresql/data:/var/lib/postgresql/data
+      - ./docker/ticket-app/postgresql/initdb:/docker-entrypoint-initdb.d
   ticket-app-postgres-test:
     image: postgres:15.4
     container_name: ticket-app-postgres-test
@@ -25,5 +25,5 @@ services:
     ports:
       - "55441:5432"
     volumes:
-      - ./docker//postgresql/data:/var/lib/postgresql/data
-      - ./docker/initdb:/docker-entrypoint-initdb.d
+      - ./docker/ticket-app-test/postgresql/data:/var/lib/postgresql/data
+      - ./docker/ticket-app-test/postgresql/initdb:/docker-entrypoint-initdb.d
