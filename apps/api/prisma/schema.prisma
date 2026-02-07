@@ -23,8 +23,11 @@ generator nestgraphql {
   fields_Scalars_output = true
 }
 
-// @note: id, createdAt, updatedAtはモデルの上の方に必ず定義すること
-// @note: リレーションはモデルの下の方に定義すること
+// モデル定義のルール
+// id, createdAt, updatedAtはモデルの上の方に必ず定義すること
+// リレーションはモデルの下の方に定義すること
+// 全てのリレーションは@HideField()を使って非表示にすること(GraphQLを使う場合、ネストして色んな情報にアクセスできるというセキュリティホールが生まれてしまうため)
+// prisma/models/*.prismaのどのグループにも入らないモデルは、schema.prisma内に定義する
 
 // トップページ上部に特別に表示するイベント
 model FeaturedEvent {
