@@ -1,0 +1,49 @@
+// // 座席割り当てに関する情報を管理するテーブル
+
+// // TicketItemに対する座席割当（現在値）
+// model SeatAllocation {
+//     id        String   @id @default(cuid())
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @default(now()) @updatedAt
+
+//     ticketItemId String @unique
+//     stageId      String
+//     seatId       String
+
+//     allocatedAt DateTime?
+//     method      SeatAllocationMethod?
+
+//     /// @HideField()
+//     ticketItem TicketItem @relation(fields: [ticketItemId], references: [id])
+//     /// @HideField()
+//     stage      Stage      @relation(fields: [stageId], references: [id])
+//     /// @HideField()
+//     seat       Seat       @relation(fields: [seatId, stageId], references: [id, stageId])
+
+//     // 同一公演で同一座席の重複割当を防ぐ
+//     @@unique([stageId, seatId])
+// }
+
+// enum SeatAllocationMethod {
+//     AUTO
+//     MANUAL
+// }
+
+// // Stage(公演)ごとの座席マスタ
+// model Seat {
+//     id        String   @id @default(cuid())
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @default(now()) @updatedAt
+
+//     stageId String
+//     code    String // 例: A-12
+//     row     String?
+//     number  String?
+
+//     /// @HideField()
+//     stage           Stage            @relation(fields: [stageId], references: [id])
+//     /// @HideField()
+//     seatAllocations SeatAllocation[]
+
+//     @@unique([stageId, code])
+// }

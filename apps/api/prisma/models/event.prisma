@@ -1,0 +1,114 @@
+// イベント関連の情報を管理するテーブル
+
+model Event {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    eventOrganizerId String
+    name             String
+    // イベントページの詳細文・概要文（Markdown記法）
+    description      String @db.Text
+    inquiry          String // 問い合わせ先(電話番号 or メール)
+
+    thumbnailUrls    String[]
+    lineThumbnailUrl String? // LINEサムネイル画像URL（JPEG形式の画像URL）
+
+    publishAt DateTime? // 予約公開したい場合は未来の日時を設定する
+
+    publishStatus    EventPublishStatus @default(UNPUBLISHED)
+    isDisplayedInTop Boolean            @default(true) // トップページ非公開にしたい場合はfalse
+
+    // 特定興行の場合は、チケットの不正転売を防止するために、入場券に特定興行入場券という印を押す必要がある
+    isTokuteiKogyo Boolean @default(false) // 特定興行の場合はtrue
+
+    /// @HideField()
+    eventOrganizer EventOrganizer  @relation(fields: [eventOrganizerId], references: [id])
+    /// @HideField()
+    favoriteEvents FavoriteEvent[]
+    /// @HideField()
+    featuredEvent  FeaturedEvent?
+    /// @HideField()
+    stages         Stage[]
+    /// @HideField()
+    saleSchedules  SaleSchedule[]
+}
+
+enum EventPublishStatus {
+    PUBLISHED
+    UNPUBLISHED
+}
+
+// 公演を管理するテーブル
+// 1イベントに対して、複数の公演を設定できる
+model Stage {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    eventId String
+    venueId String?
+
+    name String
+
+    doorsOpenAt DateTime // 会場時間
+    startAt     DateTime // 公演開始時間
+
+    /// @HideField()
+    event            Event             @relation(fields: [eventId], references: [id])
+    /// @HideField()
+    venue            Venue?            @relation(fields: [venueId], references: [id])
+    /// @HideField()
+    stageArtists     StageArtist[]
+    /// @HideField()
+    stageTicketTypes StageTicketType[]
+    /// @HideField()
+    ticketItems      TicketItem[]
+}
+
+// 会場を管理するテーブル
+model Venue {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    name String // 会場名
+
+    /// @HideField()
+    stages Stage[]
+}
+
+model Artist {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    name            String
+    description     String? @db.Text
+    profileImageUrl String?
+    twitterAccount  String?
+
+    /// @HideField()
+    stageArtists StageArtist[]
+    /// @HideField()
+    favorites    FavoriteArtist[]
+}
+
+// ステージとアーティストを紐づける中間テーブル
+model StageArtist {
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    stageId  String
+    artistId String
+
+    // 同じステージ内でのアーティストの表示順
+    sortOrder Int @default(0)
+
+    /// @HideField()
+    stage  Stage  @relation(fields: [stageId], references: [id])
+    /// @HideField()
+    artist Artist @relation(fields: [artistId], references: [id])
+
+    @@id([stageId, artistId])
+}

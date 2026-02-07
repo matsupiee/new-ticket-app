@@ -1,0 +1,81 @@
+// 決済関連のテーブル
+
+// チケット販売時に、利用可能な支払い方法を変更できる
+model AvailablePaymentMethod {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    saleScheduleId String
+    paymentMethod  PaymentMethodType
+
+    /// @HideField()
+    saleSchedule SaleSchedule @relation(fields: [saleScheduleId], references: [id])
+}
+
+model Payment {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    ticketApplicationId String
+
+    paymentMethod PaymentMethodType
+    cardId        String? // カード支払いの場合だけ値が入る
+
+    totalPaymentAmount Int // 実際の支払い金額(割引などが入る場合、割引分が引かれた値が入る)
+
+    // ステータス・支払い確定までの過程を管理する
+    status        PaymentStatus @default(PENDING)
+    authorizedAt  DateTime?
+    capturedAt    DateTime?
+    failedAt      DateTime?
+    failureReason String?
+
+    externalId String? // 外部決済ID
+
+    /// @HideField()
+    ticketApplication TicketApplication @relation(fields: [ticketApplicationId], references: [id])
+    /// @HideField()
+    paymentCard       PaymentCard?      @relation(fields: [cardId], references: [id])
+}
+
+enum PaymentMethodType {
+    CARD
+    KONBINI
+}
+
+enum PaymentStatus {
+    PENDING
+    AUTHORIZED
+    CAPTURED
+    FAILED
+    CANCELLED
+    REFUNDED
+}
+
+// カード情報を保存する
+model PaymentCard {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    userId      String
+    provider    PaymentProvider // GMO, RAKUTEN
+    cardToken   String // トークン化されたカード情報
+    cardLast4   String // 下4桁
+    cardBrand   String // VISA, MASTERCARD等
+    expiryMonth Int
+    expiryYear  Int
+    isDefault   Boolean         @default(false)
+
+    /// @HideField()
+    user     User      @relation(fields: [userId], references: [id])
+    /// @HideField()
+    payments Payment[]
+}
+
+enum PaymentProvider {
+    GMO
+    RAKUTEN
+}

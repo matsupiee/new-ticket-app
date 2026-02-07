@@ -1,0 +1,292 @@
+// チケット関連の情報を管理するテーブル(配席に関する情報は別ファイルに分けてます)
+model SaleSchedule {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    eventId String
+
+    name           String
+    description    String
+    // 同じステージ内での表示順
+    sortOrder      Int                  @default(0)
+    transferPolicy TicketTransferPolicy @default(FREE)
+
+    publishStatus SaleSchedulePublishStatus @default(UNPUBLISHED)
+    publishAt     DateTime // 公開開始日時(公開されていても販売自体は開始してないことがある)
+    saleStartAt   DateTime // 販売開始日時
+    saleEndAt     DateTime // 販売終了日時
+
+    paperTicketExchangeStartAt DateTime? // 紙のチケットを交換する開始日時
+    paperTicketExchangeEndAt   DateTime? // 紙のチケットを交換する終了日時
+
+    receptionType ReceptionType
+
+    // 以下はreceptionTypeがLOTTERYの場合にのみ値が入る
+    lotteryMode             LotteryMode? // 抽選方式
+    lotteryStartAt          DateTime? // 抽選開始日時
+    lotteryResultAnnounceAt DateTime? // 抽選結果発表日時
+
+    reservedSeatTicketIssueAt DateTime? // 指定席チケットの発行予定日時
+
+    maxApplicationCount Int? // 申込回数制限
+    maxPerApplication   Int  @default(4) // 1申込あたりの最大枚数
+
+    konbiniPaymentTermDay Int? // コンビニ支払いの期限日数
+
+    isDuplicatePurchaseAllowed Boolean @default(false) // 同一SaleSchedule内での重複購入可否
+    isSmsAuthRequired          Boolean @default(false) // sms認証必須
+    isResale                   Boolean @default(false) // リセール受付かどうか
+    isTransferRequired         Boolean @default(false) // 分配必須かどうか
+    isFanClubOnly              Boolean @default(false) // ファンクラブ会員のみ
+
+    deletedAt DateTime?
+
+    /// @HideField()
+    event                   Event                    @relation(fields: [eventId], references: [id])
+    /// @HideField()
+    ticketTypes             TicketType[]
+    /// @HideField()
+    availablePaymentMethods AvailablePaymentMethod[]
+}
+
+enum ReceptionType {
+    FIRST_COME // 先着
+    LOTTERY // 抽選
+}
+
+enum LotteryMode {
+    MANUAL // 手動
+    AUTO // 自動
+}
+
+enum SaleSchedulePublishStatus {
+    PUBLISHED
+    UNPUBLISHED
+}
+
+enum TicketTransferPolicy {
+    FREE // 自由に分配可能
+    COMPANIONS_ONLY // 同行者のみ
+    REGISTERED_COMPANIONS_ONLY // 事前登録済みの同行者のみ
+    NOT_ALLOWED // 分配不可
+}
+
+model TicketType {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    saleScheduleId       String
+    seatType             SeatType
+    seatAllocationTiming SeatAllocationTiming
+    name                 String // S席、A席、立見等
+    description          String
+
+    basePrice           Int // チケット価格(手数料などは含まれない)
+    platformShareAmount Int // チケット価格からプラットフォーム側がもらう金額
+
+    capacity       Int // 販売可能枚数
+    maxNumPerApply Int @default(1) // 1申込あたりの最大枚数
+
+    sortOrder Int @default(0) // 同じSaleSchedule内での表示順
+
+    // 制限
+    isOnceApplyOnly   Boolean @default(false) // 一度のみ申込可能かどうか
+    isOnlyQrCodeEntry Boolean @default(false) // QRコードのみで入場可能かどうか
+
+    /// @HideField()
+    saleSchedule           SaleSchedule            @relation(fields: [saleScheduleId], references: [id])
+    /// @HideField()
+    ticketTypeFees         TicketTypeFee[]
+    /// @HideField()
+    ticketApplicationItems TicketApplicationItem[]
+    /// @HideField()
+    stageTicketTypes       StageTicketType[]
+
+    @@unique([saleScheduleId, name])
+}
+
+enum SeatType {
+    NORMAL // 通常
+    QUEUE // 整理番号
+    SEAT // 座席指定
+}
+
+enum SeatAllocationTiming {
+    AT_PURCHASE
+    AFTER_PURCHASE
+}
+
+// 手数料を管理するセーブル
+// 1TicketTypeに対して、複数種類の手数料が存在しうる
+model TicketTypeFee {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    ticketTypeId String
+    name         String // 「システム手数料」「先行サービス手数料」など
+
+    amount              Int // 手数料
+    platformShareAmount Int // プラットフォーム側の取り分
+
+    /// @HideField()
+    ticketType TicketType @relation(fields: [ticketTypeId], references: [id])
+
+    @@unique([ticketTypeId, name])
+}
+
+// ステージとチケットタイプを紐づける中間テーブル
+// ステージとチケットタイプはmany-to-manyの関係になる
+model StageTicketType {
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    stageId      String
+    ticketTypeId String
+
+    /// @HideField()
+    stage      Stage      @relation(fields: [stageId], references: [id])
+    /// @HideField()
+    ticketType TicketType @relation(fields: [ticketTypeId], references: [id])
+
+    @@id([stageId, ticketTypeId])
+}
+
+// 申し込み
+model TicketApplication {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    userId          String
+    resultDecidedAt DateTime? // 当落の結果が確定した日時
+
+    /// @HideField()
+    user                   User                    @relation(fields: [userId], references: [id])
+    /// @HideField()
+    ticketApplicationItems TicketApplicationItem[]
+    /// @HideField()
+    payments               Payment[]
+}
+
+enum TicketApplicationStatus {
+    APPLYING // 申し込み作成直後
+    RESULT_DECIDED // 当落の結果が確定する
+    CANCELLED // ユーザーキャンセル
+}
+
+// 1つのticketTypeに対して1申し込みを行うことが基本だが、
+// 複数のticketTypeに対して申し込む場合もある
+// 例: 第1希望=A席, 第2希望=B席, 第3希望=C席など
+model TicketApplicationItem {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    ticketApplicationId String
+    ticketTypeId        String
+
+    quantity Int // 申し込み枚数
+    priority Int // 複数のチケットに同時に申し込む際に希望順位をつける
+
+    result TicketApplicationItemResult @default(PENDING)
+
+    // 申し込みがキャンセルになった場合は、以下に値が入る
+    cancelledAt     DateTime?
+    cancelledReason String?
+
+    /// @HideField()
+    ticketApplication TicketApplication @relation(fields: [ticketApplicationId], references: [id])
+    /// @HideField()
+    ticketType        TicketType        @relation(fields: [ticketTypeId], references: [id])
+    /// @HideField()
+    tickets           Ticket[] // 1TicketApplicationItemで複数枚申し込めるので、複数のticketが紐づけられる
+
+    @@unique([ticketApplicationId, ticketTypeId])
+    @@unique([ticketApplicationId, priority])
+}
+
+enum TicketApplicationItemResult {
+    PENDING // 抽選待ち
+    WIN // 当選
+    LOST // 落選
+}
+
+// 1Ticket に対して複数のTicketItemが紐づく
+// TicketTypeが作成された段階ではTicketは作成されない
+// 当選したタイミングなどで作成される
+model Ticket {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    ticketApplicationItemId String
+    userId                  String // チケットを持つユーザー
+
+    name String
+
+    /// @HideField()
+    ticketApplicationItem TicketApplicationItem @relation(fields: [ticketApplicationItemId], references: [id])
+    /// @HideField()
+    user                  User                  @relation(fields: [userId], references: [id])
+    /// @HideField()
+    ticketItems           TicketItem[]
+}
+
+// 1TicketItemに対して1Stageが紐づく
+// 通し券の場合は1 Ticketに対して複数TicketItemを紐づける
+model TicketItem {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    ticketId String
+    stageId  String
+
+    checkInMethod TicketCheckInMethod
+
+    // seatType=ENTRY_NUMBERのときだけ値を入れる
+    entryNumber Int?
+
+    // seatTypeごとに以下の値を使い分ける
+    // RESERVED: PENDING/ALLOCATED
+    // ENTRY_NUMBER/FREE: NOT_REQUIRED
+    seatAllocationStatus SeatAllocationStatus @default(NOT_REQUIRED)
+
+    /// @HideField()
+    ticket       Ticket        @relation(fields: [ticketId], references: [id])
+    /// @HideField()
+    stage        Stage         @relation(fields: [stageId], references: [id])
+    /// @HideField()
+    ticketUsages TicketUsage[]
+
+    // 同一Ticket内で同一公演の重複を防ぐ
+    @@unique([ticketId, stageId])
+}
+
+enum TicketCheckInMethod {
+    CUSTOMER_SELF
+    QR_SCAN
+    STAFF_MANUAL
+}
+
+enum SeatAllocationStatus {
+    NOT_REQUIRED // 座席割り当てが不要(スタンディング方式などの場合)
+    PENDING // 座席割り当てが保留中
+    ALLOCATED // 座席割り当てが完了
+}
+
+// チケットが使われたことをログとして残す
+// 1チケットを使って、複数回入場した場合は、複数のログが残る
+model TicketUsage {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now()) // 入場した時間
+    updatedAt DateTime @default(now()) @updatedAt
+
+    ticketItemId String
+
+    /// @HideField()
+    ticketItem TicketItem @relation(fields: [ticketItemId], references: [id])
+}

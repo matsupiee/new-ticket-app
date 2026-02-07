@@ -1,0 +1,137 @@
+// ユーザー情報・認証関連のテーブル
+
+model User {
+    id        String   @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name          String
+    email         String  @unique
+    emailVerified Boolean @default(false)
+    image         String?
+
+    role UserRole @default(TICKET_PURCHASER)
+
+    // 認証関連テーブル
+    /// @HideField()
+    sessions Session[]
+    /// @HideField()
+    accounts Account[]
+
+    // その他
+    /// @HideField()
+    userRestrictions   UserRestriction[]
+    /// @HideField()
+    eventOrganizers    EventOrganizer[]
+    /// @HideField()
+    ticketApplications TicketApplication[]
+    /// @HideField()
+    paymentCards       PaymentCard[]
+    /// @HideField()
+    tickets            Ticket[]
+    /// @HideField()
+    favoriteArtists    FavoriteArtist[]
+    /// @HideField()
+    favoriteEvents     FavoriteEvent[]
+
+    @@map("user")
+}
+
+enum UserRole {
+    TICKET_PURCHASER
+    EVENT_ORGANIZER
+    PLATFORM_MANAGER
+}
+
+model Session {
+    id        String   @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    expiresAt DateTime
+    token     String   @unique
+    ipAddress String?
+    userAgent String?
+    userId    String   @unique
+
+    /// @HideField()
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+    @@map("session")
+}
+
+model Account {
+    id        String   @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    accountId             String
+    providerId            String
+    userId                String
+    accessToken           String?
+    refreshToken          String?
+    idToken               String?
+    accessTokenExpiresAt  DateTime?
+    refreshTokenExpiresAt DateTime?
+    scope                 String?
+    password              String?
+
+    /// @HideField()
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("account")
+}
+
+model Verification {
+    id        String   @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    identifier String
+    value      String
+    expiresAt  DateTime
+
+    @@index([identifier])
+    @@map("verification")
+}
+
+model UserRestriction {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    userId    String
+    reason    String
+    expiresAt DateTime? // nullの場合は無期限
+
+    /// @HideField()
+    user User @relation(fields: [userId], references: [id])
+
+    @@map("user_restriction")
+}
+
+model BankAccount {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    eventOrganizerId String
+    bankCode         String
+    bankName         String
+    branchCode       String
+    branchName       String
+    accountType      BankAccountType
+    accountNumber    String
+    accountHolder    String
+
+    /// @HideField()
+    eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+
+    @@unique([bankCode, branchCode, accountNumber])
+}
+
+enum BankAccountType {
+    SAVINGS // 普通
+    CHECKING // 当座
+}

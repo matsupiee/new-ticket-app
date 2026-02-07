@@ -1,0 +1,56 @@
+// イベント主催者の情報を管理するテーブル
+
+model EventOrganizer {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    userId String
+    name   String
+
+    // 問い合わせ先情報
+    inquiryEmail   String
+    inquirySubject String
+
+    // 通知に使うメールアドレスとSlackのWebhook URL
+    notifyEmail           String?
+    notifySlackWebhookUrl String?
+
+    /// @HideField()
+    user                    User                     @relation(fields: [userId], references: [id])
+    /// @HideField()
+    events                  Event[]
+    /// @HideField()
+    eventOrganizerReferrers EventOrganizerReferrer[]
+    /// @HideField()
+    eventOrganizerFeatures  EventOrganizerFeature[]
+    bankAccounts            BankAccount[]
+}
+
+// 主催者ごとに使える機能の設定
+model EventOrganizerFeature {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    eventOrganizerId String
+    key              String
+    isEnabled        Boolean @default(false)
+
+    /// @HideField()
+    eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+}
+
+// イベント主催者の紹介者を管理するテーブル
+model EventOrganizerReferrer {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+
+    eventOrganizerId String
+    name             String
+    referrerSource   String
+
+    /// @HideField()
+    eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
+}
