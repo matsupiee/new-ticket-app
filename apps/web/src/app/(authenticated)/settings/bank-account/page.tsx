@@ -11,42 +11,67 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/components/ui/table';
-import { Badge } from '@/shared/components/ui/badge';
 import { CreateBankAccountDialog } from './_components/create-bank-account-dialog';
+import { useQuery } from 'urql';
+import { graphql } from '@/libs/graphql/tada';
 
-// ダミーデータ
-const bankAccounts = [
-  {
-    id: '1',
-    bankName: 'みずほ銀行',
-    branchName: '渋谷支店',
-    accountType: '普通',
-    accountNumber: '1234567',
-    accountHolder: 'カブシキガイシャ サンプル',
-    isDefault: true,
-  },
-  {
-    id: '2',
-    bankName: '三菱UFJ銀行',
-    branchName: '新宿支店',
-    accountType: '当座',
-    accountNumber: '9876543',
-    accountHolder: 'カブシキガイシャ サンプル',
-    isDefault: false,
-  },
-  {
-    id: '3',
-    bankName: '三井住友銀行',
-    branchName: '東京支店',
-    accountType: '普通',
-    accountNumber: '5555555',
-    accountHolder: 'カブシキガイシャ サンプル',
-    isDefault: false,
-  },
-];
+const BankAccountsQuery = graphql(`
+  query BankAccounts($first: Int, $after: String) {
+    bankAccounts(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          test
+          bankCode
+          bankName
+          branchCode
+          branchName
+          accountType
+          accountNumber
+          accountHolder
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+`);
 
 export default function BankAccountPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [{ data, fetching, error }] = useQuery({
+    query: BankAccountsQuery,
+    variables: { first: 100 },
+  });
+
+  const bankAccounts =
+    data?.bankAccounts?.edges?.map((edge) => edge.node) || [];
+
+  if (fetching) {
+    return (
+      <div className="flex-1 p-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center py-12 text-gray-500">
+            <p>読み込み中...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex-1 p-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center py-12 text-red-500">
+            <p>エラーが発生しました: {error.message}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 p-8">
@@ -64,57 +89,45 @@ export default function BankAccountPage() {
           </Button>
         </div>
 
-        <div className="border rounded-lg bg-white">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>銀行名</TableHead>
-                <TableHead>支店名</TableHead>
-                <TableHead>口座種別</TableHead>
-                <TableHead>口座番号</TableHead>
-                <TableHead>口座名義</TableHead>
-                <TableHead>ステータス</TableHead>
-                <TableHead className="text-right">操作</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {bankAccounts.map((account) => (
-                <TableRow key={account.id}>
-                  <TableCell className="font-medium">
-                    {account.bankName}
-                  </TableCell>
-                  <TableCell>{account.branchName}</TableCell>
-                  <TableCell>{account.accountType}</TableCell>
-                  <TableCell>{account.accountNumber}</TableCell>
-                  <TableCell>{account.accountHolder}</TableCell>
-                  <TableCell>
-                    {account.isDefault ? (
-                      <Badge className="bg-primary text-primary-foreground">
-                        メイン
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline">サブ</Badge>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Edit className="size-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        disabled={account.isDefault}
-                      >
-                        <Trash2 className="size-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
+        {bankAccounts.length > 0 && (
+          <div className="border rounded-lg bg-white">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>銀行名</TableHead>
+                  <TableHead>支店名</TableHead>
+                  <TableHead>口座種別</TableHead>
+                  <TableHead>口座番号</TableHead>
+                  <TableHead>口座名義</TableHead>
+                  <TableHead className="text-right">操作</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {bankAccounts.map((account) => (
+                  <TableRow key={account?.id}>
+                    <TableCell className="font-medium">
+                      {account?.bankName}
+                    </TableCell>
+                    <TableCell>{account?.branchName}</TableCell>
+                    <TableCell>{account?.accountType}</TableCell>
+                    <TableCell>{account?.accountNumber}</TableCell>
+                    <TableCell>{account?.accountHolder}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button variant="ghost" size="sm">
+                          <Edit className="size-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <Trash2 className="size-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
 
         {bankAccounts.length === 0 && (
           <div className="text-center py-12 text-gray-500">

@@ -103,7 +103,7 @@ export default function EventDetailPage() {
     setSelectedSaleScheduleIdForTicketType,
   ] = useState<string | null>(null);
 
-  const [{ data, fetching, error }] = useQuery({
+  const [{ data, fetching, error }, refetch] = useQuery({
     query: EventDetailQuery,
     variables: { id: eventId },
     context: useMemo(

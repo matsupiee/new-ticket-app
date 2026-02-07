@@ -165,6 +165,7 @@ model EventOrganizer {
   ticketTypeFeeDistributions   TicketTypeFeeDistribution[]
   /// @HideField()
   eventOrganizerFeatures       EventOrganizerFeature[]
+  bankAccounts                 BankAccount[]
 }
 
 // 主催者ごとに使える機能の設定
@@ -181,29 +182,30 @@ model EventOrganizerFeature {
   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
 }
 
-// model BankAccount {
-//   id        String   @id @default(cuid())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @default(now()) @updatedAt
+model BankAccount {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
-//   eventOrganizerId String
-//   bankCode         String
-//   bankName         String
-//   branchCode       String
-//   branchName       String
-//   accountType      BankAccountType
-//   accountNumber    String
-//   accountHolder    String
+  eventOrganizerId String
+  bankCode         String
+  bankName         String
+  branchCode       String
+  branchName       String
+  accountType      BankAccountType
+  accountNumber    String
+  accountHolder    String
 
-//   /// @HideField()
-//   eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
-//   @@unique([bankCode, branchCode, accountNumber])
-// }
+  /// @HideField()
+  eventOrganizer EventOrganizer @relation(fields: [eventOrganizerId], references: [id])
 
-// enum BankAccountType {
-//   SAVINGS // 普通
-//   CHECKING // 当座
-// }
+  @@unique([bankCode, branchCode, accountNumber])
+}
+
+enum BankAccountType {
+  SAVINGS // 普通
+  CHECKING // 当座
+}
 
 model EventOrganizerReferrer {
   id        String   @id @default(cuid())
@@ -257,6 +259,8 @@ enum EventPublishStatus {
   UNPUBLISHED
 }
 
+// 公演を管理するテーブル
+// 1イベントに対して、複数の公演を設定できる
 model Stage {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -280,6 +284,7 @@ model Stage {
   stageTicketTypes StageTicketType[]
 }
 
+// 会場を管理するテーブル
 model Venue {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -307,7 +312,7 @@ model Artist {
   favorites    FavoriteArtist[]
 }
 
-// ステージとアーティストの紐付け
+// ステージとアーティストを紐づける中間テーブル
 model StageArtist {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -326,6 +331,7 @@ model StageArtist {
   @@id([stageId, artistId])
 }
 
+// 販売スケジュールを管理するテーブル
 model SaleSchedule {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -411,6 +417,7 @@ model AvailablePaymentMethod {
   saleSchedule SaleSchedule @relation(fields: [saleScheduleId], references: [id])
 }
 
+// ステージとチケットタイプを紐づける中間テーブル
 model StageTicketType {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -481,6 +488,7 @@ model TicketTypePriceDistribution {
   @@id([eventOrganizerId, ticketTypeId])
 }
 
+// チケットの手数料を管理するセーブル
 model TicketTypeFee {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -691,7 +699,7 @@ model TicketStageEntry {
   @@id([ticketId, stageId])
 }
 
-// お気に入りアーティスト
+// ユーザーのお気に入りアーティストを管理するテーブル
 model FavoriteArtist {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -707,7 +715,7 @@ model FavoriteArtist {
   @@id([userId, artistId])
 }
 
-// お気に入りイベント
+// ユーザーのお気に入りイベントを管理するテーブル
 model FavoriteEvent {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

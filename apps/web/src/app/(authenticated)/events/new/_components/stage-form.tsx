@@ -119,7 +119,9 @@ export function StageForm({
                   }
                 />
               </FormControl>
-              <FormMessage />
+              <div className="min-h-10">
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
@@ -134,7 +136,9 @@ export function StageForm({
               <FormControl>
                 <Input {...field} placeholder="例: 東京ドーム" />
               </FormControl>
-              <FormMessage />
+              <div className="min-h-10">
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
@@ -162,7 +166,9 @@ export function StageForm({
               <FormControl>
                 <Input {...field} type="datetime-local" />
               </FormControl>
-              <FormMessage />
+              <div className="min-h-10">
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
@@ -191,7 +197,9 @@ export function StageForm({
               <FormControl>
                 <Input {...field} type="datetime-local" />
               </FormControl>
-              <FormMessage />
+              <div className="min-h-10">
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />

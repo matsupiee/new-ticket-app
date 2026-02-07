@@ -34,6 +34,7 @@ import { TicketModule } from './components/ticket/ticket.module';
 import { FavoriteArtistModule } from './components/favorite-artist/favorite-artist.module';
 import { FavoriteEventModule } from './components/favorite-event/favorite-event.module';
 import { FeaturedEventModule } from './components/featured-event/featured-event.module';
+import { BankAccountModule } from './components/bank-account/bank-account.module';
 
 @Module({
   imports: [
@@ -53,7 +54,7 @@ import { FeaturedEventModule } from './components/featured-event/featured-event.
     UserRestrictionModule,
     EventOrganizerModule,
     EventOrganizerFeatureModule,
-    // BankAccountModule,
+    BankAccountModule,
     EventOrganizerReferrerModule,
     StageModule,
     VenueModule,
